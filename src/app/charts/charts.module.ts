@@ -3,7 +3,8 @@ import { RouterModule } from '@angular/router';
 import {ChartsComponent} from "./charts.component";
 import {TileLayoutModule} from "@progress/kendo-angular-layout";
 import { ChartsModule } from "@progress/kendo-angular-charts";
-import {SharedModule} from "../../shared/shared.module";
+import {SharedModule} from "@progress/kendo-angular-grid";
+
 @NgModule({
   imports: [
     RouterModule.forChild([

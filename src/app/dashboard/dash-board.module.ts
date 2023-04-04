@@ -5,6 +5,7 @@ import {TableModule} from "../table/table.module";
 import {ChartModule} from "../charts/charts.module";
 import {SharedModule} from "../../shared/shared.module";
 
+
 @NgModule({
   imports: [
     RouterModule.forChild([
