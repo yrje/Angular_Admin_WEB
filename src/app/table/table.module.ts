@@ -8,7 +8,6 @@ import {GridModule} from "@progress/kendo-angular-grid";
   imports: [
     RouterModule.forChild([
       {
-
         path: 'table',
         component: TableComponent
       }

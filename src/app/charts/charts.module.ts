@@ -9,7 +9,6 @@ import {SharedModule} from "@progress/kendo-angular-grid";
   imports: [
     RouterModule.forChild([
       {
-
         path: 'charts',
         component: ChartsComponent
       }

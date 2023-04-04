@@ -12,7 +12,6 @@ import { LayoutModule } from '@progress/kendo-angular-layout';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { ChartsModule } from '@progress/kendo-angular-charts';
 import 'hammerjs';
-import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations: [

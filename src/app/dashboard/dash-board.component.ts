@@ -4,6 +4,9 @@ import {Component, OnInit} from "@angular/core";
   templateUrl:'dash-board.component.html',
 })
 export class DashBoardComponent implements OnInit{
+  /**
+   * 초기화
+   */
   ngOnInit() {
   }
 }
