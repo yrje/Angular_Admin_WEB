@@ -7,7 +7,7 @@ import {Component, OnInit} from "@angular/core";
   }
 )
 export class ChartsComponent implements OnInit{
-
+  // 그래프 데이터 생성
   public chartData: number[] = [1, 2, 3, 4, 5];
 
   ngOnInit() {

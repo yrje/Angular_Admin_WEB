@@ -7,16 +7,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  data=['login-page','login-page2','login-page3']
   selectedStyle = 'login-page';
 
-  sidemenu1=true;
-  sidemenu2=false;
-  sidemenu3=false;
+  /**
+   * @param router
+   */
   constructor(private router: Router) {}
 
-
+  /**
+   * 초기화
+   */
   ngOnInit() {}
+
+  /**
+   * 로그인 시 대시보드로 이동 이벤트
+   */
   onLogin() {
     localStorage.setItem('isLoggedin', 'true');
     this.router.navigate(['/dashboard']);

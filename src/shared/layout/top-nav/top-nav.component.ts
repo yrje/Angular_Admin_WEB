@@ -10,20 +10,37 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class TopNavComponent implements OnInit {
 
-
+  /**
+   * 생성자
+   * @param dialog
+   * @param router
+   */
   constructor(public dialog:MatDialog,private router: Router)
   {}
+
   @Output() sideNavToggled = new EventEmitter<void>();
+
+  /**
+   * 초기화
+   */
   ngOnInit() {}
 
   toggleSidebar() {
     this.sideNavToggled.emit();
   }
+
+  /**
+   * 로그아웃 컨펀 다이얼로그 이벤트
+   */
   openDialog() {
     const dialogRef = this.dialog.open(LogoutConfirmComponent, {
       width: '300px',
     });
   }
+
+  /**
+   * 로그아웃 버튼 클릭시 로그인 페이지 이동 이벤트
+   */
   loginPage() {
     this.router.navigate(['/login']);
   }
