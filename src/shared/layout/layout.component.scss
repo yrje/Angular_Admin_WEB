@@ -1,0 +1,26 @@
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+
+  .sidenav-container {
+    flex: 1;
+    //background: $main-background-color-dark-md;
+    .sidenav {
+      padding: 12px;
+      width: 250px;
+      //background: $black;
+    }
+    .main-container {
+      padding: 16px;
+    }
+  }
+}
+app-top-nav{
+  border-bottom: black 1px solid;
+}
