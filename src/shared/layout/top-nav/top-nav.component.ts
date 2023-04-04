@@ -1,4 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {LogoutConfirmComponent} from "../../component/dialogs/logout-confirm/logout-confirm.component";
+import {Router} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-top-nav',
@@ -7,13 +10,22 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class TopNavComponent implements OnInit {
 
-  textSelectColor:string='';
-  @Output() sideNavToggled = new EventEmitter<void>();
 
+  constructor(public dialog:MatDialog,private router: Router)
+  {}
+  @Output() sideNavToggled = new EventEmitter<void>();
   ngOnInit() {}
 
   toggleSidebar() {
     this.sideNavToggled.emit();
+  }
+  openDialog() {
+    const dialogRef = this.dialog.open(LogoutConfirmComponent, {
+      width: '300px',
+    });
+  }
+  loginPage() {
+    this.router.navigate(['/login']);
   }
 
 }

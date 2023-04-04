@@ -12,6 +12,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
 import { PanelBarModule } from "@progress/kendo-angular-layout";
 import { RouterModule } from '@angular/router';
+import {LogoutConfirmComponent} from "./component/dialogs/logout-confirm/logout-confirm.component";
 
 @NgModule({
   imports: [
@@ -26,7 +27,14 @@ import { RouterModule } from '@angular/router';
     MatListModule,
     PanelBarModule,
   ],
-  declarations: [SideNavComponent, TopNavComponent, LayoutComponent],
+  declarations: [
+    // layout
+    SideNavComponent,
+    TopNavComponent,
+    LayoutComponent,
+    // dialogs
+    LogoutConfirmComponent
+  ],
   exports: [LayoutComponent]
 })
 export class SharedModule { }

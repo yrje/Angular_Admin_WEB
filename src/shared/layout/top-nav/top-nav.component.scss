@@ -3,6 +3,9 @@ $white: #ffffff;
 $black: #000000;
 $main-background-color-light-md: #fafafa;
 $main-background-color-dark-md: #4f4f4f;
+.my-dialog {
+  z-index: 1000;
+}
 
 :host {
   display: block;
