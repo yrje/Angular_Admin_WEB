@@ -1,10 +1,12 @@
 .layout-container {
   display: flex;
   position: absolute;
-  top: 0;
+  top: 76.81px;
   bottom: 0;
   left: 0;
   right: 0;
+  height: 97%;
+
 
 
   .sidenav-container {
@@ -21,6 +23,8 @@
   }
 }
 app-top-nav{
+  padding: 1%;
+  height: 3%;
   border-bottom: #a7a7a7 1px solid;
   box-shadow:  0 4px 4px -4px #a7a7a7;
 }
