@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import {DataService} from "../../shared/service/data.service";
 import {NotificationService} from "@progress/kendo-angular-notification";
 import {UserResponseModel} from "../../shared/model/response/user.response.model";
+import {FormControl, FormGroup} from "@angular/forms";
 
 type HorizontalPosition = "left" | "center" | "right";
 type VerticalPosition = "top" | "bottom";
@@ -23,6 +24,11 @@ export class LoginComponent implements OnInit {
   public vertical: VerticalPosition = "top";
 
   selectedStyle = 'login-page-wrap';
+
+  public registerForm: FormGroup = new FormGroup({
+    email: new FormControl(""),
+    password: new FormControl(),
+  });
 
   /**
    * @param router
@@ -48,9 +54,10 @@ export class LoginComponent implements OnInit {
    * 로그인 시 대시보드로 이동 이벤트
    */
   onLogin() {
+    console.log(this.registerForm.controls['email'].value );
     this.loginData.forEach(item => {
-        if(item.email === this.email ){
-          if(item.password === this.passWord){
+        if(item.email === this.registerForm.controls['email'].value ){
+          if(item.password === this.registerForm.controls['password'].value){
             this.router.navigateByUrl(`/dashboard`);
             return
           }

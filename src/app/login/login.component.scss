@@ -35,6 +35,12 @@
     align-items: center;
     justify-content: center;
 
+    .app-name {
+      vertical-align:middle;
+      font-size: 40px;
+      margin: 15px;
+    }
+
     .login-form {
       padding: 200px 300px;
       max-width: 500px;
@@ -42,22 +48,10 @@
       display: flex;
       flex-direction: column;
 
-      &.dark-1{
-        background-color: rgba(0,0,0,0.95);
-      }
-
-      &.dark-2{
-        background-color: rgba(255,255,255,0.1);
-      }
-
       .form-title {
         text-align: center;
         display: flex;
         justify-content: center;
-      }
-
-      .form-label{
-        color: white;
       }
 
       .form-input{

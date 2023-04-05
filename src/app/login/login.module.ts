@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 
 import {RowFilterModule} from "@progress/kendo-angular-grid";
 import {LoginComponent} from "./login.component";
+import {LabelModule} from "@progress/kendo-angular-label";
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import {LoginComponent} from "./login.component";
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
-    RowFilterModule
+    RowFilterModule,
+    LabelModule
   ],
   declarations: [LoginComponent]
 })
