@@ -19,7 +19,7 @@ export class LogoutConfirmComponent {
    * 다이얼로그를 닫는다.
    */
   public closeDialog(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({text: 'No'});
   }
 
   /**
