@@ -1,4 +1,12 @@
 {
+  "users" : [
+    {
+      "id": 1,
+      "name": "Sally",
+      "email": "seoyoon24@megabride.co.kr",
+      "password": "Sally"
+    }
+  ],
   "posts": [
       {
         "id":1,

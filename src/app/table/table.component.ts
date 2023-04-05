@@ -13,7 +13,9 @@ export class TableComponent implements OnInit{
    *
    * @param dataService
    */
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService
+  ) {}
 
   /**
    * 초기화

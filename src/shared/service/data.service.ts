@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {UserResponseModel} from "../model/response/user.response.model";
 
 /**
  * json-server data provider
@@ -20,9 +21,16 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   /**
-   * sample data load
+   * 포스트 정보 불러오기
    */
   getData(): Observable<any> {
     return this.http.get(`${this.JSONURL}/posts`);
+  }
+
+  /**
+   * 사용자 정보 불러오기
+   */
+  getUserData():Observable<UserResponseModel[]> {
+    return this.http.get<UserResponseModel[]>(`${this.JSONURL}/users`);
   }
 }

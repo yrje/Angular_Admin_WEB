@@ -11,6 +11,8 @@ import { LayoutModule } from '@progress/kendo-angular-layout';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { ChartsModule } from '@progress/kendo-angular-charts';
 import 'hammerjs';
+import { NotificationModule } from '@progress/kendo-angular-notification';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import 'hammerjs';
     GridModule,
     ChartsModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    NotificationModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]
