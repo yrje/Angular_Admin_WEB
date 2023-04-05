@@ -1,11 +1,12 @@
 .layout-container {
   display: flex;
   position: absolute;
-  top: 76.81px;
+  //top: 76.81px;
+  top: 4.4%;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 97%;
+  height: 95.6%;
 
 
 
@@ -23,8 +24,6 @@
   }
 }
 app-top-nav{
-  padding: 1%;
-  height: 3%;
   border-bottom: #a7a7a7 1px solid;
   box-shadow:  0 4px 4px -4px #a7a7a7;
 }

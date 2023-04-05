@@ -2,18 +2,18 @@
   <button type="button" mat-icon-button class="visible-md" (click)="toggleSidebar()">
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>
-  <div class="nav-brand">
-    <span style="font-size: 30px; font-weight: 500;">MegaBridge</span> <br>
+  <div>
+    <span style="font-size: 25px; font-weight: 500;">MegaBridge</span> <br>
     <span style="font-size: 15px;">Connect your business</span>
   </div>
   <span class="nav-spacer"></span>
 
-    <button mat-button (click)="openDialog()">
+    <button (click)="openDialog()">
       <span>logout</span>
     </button>
-    <button mat-button (click)="openDialog2()">
-      <span>logout</span>
-    </button>
+<!--    <button mat-button (click)="openDialog2()">-->
+<!--      <span>logout</span>-->
+<!--    </button>-->
 </mat-toolbar>
 
 <ng-container #dialog></ng-container>

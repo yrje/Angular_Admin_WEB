@@ -42,15 +42,6 @@ export class TopNavComponent implements OnInit {
    * 로그아웃 컨펀 다이얼로그 이벤트
    */
   public openDialog(): void {
-    // let dialogRef = this.dialog.open(LogoutConfirmComponent, {
-    //   position:{
-    //     top: '50%',
-    //     left: '50%',
-    //   },
-    //   height: '400px',
-    //   width: '600px',
-    // });
-
     const dialog = this.dialogService.open({
       title: "Please confirm",
       content: LogoutConfirmComponent,
@@ -65,7 +56,7 @@ export class TopNavComponent implements OnInit {
       if (result.text === 'No') {
         console.log("close");
       } else {
-        console.log("action", result);
+        this.router.navigateByUrl(`/login`);
       }
     });
   }
