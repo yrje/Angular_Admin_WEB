@@ -22,7 +22,6 @@ export class TableComponent implements OnInit{
     // 데이터 로드
     this.dataService.getData().subscribe(data=>{
       this.data=data;
-      console.log(this.data[1])
     })
   }
 
