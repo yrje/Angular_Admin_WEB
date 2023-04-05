@@ -11,6 +11,8 @@ import { Observable } from 'rxjs';
 })
 export class DataService {
 
+  public JSONURL = 'http://localhost:3000';
+
   /**
    * 생성자
    * @param http
@@ -21,6 +23,6 @@ export class DataService {
    * sample data load
    */
   getData(): Observable<any> {
-    return this.http.get("http://localhost:3000/posts");
+    return this.http.get(`${this.JSONURL}/posts`);
   }
 }
