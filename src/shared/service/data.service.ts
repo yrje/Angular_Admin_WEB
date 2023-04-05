@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+/**
+ * json-server data provider
+ */
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,7 +18,7 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   /**
-   * json server에서 데이터 로드
+   * sample data load
    */
   getData(): Observable<any> {
     return this.http.get("http://localhost:3000/posts");

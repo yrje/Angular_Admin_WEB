@@ -18,11 +18,11 @@ export class TableComponent implements OnInit{
   /**
    * 초기화
    */
-  ngOnInit() {
-    // 데이터 로드
-    this.dataService.getData().subscribe(data=>{
-      this.data=data;
+  ngOnInit():void {
+    this.dataService.getData().subscribe(data => {
+      this.data = data;
     })
   }
+
 
 }
