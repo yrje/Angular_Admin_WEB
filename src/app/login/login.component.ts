@@ -69,12 +69,12 @@ export class LoginComponent implements OnInit {
     this.notificationService.show({
       content: message,
       cssClass: 'button-notification',
-      animation: { type: "fade", duration: 300 },
+      animation: { type: "fade", duration: 500 },
       type: { style: "info", icon: true },
       position: { horizontal: this.horizontal, vertical: this.vertical },
       width: 500,
       height: 50,
-      hideAfter:1500,
+      hideAfter: 2000,
     });
   }
 
