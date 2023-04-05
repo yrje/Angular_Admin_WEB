@@ -12,7 +12,11 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
 import { PanelBarModule } from "@progress/kendo-angular-layout";
 import { RouterModule } from '@angular/router';
-import {LogoutConfirmComponent} from "./component/dialogs/logout-confirm/logout-confirm.component";
+import {
+  LogoutConfirmComponent,
+} from "./component/dialogs/logout-confirm/logout-confirm.component";
+import {ButtonsModule} from "@progress/kendo-angular-buttons";
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   imports: [
@@ -26,6 +30,8 @@ import {LogoutConfirmComponent} from "./component/dialogs/logout-confirm/logout-
     MatMenuModule,
     MatListModule,
     PanelBarModule,
+    ButtonsModule,
+    MatDialogModule,
   ],
   declarations: [
     // layout

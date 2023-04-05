@@ -1,6 +1,5 @@
 .layout-container {
   display: flex;
-  flex-direction: column;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -11,8 +10,10 @@
   .sidenav-container {
     flex: 1;
     .sidenav {
-      padding: 12px;
       width: 250px;
+      background-color: #f6f6f6;
+      border-right: #a7a7a7 solid 1px;
+      box-shadow:  4px 0 4px -4px #a7a7a7;
     }
     .main-container {
       padding: 16px;
@@ -20,5 +21,6 @@
   }
 }
 app-top-nav{
-  border-bottom: black 1px solid;
+  border-bottom: #a7a7a7 1px solid;
+  box-shadow:  0 4px 4px -4px #a7a7a7;
 }

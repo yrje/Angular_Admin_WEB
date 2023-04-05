@@ -1,7 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
-import { MediaObserver, MediaChange } from '@angular/flex-layout';
-import { Subscription } from 'rxjs';
-import {MatSidenav} from "@angular/material/sidenav";
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-layout',
@@ -11,7 +8,7 @@ import {MatSidenav} from "@angular/material/sidenav";
 export class LayoutComponent implements OnInit {
   sideNavOpened = true;
   sideNavMode: 'side' | 'over' = 'side';
-  toolBarHeight = 64;
+  toolBarHeight = 36.55;
 
   ngOnInit() { }
 }

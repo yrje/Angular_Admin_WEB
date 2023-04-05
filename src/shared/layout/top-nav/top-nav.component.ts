@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, ViewContainerRef, ViewChild} from '@angular/core';
 import {LogoutConfirmComponent} from "../../component/dialogs/logout-confirm/logout-confirm.component";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
+import {DialogService} from "@progress/kendo-angular-dialog";
 
 @Component({
   selector: 'app-top-nav',
@@ -14,11 +15,19 @@ export class TopNavComponent implements OnInit {
    * 생성자
    * @param dialog
    * @param router
+   * @param dialogService
    */
-  constructor(public dialog:MatDialog,private router: Router)
-  {}
+  constructor(
+    public dialog: MatDialog,
+    private router: Router,
+    private dialogService: DialogService
+  ) {}
 
   @Output() sideNavToggled = new EventEmitter<void>();
+
+  /** 다이얼로그 생성 컨테이너 지정 */
+  @ViewChild('dialog', {read: ViewContainerRef})
+  public dialogRef!: ViewContainerRef;
 
   /**
    * 초기화
@@ -32,9 +41,48 @@ export class TopNavComponent implements OnInit {
   /**
    * 로그아웃 컨펀 다이얼로그 이벤트
    */
-  openDialog() {
+  public openDialog(): void {
+    // let dialogRef = this.dialog.open(LogoutConfirmComponent, {
+    //   position:{
+    //     top: '50%',
+    //     left: '50%',
+    //   },
+    //   height: '400px',
+    //   width: '600px',
+    // });
+
+    const dialog = this.dialogService.open({
+      title: "Please confirm",
+      content: LogoutConfirmComponent,
+      appendTo: this.dialogRef,
+      width: 450,
+      height: 185,
+      minWidth: 250,
+      cssClass: 'custom-css-class',
+    });
+
+    dialog.result.subscribe((result: any) => {
+      if (result.text === 'No') {
+        console.log("close");
+      } else {
+        console.log("action", result);
+      }
+    });
+  }
+
+  public openDialog2(): void {
     const dialogRef = this.dialog.open(LogoutConfirmComponent, {
-      width: '300px',
+      viewContainerRef: this.dialogRef,
+      position:{
+        top: '50%',
+        left: '50%',
+      },
+      height: '400px',
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
     });
   }
 
@@ -44,5 +92,7 @@ export class TopNavComponent implements OnInit {
   loginPage() {
     this.router.navigate(['/login']);
   }
+
+
 
 }

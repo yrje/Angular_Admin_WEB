@@ -3,9 +3,6 @@ $white: #ffffff;
 $black: #000000;
 $main-background-color-light-md: #fafafa;
 $main-background-color-dark-md: #4f4f4f;
-.my-dialog {
-  z-index: 1000;
-}
 
 :host {
   display: block;
@@ -17,9 +14,7 @@ $main-background-color-dark-md: #4f4f4f;
 }
 .fix-nav{
   display: flex;
-  //color: #ffffff;
-  //background-color: rgb(231 168 147);
-  //background-color: $black;
+  background-color: #ffffff;
 }
 .nav-brand {
   text-align: center;

@@ -7,9 +7,12 @@
   </div>
   <span class="nav-spacer"></span>
 
-    <button (click)="loginPage()">
+    <button mat-button (click)="openDialog()">
+      <span>logout</span>
+    </button>
+    <button mat-button (click)="openDialog2()">
       <span>logout</span>
     </button>
 </mat-toolbar>
 
-
+<ng-container #dialog></ng-container>
