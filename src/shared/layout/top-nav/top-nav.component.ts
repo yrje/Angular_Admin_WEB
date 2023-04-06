@@ -53,10 +53,10 @@ export class TopNavComponent implements OnInit {
     });
 
     dialog.result.subscribe((result: any) => {
-      if (result.text === 'No') {
-        console.log("close");
-      } else {
+      if (result.text === 'logout') {
         this.router.navigateByUrl(`/login`);
+      } else {
+        console.log("close");
       }
     });
   }

@@ -26,7 +26,7 @@ export class LogoutConfirmComponent {
    * 로그아웃한다
    */
   public submit(): void {
-    this.dialogRef.close({text: 'success'});
+    this.dialogRef.close({text: 'logout'});
   }
 
 
