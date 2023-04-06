@@ -17,9 +17,6 @@ type VerticalPosition = "top" | "bottom";
 export class LoginComponent implements OnInit {
   public loginData: UserResponseModel[] = [];
 
-  public email:string='';
-  public passWord:string='';
-
   public horizontal: HorizontalPosition = "center";
   public vertical: VerticalPosition = "top";
 
@@ -54,7 +51,6 @@ export class LoginComponent implements OnInit {
    * 로그인 시 대시보드로 이동 이벤트
    */
   onLogin() {
-    console.log(this.registerForm.controls['email'].value );
     this.loginData.forEach(item => {
         if(item.email === this.registerForm.controls['email'].value ){
           if(item.password === this.registerForm.controls['password'].value){
@@ -63,12 +59,12 @@ export class LoginComponent implements OnInit {
           }
           else{
             this.openAlert('비밀번호를 확인해주세요.');
+            return
           }
         }
-        else{
-          this.openAlert('존재하지 않는 Email입니다.');
-        }
       });
+
+    this.openAlert('존재하지 않는 Email입니다.');
   }
 
 
