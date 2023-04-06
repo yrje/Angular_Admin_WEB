@@ -5,6 +5,12 @@
       "name": "Sally",
       "email": "seoyoon24@megabridge.co.kr",
       "password": "Sally"
+    },
+    {
+      "id": 2,
+      "name": "Lynn",
+      "email": "yerin08@megabridge.co.kr",
+      "password": "Lynn"
     }
   ],
   "posts": [
