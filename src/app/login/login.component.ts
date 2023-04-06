@@ -68,7 +68,6 @@ export class LoginComponent implements OnInit {
     // this.openAlert('존재하지 않는 Email입니다.');
 
     for(let i=0;i<this.loginData.length;i++){
-      console.log(this.loginData)
       if(this.loginData[i].email === this.registerForm.controls['email'].value ){
 
         if(this.loginData[i].password === this.registerForm.controls['password'].value){
