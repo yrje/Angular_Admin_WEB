@@ -51,22 +51,6 @@ export class LoginComponent implements OnInit {
    * 로그인 시 대시보드로 이동 이벤트
    */
   onLogin() {
-    // this.loginData.forEach(item => {
-    //   console.log(item)
-    //     if(item.email === this.registerForm.controls['email'].value ){
-    //       if(item.password === this.registerForm.controls['password'].value){
-    //         this.router.navigateByUrl(`/dashboard`);
-    //         return
-    //       }
-    //       else{
-    //         this.openAlert('비밀번호를 확인해주세요.');
-    //         return
-    //       }
-    //     }
-    //   });
-    //
-    // this.openAlert('존재하지 않는 Email입니다.');
-
     for(let i=0;i<this.loginData.length;i++){
       if(this.loginData[i].email === this.registerForm.controls['email'].value ){
 
