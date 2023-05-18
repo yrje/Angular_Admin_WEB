@@ -20,7 +20,8 @@ import {LabelModule} from "@progress/kendo-angular-label";
     MatCheckboxModule,
     MatButtonModule,
     RowFilterModule,
-    LabelModule
+    LabelModule,
+
   ],
   declarations: [LoginComponent]
 })

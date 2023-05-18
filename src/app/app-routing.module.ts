@@ -9,9 +9,10 @@ import {AuthGuard} from "../shared/service/auth.guard";
 
 const routes: Routes = [
   {
-    path: 'login',
+    path: '',
     component: LoginComponent,
-    loadChildren: () => import('./login/login.module').then(i => i.LoginModule)
+    loadChildren: () => import('./login/login.module').then(i => i.LoginModule),
+    pathMatch: 'full'
   },
   {
     path:'',
