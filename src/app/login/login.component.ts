@@ -1,8 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { Router } from '@angular/router';
-import {DataService} from "../../shared/service/data.service";
 import {NotificationService} from "@progress/kendo-angular-notification";
-import {UserModel} from "../../shared/model/response/user.response.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../shared/service/auth.service";
 import {LoginRequestModel} from "../../shared/model/request/login.request.model";

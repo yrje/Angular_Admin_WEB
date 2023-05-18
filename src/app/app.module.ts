@@ -6,7 +6,6 @@ import {SharedModule} from "../shared/shared.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {MatDialogModule} from "@angular/material/dialog";
-import {DataService} from "../shared/service/data.service";
 import { LayoutModule } from '@progress/kendo-angular-layout';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { ChartsModule } from '@progress/kendo-angular-charts';

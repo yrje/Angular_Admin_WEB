@@ -6,6 +6,7 @@ import {LoginComponent} from "./login/login.component";
 import {LayoutComponent} from "../shared/layout/layout.component";
 import {ChartsComponent} from "./charts/charts.component";
 import {AuthGuard} from "../shared/service/auth.guard";
+import {FishFamilyResultComponent} from "./fish-family-result/fish-family-result.component";
 
 const routes: Routes = [
   {
@@ -18,6 +19,12 @@ const routes: Routes = [
     path:'',
     component:LayoutComponent,
     children: [
+      {
+        path: 'fish-family-result',
+        component: FishFamilyResultComponent,
+        canActivate:[AuthGuard],
+        loadChildren: () => import('./fish-family-result/fish-family-result.module').then(i => i.FishFamilyResultModule)
+      },
 
       {
         path: 'dashboard',
