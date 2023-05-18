@@ -1,5 +1,4 @@
-import {UserModel} from "./user.response.model";
-
+import {UserModel} from "../user.model";
 
 /**
  * 로그인 결과 객체
