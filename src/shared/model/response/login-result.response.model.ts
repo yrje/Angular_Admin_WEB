@@ -1,0 +1,11 @@
+import {UserModel} from "./user.response.model";
+
+
+/**
+ * 로그인 결과 객체
+ */
+export class LoginResultResponse {
+    public jwt: string = '';
+    public jwtExpTime: Date|null = null;
+    public user: UserModel = new UserModel();
+}
