@@ -5,6 +5,7 @@ import {TableComponent} from "./table/table.component";
 import {LoginComponent} from "./login/login.component";
 import {LayoutComponent} from "../shared/layout/layout.component";
 import {ChartsComponent} from "./charts/charts.component";
+import {AuthGuard} from "../shared/service/auth.guard";
 
 const routes: Routes = [
   {
@@ -16,19 +17,23 @@ const routes: Routes = [
     path:'',
     component:LayoutComponent,
     children: [
+
       {
         path: 'dashboard',
         component: DashBoardComponent,
+        canActivate:[AuthGuard],
         loadChildren: () => import('./dashboard/dash-board.module').then(i => i.DashBoardModule)
       },
       {
         path: 'charts',
         component: ChartsComponent,
+        canActivate:[AuthGuard],
         loadChildren: () => import('./charts/charts.module').then(i => i.ChartModule),
       },
       {
         path: 'table',
         component: TableComponent,
+        canActivate:[AuthGuard],
         loadChildren: () => import('./table/table.module').then(i => i.TableModule),
       },
     ]
@@ -38,7 +43,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true, onSameUrlNavigation: 'reload', scrollPositionRestoration: 'enabled'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
