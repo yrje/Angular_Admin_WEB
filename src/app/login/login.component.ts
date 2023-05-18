@@ -2,7 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { Router } from '@angular/router';
 import {DataService} from "../../shared/service/data.service";
 import {NotificationService} from "@progress/kendo-angular-notification";
-import {UserResponseModel} from "../../shared/model/response/user.response.model";
+import {UserModel} from "../../shared/model/response/user.response.model";
 import {FormControl, FormGroup} from "@angular/forms";
 
 type HorizontalPosition = "left" | "center" | "right";
@@ -15,7 +15,7 @@ type VerticalPosition = "top" | "bottom";
   encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit {
-  public loginData: UserResponseModel[] = [];
+  public loginData: UserModel[] = [];
 
   public horizontal: HorizontalPosition = "center";
   public vertical: VerticalPosition = "top";
