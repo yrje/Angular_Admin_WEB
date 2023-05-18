@@ -3,6 +3,7 @@ import {LogoutConfirmComponent} from "../../component/dialogs/logout-confirm/log
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogService} from "@progress/kendo-angular-dialog";
+import {AuthService} from "../../service/auth.service";
 
 @Component({
   selector: 'app-top-nav',
@@ -20,7 +21,8 @@ export class TopNavComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private router: Router,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private loginService:AuthService,
   ) {}
 
   @Output() sideNavToggled = new EventEmitter<void>();
@@ -38,12 +40,13 @@ export class TopNavComponent implements OnInit {
     this.sideNavToggled.emit();
   }
 
+
   /**
-   * 로그아웃 컨펀 다이얼로그 이벤트
+   * 로그아웃 컨펌 다이얼로그 이벤트
    */
   public openDialog(): void {
     const dialog = this.dialogService.open({
-      title: "Please confirm",
+      title: "로그아웃하시겠습니까?",
       content: LogoutConfirmComponent,
       appendTo: this.dialogRef,
       width: 450,
@@ -51,29 +54,17 @@ export class TopNavComponent implements OnInit {
       minWidth: 250,
       cssClass: 'custom-css-class',
     });
+    dialog.content.instance.text = `정말로 로그아웃하시겠습니까?`;
 
     dialog.result.subscribe((result: any) => {
+      console.log(result)
       if (result.text === 'logout') {
-        this.router.navigateByUrl(`/login`);
+        this.loginService.removeSessionStorage();
+        // 페이지 새로고침
+        window.location.reload();
       } else {
         console.log("close");
       }
-    });
-  }
-
-  public openDialog2(): void {
-    const dialogRef = this.dialog.open(LogoutConfirmComponent, {
-      viewContainerRef: this.dialogRef,
-      position:{
-        top: '50%',
-        left: '50%',
-      },
-      height: '400px',
-      width: '600px',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
     });
   }
 

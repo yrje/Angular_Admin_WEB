@@ -11,6 +11,7 @@ import {SharedModule} from "../../shared/shared.module";
     RouterModule.forChild([
           {
             path: 'dashboard',
+
             component: DashBoardComponent
           }
     ]),
