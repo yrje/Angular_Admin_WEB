@@ -38,8 +38,11 @@ export class MindReaderControlService {
   /**
    * 사용자 데이터 세트 조회
    */
-  getDataSet():Observable<MrDataSetResponseModel[]>{
-    return this.http.get<MrDataSetResponseModel[]>(`${this.MR_CONTROL_URL}/dataSet`);
+  getDataSet(userEmail:string):Observable<MrDataSetResponseModel[]>{
+    const param={
+      userEmail: userEmail
+    }
+    return this.http.get<MrDataSetResponseModel[]>(`${this.MR_CONTROL_URL}/dataSet`,{params: param});
   }
 
   /**

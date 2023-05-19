@@ -7,6 +7,7 @@ import {InputsModule} from "@progress/kendo-angular-inputs";
 import {PopupModule} from "@progress/kendo-angular-popup";
 import {LayoutModule} from "@progress/kendo-angular-layout";
 import {FishFamilyResultComponent} from "./fish-family-result.component";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import {FishFamilyResultComponent} from "./fish-family-result.component";
     ChipModule,
     PopupModule,
     LayoutModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     FishFamilyResultComponent
