@@ -51,8 +51,12 @@ export class LoginComponent  {
       .subscribe({
         next: async (response) => {
           if (response) {
-            // 로그인 성공 시 튜토리얼로 이동
-            this.dashboard();
+            if(response.user.role=='ROLE_ADMIN'){
+              this.dashboard();
+            }
+            else{
+              this.alertService.openAlert('관리자 권한이 없습니다. 다시 확인해주세요.')
+            }
           }
         },
         // http error message 출력
@@ -75,7 +79,7 @@ export class LoginComponent  {
    * 대시보드로 이동
    */
   dashboard() {
-    this.router.navigateByUrl(`/dashboard`);
+    this.router.navigateByUrl(`/fish-family-result`);
   }
 
 }
