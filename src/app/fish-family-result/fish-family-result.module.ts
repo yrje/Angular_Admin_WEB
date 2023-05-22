@@ -8,6 +8,7 @@ import {PopupModule} from "@progress/kendo-angular-popup";
 import {LayoutModule} from "@progress/kendo-angular-layout";
 import {FishFamilyResultComponent} from "./fish-family-result.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component";
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     ReactiveFormsModule,
   ],
   declarations: [
-    FishFamilyResultComponent
+    FishFamilyResultComponent,
+    DragAndDropComponent
   ],
   providers: [
     FishFamilyResultComponent
