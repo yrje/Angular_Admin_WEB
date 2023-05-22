@@ -1,8 +1,14 @@
 <form [formGroup]="inputResult">
-  <input formControlName="userEmail">
-  <button (click)="loadDataSet()"> 데이터 셋 조회</button>
+  <input class="email-input" placeholder="설문지를 작성할 이메일을 입력하십시오."  formControlName="userEmail">
+  <button class="button-style" (click)="loadDataSet()">확인</button>
 </form>
+<kendo-dropdownlist
+  [data]="countTurnList"
+  [(ngModel)]="selectedTurn"
+  (ngModelChange)="objectResult()"
+></kendo-dropdownlist>
 
 <div>
   <app-drag-and-drop #canvas></app-drag-and-drop>
 </div>
+
