@@ -31,6 +31,8 @@ export class FishFamilyResultComponent implements OnInit{
   public selectedBowl: string = '';
   // 회차별 물병 코드
   public selectedBowlCode: number = 0;
+  // 이메일 입력후 확인 클릭 여부
+  public inputEmailCheck: boolean = false;
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -74,6 +76,7 @@ export class FishFamilyResultComponent implements OnInit{
           }
         }
       });
+    this.inputEmailCheck = true;
   }
 
   /**
