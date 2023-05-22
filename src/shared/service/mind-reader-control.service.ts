@@ -14,6 +14,7 @@ import {PatientInfoRequest} from "../model/request/patient-info.request.model";
 import {MrDetailFishResponseModel} from "../model/response/mr-detail-fish.response.model";
 import {MrQuestionResponse} from "../model/response/mr-question.response.model";
 import {MrResultSheetRequest} from "../model/request/mr-result-sheet.request.model";
+import {MrResultSheetResponse} from "../model/response/mr-result-sheet.response.model";
 
 @Injectable({
   providedIn: 'root'
@@ -149,10 +150,18 @@ export class MindReaderControlService {
   }
 
   /**
-   * 설문 문항 리스트 조회
+   * 설문 문항 생성
    */
-  postResultSheet(request: PatientInfoRequest): Observable<MrResultSheetRequest>{
-    return this.http.post<MrResultSheetRequest>(`${this.MR_CONTROL_URL}/resultSheet`, request)
+  postResultSheet(request: MrResultSheetRequest): Observable<MrResultSheetRequest[]>{
+    return this.http.post<MrResultSheetRequest[]>(`${this.MR_CONTROL_URL}/resultSheet`, request)
   }
+
+  /**
+   * 회차별 설문 데이터 조회
+   */
+  getResultSheet(dataSetId:number): Observable<MrResultSheetResponse[]>{
+    return this.http.get<MrResultSheetResponse[]>(`${this.MR_CONTROL_URL}/resultSheet/${dataSetId}`)
+  }
+
 }
 
