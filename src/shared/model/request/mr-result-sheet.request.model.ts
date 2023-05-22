@@ -9,7 +9,7 @@ export class MrResultSheetRequest{
 
   public createDate: Date | null = null;
 
-  public dateSetId: number = 0;
+  public dataSetId: number = 0;
 
   public description: string = '';
 
