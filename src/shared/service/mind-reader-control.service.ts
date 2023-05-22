@@ -13,6 +13,7 @@ import {MrDataSetResponseModel} from "../model/response/mr-data-set.response.mod
 import {PatientInfoRequest} from "../model/request/patient-info.request.model";
 import {MrPatientInfoResponse} from "../model/response/mr-patient-info.response.model";
 import {MrDetailFishResponseModel} from "../model/response/mr-detail-fish.response.model";
+import {MrQuestionResponse} from "../model/response/mr-question.response.model";
 
 @Injectable({
   providedIn: 'root'
@@ -162,6 +163,13 @@ export class MindReaderControlService {
    */
   postPatientInfo(request: PatientInfoRequest) : Observable<PatientInfoRequest> {
     return this.http.post<PatientInfoRequest>(`${this.MR_CONTROL_URL}/patientInfo`, request);
+  }
+
+  /**
+   * 설문 문항 리스트 조회
+   */
+  getQuestion(): Observable<MrQuestionResponse[]>{
+    return this.http.get<MrQuestionResponse[]>(`${this.MR_CONTROL_URL}/question`)
   }
 }
 
