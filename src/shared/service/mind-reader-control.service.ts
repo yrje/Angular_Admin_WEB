@@ -11,9 +11,9 @@ import {MrDataSetRequestModel} from "../model/request/mr-data-set.request.model"
 import {MrObjectCodeResponseModel} from "../model/response/mr-object-code.response.model";
 import {MrDataSetResponseModel} from "../model/response/mr-data-set.response.model";
 import {PatientInfoRequest} from "../model/request/patient-info.request.model";
-import {MrPatientInfoResponse} from "../model/response/mr-patient-info.response.model";
 import {MrDetailFishResponseModel} from "../model/response/mr-detail-fish.response.model";
 import {MrQuestionResponse} from "../model/response/mr-question.response.model";
+import {MrResultSheetRequest} from "../model/request/mr-result-sheet.request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -128,13 +128,6 @@ export class MindReaderControlService {
     return this.http.get<MrObjectImageResponse[]>(`${this.MR_CONTROL_URL}/objectImage`);
   }
 
-  /**
-   * 회차별 오브젝트 생성
-   */
-  postObject(request: MrObjectModel[]) : Observable<MrObjectModel[]> {
-    return this.http.post<MrObjectModel[]>(`${this.MR_CONTROL_URL}/seq/object`, request);
-  }
-
 
   /**
    * 회차별 사용자 오브젝트 순서 목록 조회
@@ -147,29 +140,19 @@ export class MindReaderControlService {
     return this.http.get<MrObjectCodeResponseModel[]>(`${this.MR_CONTROL_URL}/user/objectCode/${seq}`,{params: param})
   }
 
-  /**
-   * 내담자 추가 정보 조회
-   */
-  getPatientInfo(email: string): Observable<MrPatientInfoResponse[]>{
-    const param={
-      email: email
-    }
-    return this.http.get<MrPatientInfoResponse[]>(`${this.MR_CONTROL_URL}/patientInfo`,{params: param})
-  }
-
-  /**
-   * 내담자 추가 정보 생성
-   * @param request
-   */
-  postPatientInfo(request: PatientInfoRequest) : Observable<PatientInfoRequest> {
-    return this.http.post<PatientInfoRequest>(`${this.MR_CONTROL_URL}/patientInfo`, request);
-  }
 
   /**
    * 설문 문항 리스트 조회
    */
   getQuestion(): Observable<MrQuestionResponse[]>{
     return this.http.get<MrQuestionResponse[]>(`${this.MR_CONTROL_URL}/question`)
+  }
+
+  /**
+   * 설문 문항 리스트 조회
+   */
+  postResultSheet(request: PatientInfoRequest): Observable<MrResultSheetRequest>{
+    return this.http.post<MrResultSheetRequest>(`${this.MR_CONTROL_URL}/resultSheet`, request)
   }
 }
 
