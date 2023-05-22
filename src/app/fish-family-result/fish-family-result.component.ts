@@ -23,6 +23,9 @@ export class FishFamilyResultComponent implements OnInit{
   // 회차별 사용자 오브젝트 순서 목록
   public objectSeq: any;
 
+  // 설문지 데이터
+  public questionData: any;
+
   // 사용자 회차 수
   public countTurnList: string[] = [];
   // 선택한 회차
@@ -52,7 +55,15 @@ export class FishFamilyResultComponent implements OnInit{
    * 초기화
    */
   ngOnInit(){
-
+      // 사용자 데이터 셋 조회
+      this.mindReaderControlService.getQuestion()
+        .subscribe({
+          next: async (data) => {
+            if (data){
+              this.questionData = data;
+            }
+          }
+        });
   }
   loadDataSet(){
     // 사용자 데이터 셋 조회
