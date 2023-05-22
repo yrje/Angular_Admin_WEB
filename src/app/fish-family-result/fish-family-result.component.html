@@ -14,7 +14,7 @@
       <app-drag-and-drop #canvas></app-drag-and-drop>
     </div>
   </div>
-  <div style="width:38%;float:right;height: 100%">
+  <div style="width:38%;float:right;height: 100%;top:300px">
     <kendo-drawer
       #drawer
 
@@ -38,10 +38,9 @@
           <span (click)="drawer.toggle()" style="font-size: 25px;cursor: pointer;" title="닫기"> <b> >> </b> </span>
           <span style="font-size: 25px;">설문지</span>
           <div>
-            <div style="width: 800px;height: 800px;">
+            <div style="width: 550px;height: 600px;overflow: auto;">
               <ng-container *ngFor="let title of questionTitle; let i = index;">
-                {{i+1}}.{{title.title}}<br>
-
+                {{i+1}}. {{title.title}}<br>
                 <ng-container *ngFor="let description of questionData;let j = index;">
                   <ng-container *ngIf="title.titleId==description.titleId">
                     <input type="radio" name="{{i}}" value="{{description.description}}" [(ngModel)]="resultDescription[i]" >
@@ -49,13 +48,14 @@
                   </ng-container>
                 </ng-container>
               </ng-container>
-
+              <button (click)="saveResultSheet()">저장하기</button>
             </div>
+
           </div>
+
         </div>
       </ng-template>
     </kendo-drawer>
-
   </div>
 </div>
 

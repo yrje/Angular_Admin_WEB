@@ -10,7 +10,7 @@
 }
 .dropdown-list{
   margin: 10px;
-  width: 8%;
+  width: 10%;
   height: 25px;
 }
 
@@ -43,4 +43,9 @@
       }
     }
   }
+}
+.long-text {
+  white-space: nowrap; /* 텍스트가 한 줄에 표시되도록 설정 */
+  overflow: hidden; /* 넘치는 부분을 숨김 */
+  text-overflow: ellipsis; /* 넘치는 부분을 생략 부호 (...)로 표시 */
 }

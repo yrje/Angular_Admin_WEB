@@ -4,6 +4,9 @@ import {MindReaderControlService} from "../../shared/service/mind-reader-control
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component";
 import {interval} from "rxjs";
 import {DrawerPosition} from "@progress/kendo-angular-layout";
+import {HttpErrorResponse} from "@angular/common/http";
+import {AlertService} from "../../shared/service/alert.service";
+import {MrResultSheetRequest} from "../../shared/model/request/mr-result-sheet.request.model";
 
 @Component({
   selector: 'app-fish-family-result',
@@ -61,7 +64,8 @@ export class FishFamilyResultComponent implements OnInit{
    * @param mindReaderControlService
    */
   constructor(
-    private mindReaderControlService:MindReaderControlService
+    private mindReaderControlService:MindReaderControlService,
+    private alertService: AlertService,
   ) {}
   public inputResult: FormGroup = new FormGroup({
     userEmail: new FormControl(''), // 사용자 이메일
@@ -163,6 +167,34 @@ export class FishFamilyResultComponent implements OnInit{
          }},100);
     // 어항 세팅
     this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
+    }
+
+    saveResultSheet(){
+      const resultDescription = this.resultDescription.join('');
+      const request:MrResultSheetRequest={
+        answerIds:'',
+        counselor:'',
+        createDate:new Date(),
+        dataSetId:0,
+        description:resultDescription,
+        id:0,
+        questionIds:'',
+        userEmail:'',
+      }
+      console.log(request)
+      if (this.resultDescription.length==10){
+        this.mindReaderControlService.postResultSheet(request)
+          .subscribe({
+            next: async(data) => {
+              if(data){
+              }
+            },
+            error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
+          });
+      }
+      else{
+        this.alertService.openAlert('모든 문항을 체크하지 않았습니다.')
+      }
     }
 
 }
