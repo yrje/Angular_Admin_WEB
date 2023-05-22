@@ -8,6 +8,18 @@ import {MindReaderControlService} from "../../shared/service/mind-reader-control
 })
 export class FishFamilyResultComponent implements OnInit{
 
+  // 회차별 오브젝트 데이터
+  public objectData: any;
+
+  // 사용자 데이터 셋
+  public dataSet: any;
+
+  // 오브젝트 이미지 데이터
+  public objectImage: any;
+
+  // 회차별 사용자 오브젝트 순서 목록
+  public objectSeq: any;
+
   constructor(
     private mindReaderControlService:MindReaderControlService
   ) {}
@@ -24,6 +36,34 @@ export class FishFamilyResultComponent implements OnInit{
       .subscribe({
         next: async (data) => {
           if (data){
+            this.dataSet = data
+          }
+        }
+      });
+    // 회차별 사용자 오브젝트 조회
+    this.mindReaderControlService.getSeqObject(10,this.inputResult.controls['userEmail'].value)
+      .subscribe({
+        next: async (data) => {
+          if (data){
+            this.objectData=data;
+          }
+        }
+      });
+    // 회차별 사용자 오브젝트 순서 목록 조회
+    this.mindReaderControlService.getObjectCodeSeq(10,this.inputResult.controls['userEmail'].value)
+      .subscribe({
+        next: async (data) => {
+          if (data){
+            this.objectSeq = data;
+          }
+        }
+      });
+    // 오브젝트 이미지 조회
+    this.mindReaderControlService.getObjectData()
+      .subscribe({
+        next: async (data) => {
+          if (data){
+            this.objectImage = data;
           }
         }
       });
