@@ -111,8 +111,11 @@ export class MindReaderControlService {
    * 회차별 사용자 오브젝트 조회
    * @param seq
    */
-  getSeqObject(seq: number): Observable<MrObjectModel> {
-    return this.http.get<MrObjectModel>(`${this.MR_CONTROL_URL}/object/${seq}`);
+  getSeqObject(seq: number, userEmail:string): Observable<MrObjectModel> {
+    const param={
+      userEmail: userEmail
+    }
+    return this.http.get<MrObjectModel>(`${this.MR_CONTROL_URL}/object/${seq}`,{params: param});
   }
 
 
@@ -134,10 +137,13 @@ export class MindReaderControlService {
 
   /**
    * 회차별 사용자 오브젝트 순서 목록 조회
-   * @param seq
+   * @param seq서
    */
-  getObjectCodeSeq(seq: number): Observable<MrObjectCodeResponseModel[]>{
-    return this.http.get<MrObjectCodeResponseModel[]>(`${this.MR_CONTROL_URL}/user/objectCode/${seq}`)
+  getObjectCodeSeq(seq: number, userEmail:string): Observable<MrObjectCodeResponseModel[]>{
+    const param={
+      userEmail: userEmail
+    }
+    return this.http.get<MrObjectCodeResponseModel[]>(`${this.MR_CONTROL_URL}/user/objectCode/${seq}`,{params: param})
   }
 
   /**
