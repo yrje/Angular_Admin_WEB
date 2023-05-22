@@ -3,6 +3,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {MindReaderControlService} from "../../shared/service/mind-reader-control.service";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component";
 import {interval} from "rxjs";
+import {DrawerPosition} from "@progress/kendo-angular-layout";
 
 @Component({
   selector: 'app-fish-family-result',
@@ -25,6 +26,8 @@ export class FishFamilyResultComponent implements OnInit{
 
   // 설문지 데이터
   public questionData: any;
+  // 설문지 타이틀
+  public questionTitle: any;
 
   // 사용자 회차 수
   public countTurnList: string[] = [];
@@ -36,6 +39,19 @@ export class FishFamilyResultComponent implements OnInit{
   public selectedBowlCode: number = 0;
   // 이메일 입력후 확인 클릭 여부
   public inputEmailCheck: boolean = false;
+  // 결과지 내용
+  public selectDescription: string = '';
+  public resultDescription: string[] = [];
+  /** 결과지 슬라이더 열기 */
+  public expanded = false;
+  /** 결과지 슬라이더 위치 */
+  public position: DrawerPosition = "end";
+
+  /** 결과지 슬라이더 mocks */
+  public items = [
+    {text:'결과지', icon: "k-i-arrow-seek-right", content:'수고하셨습니다! 어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다.'}
+  ];
+
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -61,6 +77,16 @@ export class FishFamilyResultComponent implements OnInit{
           next: async (data) => {
             if (data){
               this.questionData = data;
+              console.log(data)
+              this.questionTitle = data.filter((item, index, array) => {
+                return (
+                  index === array.findIndex(
+                    (obj) => obj.titleId === item.titleId && obj.title === item.title
+                  )
+                );
+              });
+
+              console.log(this.questionTitle)
             }
           }
         });
@@ -138,6 +164,5 @@ export class FishFamilyResultComponent implements OnInit{
     // 어항 세팅
     this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
     }
-
 
 }
