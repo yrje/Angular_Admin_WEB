@@ -167,7 +167,7 @@ export class MindReaderControlService {
    * 설문 답안 조회
    */
   getAnswer(questionId:number): Observable<MrAnswerResponse[]>{
-    return this.http.get<MrAnswerResponse[]>(`${this.MR_CONTROL_URL}/resultSheet/${questionId}`)
+    return this.http.get<MrAnswerResponse[]>(`${this.MR_CONTROL_URL}/answer/${questionId}`)
   }
 
 }

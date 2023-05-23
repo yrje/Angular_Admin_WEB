@@ -7,6 +7,7 @@ import {DrawerPosition} from "@progress/kendo-angular-layout";
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../shared/service/alert.service";
 import {MrResultSheetRequest} from "../../shared/model/request/mr-result-sheet.request.model";
+import {AuthService} from "../../shared/service/auth.service";
 
 @Component({
   selector: 'app-fish-family-result',
@@ -19,13 +20,15 @@ export class FishFamilyResultComponent implements OnInit{
   public objectData: any;
 
   // 사용자 데이터 셋
-  public dataSet: any;
+  public dataSet: any[]=[];
 
   // 오브젝트 이미지 데이터
   public objectImage: any;
 
   // 회차별 사용자 오브젝트 순서 목록
   public objectSeq: any;
+  // 사용자 회차별 id
+  public objectId: number = 0;
 
   // 설문지 데이터
   public questionData: any;
@@ -50,22 +53,19 @@ export class FishFamilyResultComponent implements OnInit{
   /** 결과지 슬라이더 위치 */
   public position: DrawerPosition = "end";
 
-  /** 결과지 슬라이더 mocks */
-  public items = [
-    {text:'결과지', icon: "k-i-arrow-seek-right", content:'수고하셨습니다! 어항 속 모습을 통해 해석된 당신의 심리는 아래와 같습니다.'}
-  ];
-
-
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
 
   /**
    * 생성자
    * @param mindReaderControlService
+   * @param alertService
+   * @param authService
    */
   constructor(
     private mindReaderControlService:MindReaderControlService,
     private alertService: AlertService,
+    private authService: AuthService
   ) {}
   public inputResult: FormGroup = new FormGroup({
     userEmail: new FormControl(''), // 사용자 이메일
@@ -75,6 +75,7 @@ export class FishFamilyResultComponent implements OnInit{
    * 초기화
    */
   ngOnInit(){
+    // 로그인 데이터 조회
       // 사용자 데이터 셋 조회
       this.mindReaderControlService.getQuestion()
         .subscribe({
@@ -95,9 +96,13 @@ export class FishFamilyResultComponent implements OnInit{
           }
         });
   }
+
+  /**
+   * 데이터셋 로드
+   */
   loadDataSet(){
     // 사용자 데이터 셋 조회
-    this.mindReaderControlService.getDataSet('test0522@naver.com')
+    this.mindReaderControlService.getDataSet(this.inputResult.controls['userEmail'].value)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -125,12 +130,15 @@ export class FishFamilyResultComponent implements OnInit{
    */
   loadDataTurn(){
     let selectedTurn: number = 0;
-    selectedTurn = Number(this.selectedTurn.replace('회차',''))-1;
-    console.log(selectedTurn);
-    this.selectedBowl=this.objectImage[this.dataSet[selectedTurn].fishbowlCode].path
-    this.selectedBowlCode=this.dataSet[selectedTurn].fishbowlCode
+
+    selectedTurn = Number(this.selectedTurn.replace('회차',''));
+    this.objectId = this.dataSet.find(obj => obj.seq === selectedTurn).id;
+    console.log(selectedTurn)
+    console.log(this.objectId)
+    this.selectedBowl=this.objectImage[this.dataSet[selectedTurn-1].fishbowlCode].path
+    this.selectedBowlCode=this.dataSet[selectedTurn-1].fishbowlCode
     // 회차별 사용자 오브젝트 조회
-    this.mindReaderControlService.getSeqObject(selectedTurn+1,'test0522@naver.com')
+    this.mindReaderControlService.getSeqObject(selectedTurn,this.inputResult.controls['userEmail'].value)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -140,7 +148,7 @@ export class FishFamilyResultComponent implements OnInit{
         }
       });
     // 회차별 사용자 오브젝트 순서 목록 조회
-    this.mindReaderControlService.getObjectCodeSeq(selectedTurn+1,'test0522@naver.com')
+    this.mindReaderControlService.getObjectCodeSeq(selectedTurn,this.inputResult.controls['userEmail'].value)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -169,32 +177,48 @@ export class FishFamilyResultComponent implements OnInit{
     this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
     }
 
-    saveResultSheet(){
-      const resultDescription = this.resultDescription.join('');
-      const request:MrResultSheetRequest={
-        answerIds:'',
-        counselor:'',
-        createDate:new Date(),
-        dataSetId:0,
-        description:resultDescription,
-        id:0,
-        questionIds:'',
-        userEmail:'',
-      }
-      console.log(request)
-      if (this.resultDescription.length==10){
+  /**
+   * 설문 데이터 저장
+   */
+  saveResultSheet() {
+    let resultAnswer = this.resultDescription.map(str => +str);
+/*    this.resultDescription = [];
+    console.log(resultAnswer)
+    for (let i = 0; i < resultAnswer.length; i++) {
+      this.mindReaderControlService.getAnswer(resultAnswer[i])
+        .subscribe({
+          next: async (data) => {
+            if (data) {
+              this.resultDescription.push(data[0].description)
+            }
+          }
+        });
+
+    }*/
+      if (this.resultDescription.length == 10) {
+        const request: MrResultSheetRequest = {
+          answerIds: '',
+          counselor: String(this.authService.getUserEmail()),
+          createDate: new Date(),
+          dataSetId: Number(this.objectId),
+          description: String(resultAnswer),
+          id: 0,
+          questionIds: '',
+          userEmail: this.inputResult.controls['userEmail'].value,
+        }
+        console.log(request)
         this.mindReaderControlService.postResultSheet(request)
           .subscribe({
-            next: async(data) => {
-              if(data){
+            next: async (data) => {
+              if (data) {
               }
             },
             error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
           });
-      }
-      else{
+      } else {
         this.alertService.openAlert('모든 문항을 체크하지 않았습니다.')
       }
-    }
+
+  }
 
 }
