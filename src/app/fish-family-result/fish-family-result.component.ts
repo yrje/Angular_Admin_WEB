@@ -184,7 +184,7 @@ export class FishFamilyResultComponent implements OnInit{
    */
   saveResultSheet() {
       if (this.resultDescription.length == 10) {
-        this.exception();
+        //this.exception();
         const request: MrResultSheetRequest = {
           answerIds: '',
           counselor: String(this.authService.getUserEmail()),
@@ -312,7 +312,7 @@ export class FishFamilyResultComponent implements OnInit{
       }
     }
     resultAnswer = this.resultDescription.map(str => +str);
-    for (let i = 0; i < this.resultDescription.length; i++) {
+/*    for (let i = 0; i < this.resultDescription.length; i++) {
       let j = 0;
       this.mindReaderControlService.getAnswer(resultAnswer[i])
         .subscribe({
@@ -331,7 +331,7 @@ export class FishFamilyResultComponent implements OnInit{
           }
         });
 
-    }
+    }*/
 
   }
 
