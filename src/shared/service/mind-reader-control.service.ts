@@ -10,11 +10,11 @@ import {MrObjectModel} from "../model/mr-object.model";
 import {MrDataSetRequestModel} from "../model/request/mr-data-set.request.model";
 import {MrObjectCodeResponseModel} from "../model/response/mr-object-code.response.model";
 import {MrDataSetResponseModel} from "../model/response/mr-data-set.response.model";
-import {PatientInfoRequest} from "../model/request/patient-info.request.model";
 import {MrDetailFishResponseModel} from "../model/response/mr-detail-fish.response.model";
 import {MrQuestionResponse} from "../model/response/mr-question.response.model";
 import {MrResultSheetRequest} from "../model/request/mr-result-sheet.request.model";
 import {MrResultSheetResponse} from "../model/response/mr-result-sheet.response.model";
+import {MrAnswerResponse} from "../model/response/mr-answer.response.model";
 
 @Injectable({
   providedIn: 'root'
@@ -161,6 +161,13 @@ export class MindReaderControlService {
    */
   getResultSheet(dataSetId:number): Observable<MrResultSheetResponse[]>{
     return this.http.get<MrResultSheetResponse[]>(`${this.MR_CONTROL_URL}/resultSheet/${dataSetId}`)
+  }
+
+  /**
+   * 설문 답안 조회
+   */
+  getAnswer(questionId:number): Observable<MrAnswerResponse[]>{
+    return this.http.get<MrAnswerResponse[]>(`${this.MR_CONTROL_URL}/resultSheet/${questionId}`)
   }
 
 }
