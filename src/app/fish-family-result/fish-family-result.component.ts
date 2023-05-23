@@ -67,6 +67,8 @@ export class FishFamilyResultComponent implements OnInit{
     private alertService: AlertService,
     private authService: AuthService
   ) {}
+
+  // input result form group
   public inputResult: FormGroup = new FormGroup({
     userEmail: new FormControl(''), // 사용자 이메일
   });
@@ -181,27 +183,14 @@ export class FishFamilyResultComponent implements OnInit{
    * 설문 데이터 저장
    */
   saveResultSheet() {
-    let resultAnswer = this.resultDescription.map(str => +str);
-/*    this.resultDescription = [];
-    console.log(resultAnswer)
-    for (let i = 0; i < resultAnswer.length; i++) {
-      this.mindReaderControlService.getAnswer(resultAnswer[i])
-        .subscribe({
-          next: async (data) => {
-            if (data) {
-              this.resultDescription.push(data[0].description)
-            }
-          }
-        });
-
-    }*/
       if (this.resultDescription.length == 10) {
+        this.exception();
         const request: MrResultSheetRequest = {
           answerIds: '',
           counselor: String(this.authService.getUserEmail()),
           createDate: new Date(),
           dataSetId: Number(this.objectId),
-          description: String(resultAnswer),
+          description: String(this.resultDescription),
           id: 0,
           questionIds: '',
           userEmail: this.inputResult.controls['userEmail'].value,
@@ -218,6 +207,131 @@ export class FishFamilyResultComponent implements OnInit{
       } else {
         this.alertService.openAlert('모든 문항을 체크하지 않았습니다.')
       }
+
+  }
+
+  /**
+   * 예외 처리
+   */
+  exception(){
+    let selectAnswer: number[] = [];
+    let resultAnswer = this.resultDescription.map(str => +str);
+    // 1/2이상 동시 체크되면 questionId = 1 삭제
+    let exception1: number[] = [7,8,9,10,11,16,18,19,20,23,25,29,34,36,37,38,39,40,41,42,43,44];
+    if(resultAnswer.includes(1)){
+      let includedCount: number = 0;
+      exception1.forEach(number => {
+        if (resultAnswer.includes(number) || exception1.includes(number)) {
+          includedCount++;
+        }
+      });
+      let inclusionRatio: number = includedCount / exception1.length;
+      if (inclusionRatio>=0.5){
+        resultAnswer = resultAnswer.filter(number => number !== 1);
+      }
+    }
+
+    // 물고기 순서 : 모두 해당하는 번호가 있다면 현재 그 번호의 내용으로 해석 / 모두 아니면 10 - 2
+    let exception2_1: number[] = [32,34,37] // 10 - 1
+    let exception2_2: number[] = [17,24,35,40] // 10 - 3
+    if (resultAnswer.includes(11)){
+      let includedCount1: number = 0;
+      exception2_1.forEach(number => {
+        if (resultAnswer.includes(number) || exception2_1.includes(number)) {
+          includedCount1++;
+        }
+      });
+      let inclusionRatio: number = includedCount1 / exception2_1.length;
+      if (inclusionRatio==1){
+        selectAnswer.push(0)
+      }
+      else{
+        let includedCount2: number = 0;
+        exception2_2.forEach(number => {
+          if (resultAnswer.includes(number) || exception2_2.includes(number)) {
+            includedCount1++;
+          }
+        });
+        let inclusionRatio2: number = includedCount2 / exception2_2.length;
+        if (inclusionRatio2==1){
+          selectAnswer.push(1)
+        }
+        else{
+          selectAnswer.push(2)
+        }
+      }
+    }
+
+    // 2/3이상이 체크되면 현재 그 번호의 내용으로 해석된다.
+    let exception3: number[] = [3,5,6,7,8,9,10,20,22,24,25,26,31];
+    ///////////////////////////////////////
+    if(resultAnswer.includes(18)){
+      let includedCount: number = 0;
+      exception3.forEach(number => {
+        if (resultAnswer.includes(number) || exception3.includes(number)) {
+          includedCount++;
+        }
+      });
+      let inclusionRatio: number = includedCount / exception3.length;
+      if (inclusionRatio>=0.66){
+        selectAnswer.push(1)
+      }else{
+        selectAnswer.push(0)
+      }
+    }
+    ///////////////////////////////////////
+    if(resultAnswer.includes(27)){
+      let includedCount: number = 0;
+      exception3.forEach(number => {
+        if (resultAnswer.includes(number) || exception3.includes(number)) {
+          includedCount++;
+        }
+      });
+      let inclusionRatio: number = includedCount / exception3.length;
+      if (inclusionRatio>=0.66){
+        selectAnswer.push(0)
+      }else{
+        selectAnswer.push(1)
+      }
+    }
+
+    // 안의 번호가 모두 체크 되면 현재 그 번호의 내용으로 해석
+    let exception4: number[] = [1,10,16,49]
+    if(resultAnswer.includes(45)){
+      let includedCount: number = 0;
+      exception4.forEach(number => {
+        if (resultAnswer.includes(number) || exception4.includes(number)) {
+          includedCount++;
+        }
+      });
+      let inclusionRatio: number = includedCount / exception4.length;
+      if (inclusionRatio>=1){
+        selectAnswer.push(1)
+      }else{
+        selectAnswer.push(0)
+      }
+    }
+    resultAnswer = this.resultDescription.map(str => +str);
+    for (let i = 0; i < this.resultDescription.length; i++) {
+      let j = 0;
+      this.mindReaderControlService.getAnswer(resultAnswer[i])
+        .subscribe({
+          next: async (data) => {
+            if (data) {
+              if (data.length>1){
+                console.log(data)
+                console.log(data[selectAnswer[j]])
+                this.resultDescription.push(data[selectAnswer[j]].description)
+
+                j=j+1;
+              }else{
+              this.resultDescription.push(data[0].description)
+              }
+            }
+          }
+        });
+
+    }
 
   }
 

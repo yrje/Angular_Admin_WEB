@@ -4,7 +4,7 @@
       <input class="email-input" placeholder="설문지를 작성할 이메일을 입력하십시오."  formControlName="userEmail">
       <button class="button-style" (click)="loadDataSet()">확인</button>
     </form>
-    <div *ngIf="true">
+    <div *ngIf="inputEmailCheck">
       <kendo-dropdownlist
         [data]="countTurnList"
         [(ngModel)]="selectedTurn"
@@ -29,7 +29,7 @@
       [style]="{'transform': 'translate(0px, 61px)', 'border-left': '#cccccc solid 1px'}"
       class="drawer-style"
     >
-      <ng-template kendoDrawerFooterTemplate >
+      <ng-template kendoDrawerFooterTemplate *ngIf="inputEmailCheck" >
         <div *ngIf="!expanded" style="display: flex; justify-content: center;padding: 10px; cursor: pointer;">
           <button (click)="drawer.toggle()">설문지</button>
         </div>
