@@ -38,7 +38,7 @@ export class FishFamilyResultComponent implements OnInit{
   // 사용자 회차 수
   public countTurnList: string[] = [];
   // 선택한 회차
-  public selectedTurn: string = '';
+  public selectedTurn: string = '회차선택';
   // 회차별 물병
   public selectedBowl: string = '';
   // 회차별 물병 코드
@@ -200,6 +200,7 @@ export class FishFamilyResultComponent implements OnInit{
         .subscribe({
           next: async (data) => {
             if (data) {
+              this.alertService.openAlert('설문 저장이 완료되었습니다.')
             }
           },
           error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)

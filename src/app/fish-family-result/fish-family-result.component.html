@@ -4,58 +4,35 @@
       <input class="email-input" placeholder="설문지를 작성할 이메일을 입력하십시오."  formControlName="userEmail">
       <button class="button-style" (click)="loadDataSet()">확인</button>
     </form>
-    <div *ngIf="inputEmailCheck">
-      <kendo-dropdownlist
-        [data]="countTurnList"
-        [(ngModel)]="selectedTurn"
-        (ngModelChange)="objectResult()"
-        class="dropdown-list"
-      ></kendo-dropdownlist>
-      <app-drag-and-drop #canvas></app-drag-and-drop>
-    </div>
   </div>
-  <div style="width:38%;float:right;height: 100%;top:300px">
-    <kendo-drawer
-      #drawer
 
-      mode="overlay"
-      [mini]="true"
-      [(expanded)]="expanded"
-      [autoCollapse]="false"
-      [position]="position"
-      [width]="600"
-      [miniWidth]="55"
-
-      [style]="{'transform': 'translate(0px, 61px)', 'border-left': '#cccccc solid 1px'}"
-      class="drawer-style"
-    >
-      <ng-template kendoDrawerFooterTemplate *ngIf="inputEmailCheck" >
-        <div *ngIf="!expanded" style="display: flex; justify-content: center;padding: 10px; cursor: pointer;">
-          <button (click)="drawer.toggle()">설문지</button>
-        </div>
-
-        <div kendoTooltip *ngIf="expanded" style="padding: 10px; border-bottom: #cccccc solid 1px;">
-          <span (click)="drawer.toggle()" style="font-size: 25px;cursor: pointer;" title="닫기"> <b> >> </b> </span>
-          <span style="font-size: 25px;">설문지</span>
-          <div>
-            <div style="width: 550px;height: 600px;overflow: auto;">
-              <ng-container *ngFor="let title of questionTitle; let i = index;">
-                {{i+1}}. {{title.title}}<br>
-                <ng-container *ngFor="let description of questionData;let j = index;">
-                  <ng-container *ngIf="title.titleId==description.titleId">
-                    <input type="radio" name="{{i}}" value="{{description.id}}" [(ngModel)]="resultDescription[i]" >
-                    {{description.description}}<br>
-                  </ng-container>
+  <div *ngIf="inputEmailCheck" >
+    <kendo-dropdownlist
+      [data]="countTurnList"
+      [(ngModel)]="selectedTurn"
+      (ngModelChange)="objectResult()"
+      class="dropdown-list"
+    ></kendo-dropdownlist>
+    <app-drag-and-drop style="width:40%;float:left;height: 100%;" #canvas></app-drag-and-drop>
+    <div style="width:40%;float:right;height: 100%;">
+      <div style="padding: 10px; border-bottom: #cccccc solid 1px;">
+        <span style="font-size: 25px;">< 설문지 ></span>
+        <div>
+          <div style="width: 550px;height: 600px;overflow: auto;">
+            <ng-container *ngFor="let title of questionTitle; let i = index;">
+              <b>{{i+1}}. {{title.title}}<br></b>
+              <ng-container *ngFor="let description of questionData;let j = index;">
+                <ng-container *ngIf="title.titleId==description.titleId">
+                  <input type="radio" name="{{i}}" value="{{description.id}}" [(ngModel)]="resultDescription[i]" >
+                  {{description.description}}<br>
                 </ng-container>
               </ng-container>
-              <button (click)="saveResultSheet()">저장하기</button>
-            </div>
-
+            </ng-container>
+            <button class="btn-style"(click)="saveResultSheet()">저장하기</button>
           </div>
-
         </div>
-      </ng-template>
-    </kendo-drawer>
+      </div>
+    </div>
   </div>
 </div>
 
