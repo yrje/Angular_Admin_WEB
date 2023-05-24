@@ -78,25 +78,25 @@ export class FishFamilyResultComponent implements OnInit{
    */
   ngOnInit(){
     // 로그인 데이터 조회
-      // 사용자 데이터 셋 조회
-      this.mindReaderControlService.getQuestion()
-        .subscribe({
-          next: async (data) => {
-            if (data){
-              this.questionData = data;
-              console.log(data)
-              this.questionTitle = data.filter((item, index, array) => {
-                return (
-                  index === array.findIndex(
-                    (obj) => obj.titleId === item.titleId && obj.title === item.title
-                  )
-                );
-              });
+    // 사용자 데이터 셋 조회
+    this.mindReaderControlService.getQuestion()
+      .subscribe({
+        next: async (data) => {
+          if (data){
+            this.questionData = data;
+            console.log(data)
+            this.questionTitle = data.filter((item, index, array) => {
+              return (
+                index === array.findIndex(
+                  (obj) => obj.titleId === item.titleId && obj.title === item.title
+                )
+              );
+            });
 
-              console.log(this.questionTitle)
-            }
+            console.log(this.questionTitle)
           }
-        });
+        }
+      });
   }
 
   /**
@@ -174,39 +174,39 @@ export class FishFamilyResultComponent implements OnInit{
         let pathUrl=this.objectImage[this.objectSeq[i].id].path
         this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle, pathUrl);
 
-         }},100);
+      }},100);
     // 어항 세팅
     this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
-    }
+  }
 
   /**
    * 설문 데이터 저장
    */
   saveResultSheet() {
-      if (this.resultDescription.length == 10) {
-        //this.exception();
-        const request: MrResultSheetRequest = {
-          answerIds: '',
-          counselor: String(this.authService.getUserEmail()),
-          createDate: new Date(),
-          dataSetId: Number(this.objectId),
-          description: String(this.resultDescription),
-          id: 0,
-          questionIds: '',
-          userEmail: this.inputResult.controls['userEmail'].value,
-        }
-        console.log(request)
-        this.mindReaderControlService.postResultSheet(request)
-          .subscribe({
-            next: async (data) => {
-              if (data) {
-              }
-            },
-            error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
-          });
-      } else {
-        this.alertService.openAlert('모든 문항을 체크하지 않았습니다.')
+    if (this.resultDescription.length == 10) {
+      this.exception();
+      const request: MrResultSheetRequest = {
+        answerIds: '',
+        counselor: String(this.authService.getUserEmail()),
+        createDate: new Date(),
+        dataSetId: Number(this.objectId),
+        description: String(this.resultDescription),
+        id: 0,
+        questionIds: '',
+        userEmail: this.inputResult.controls['userEmail'].value,
       }
+      console.log(request)
+      this.mindReaderControlService.postResultSheet(request)
+        .subscribe({
+          next: async (data) => {
+            if (data) {
+            }
+          },
+          error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
+        });
+    } else {
+      this.alertService.openAlert('모든 문항을 체크하지 않았습니다.')
+    }
 
   }
 
@@ -312,7 +312,7 @@ export class FishFamilyResultComponent implements OnInit{
       }
     }
     resultAnswer = this.resultDescription.map(str => +str);
-/*    for (let i = 0; i < this.resultDescription.length; i++) {
+    for (let i = 0; i < this.resultDescription.length; i++) {
       let j = 0;
       this.mindReaderControlService.getAnswer(resultAnswer[i])
         .subscribe({
@@ -325,13 +325,13 @@ export class FishFamilyResultComponent implements OnInit{
 
                 j=j+1;
               }else{
-              this.resultDescription.push(data[0].description)
+                this.resultDescription.push(data[0].description)
               }
             }
           }
         });
 
-    }*/
+    }
 
   }
 
