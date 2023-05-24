@@ -48,10 +48,8 @@ export class FishFamilyResultComponent implements OnInit{
   // 결과지 내용
   public selectDescription: string = '';
   public resultDescription: string[] = [];
-  /** 결과지 슬라이더 열기 */
-  public expanded = false;
-  /** 결과지 슬라이더 위치 */
-  public position: DrawerPosition = "end";
+  /** 오브젝트 순서 */
+  public objectList: string[] = [];
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -135,8 +133,6 @@ export class FishFamilyResultComponent implements OnInit{
 
     selectedTurn = Number(this.selectedTurn.replace('회차',''));
     this.objectId = this.dataSet.find(obj => obj.seq === selectedTurn).id;
-    console.log(selectedTurn)
-    console.log(this.objectId)
     this.selectedBowl=this.objectImage[this.dataSet[selectedTurn-1].fishbowlCode].path
     this.selectedBowlCode=this.dataSet[selectedTurn-1].fishbowlCode
     // 회차별 사용자 오브젝트 조회
@@ -155,7 +151,7 @@ export class FishFamilyResultComponent implements OnInit{
         next: async (data) => {
           if (data){
             this.objectSeq = data;
-            console.log(data)
+            this.objectList = data.map(item => item.description);
           }
         }
       });
@@ -170,10 +166,12 @@ export class FishFamilyResultComponent implements OnInit{
     // 캔버스 초기화
     this.canvas.canvas.clear();
     setTimeout(()=>{
-      for(let i=0;i<=this.objectData.length-1;i++){
-        let pathUrl=this.objectImage[this.objectSeq[i].id].path
-        this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle, pathUrl);
+      for (let i = 0; i < this.objectData.length; i++) {
+        let pathUrl = this.objectImage[this.objectSeq[i].id].path;
 
+        setTimeout(() => {
+          this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle, pathUrl);
+        }, 1000 * (i + 1));
       }},100);
     // 어항 세팅
     this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);

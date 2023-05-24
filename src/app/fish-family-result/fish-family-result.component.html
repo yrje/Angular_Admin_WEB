@@ -15,12 +15,12 @@
     ></kendo-dropdownlist>
     <app-drag-and-drop style="width:40%;float:left;height: 100%;" #canvas></app-drag-and-drop>
     <div style="width:40%;float:right;height: 100%;">
-      <div style="padding: 10px; border-bottom: #cccccc solid 1px;">
-        <span style="font-size: 25px;">< 설문지 ></span>
+      <div style="padding: 10px; border: #cccccc solid 1px;">
+        <span style="font-size: 25px;">[설문지]</span>
         <div>
-          <div style="width: 550px;height: 600px;overflow: auto;">
+          <div style="width: 630px;height: 800px;overflow: auto;">
             <ng-container *ngFor="let title of questionTitle; let i = index;">
-              <b>{{i+1}}. {{title.title}}<br></b>
+              <b><br>{{i+1}}. {{title.title}}<br></b>
               <ng-container *ngFor="let description of questionData;let j = index;">
                 <ng-container *ngIf="title.titleId==description.titleId">
                   <input type="radio" name="{{i}}" value="{{description.id}}" [(ngModel)]="resultDescription[i]" >

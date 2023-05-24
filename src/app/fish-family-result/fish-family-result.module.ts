@@ -38,6 +38,9 @@ import {FilterMenuModule} from "@progress/kendo-angular-grid";
     FishFamilyResultComponent,
     DragAndDropComponent
   ],
+  exports: [
+    FishFamilyResultComponent
+  ],
   providers: [
     FishFamilyResultComponent
   ]

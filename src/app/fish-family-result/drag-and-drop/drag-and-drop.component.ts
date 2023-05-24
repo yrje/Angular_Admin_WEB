@@ -108,6 +108,7 @@ export class DragAndDropComponent implements AfterViewInit{
    */
 
     timeObjectResult(x:number,y:number,width:number,height:number,angle:number,imgUrl:string) {
+      console.log(new Date())
       const imageElement = document.createElement('img');
       const imageUrl = './../../' + imgUrl;
       const image = new fabric.Image(imageElement);
