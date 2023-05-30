@@ -183,6 +183,7 @@ export class FishFamilyResultComponent implements OnInit{
   saveResultSheet() {
     if (this.resultDescription.length == 10) {
       this.exception();
+      setTimeout(()=> {
       const request: MrResultSheetRequest = {
         answerIds: '',
         counselor: String(this.authService.getUserEmail()),
@@ -203,10 +204,11 @@ export class FishFamilyResultComponent implements OnInit{
           },
           error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
         });
-    } else {
+      } ,1000);
+    }
+    else {
       this.alertService.openAlert('모든 문항을 체크하지 않았습니다.')
     }
-
   }
 
   /**
@@ -311,6 +313,8 @@ export class FishFamilyResultComponent implements OnInit{
       }
     }
     resultAnswer = this.resultDescription.map(str => +str);
+    let resultDescription: any[] = [];
+
     for (let i = 0; i < this.resultDescription.length; i++) {
       let j = 0;
       this.mindReaderControlService.getAnswer(resultAnswer[i])
@@ -318,20 +322,15 @@ export class FishFamilyResultComponent implements OnInit{
           next: async (data) => {
             if (data) {
               if (data.length>1){
-                console.log(data)
-                console.log(data[selectAnswer[j]])
-                this.resultDescription.push(data[selectAnswer[j]].description)
-
+                resultDescription.push(data[selectAnswer[j]].description)
                 j=j+1;
               }else{
-                this.resultDescription.push(data[0].description)
+                resultDescription.push(data[0].description)
               }
             }
           }
         });
-
     }
-
+    this.resultDescription=resultDescription;
   }
-
 }
