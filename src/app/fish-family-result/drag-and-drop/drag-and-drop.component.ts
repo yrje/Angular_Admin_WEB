@@ -108,7 +108,7 @@ export class DragAndDropComponent implements AfterViewInit{
    */
 
     timeObjectResult(x:number,y:number,width:number,height:number,angle:number,imgUrl:string) {
-      console.log(new Date())
+
       const imageElement = document.createElement('img');
       const imageUrl = './../../' + imgUrl;
       const image = new fabric.Image(imageElement);
@@ -116,8 +116,8 @@ export class DragAndDropComponent implements AfterViewInit{
       fabric.Image.fromURL(imageUrl, (img) => {
         image.setElement(img.getElement());
         image.set({
-          top: y,
-          left: x,
+          top: y-50,
+          left: x-60,
           scaleX: width,
           scaleY: height,
           angle: angle
