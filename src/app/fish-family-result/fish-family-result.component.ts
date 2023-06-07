@@ -51,6 +51,10 @@ export class FishFamilyResultComponent implements OnInit{
   /** 오브젝트 순서 */
   public objectList: string[] = [];
 
+  /** 해석 여러개 문항 */
+  public questionList: number[] = [22,31,32,33,42];
+  public answerList : any[]=[];
+
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
 
@@ -82,7 +86,6 @@ export class FishFamilyResultComponent implements OnInit{
         next: async (data) => {
           if (data){
             this.questionData = data;
-            console.log(data)
             this.questionTitle = data.filter((item, index, array) => {
               return (
                 index === array.findIndex(
@@ -91,16 +94,29 @@ export class FishFamilyResultComponent implements OnInit{
               );
             });
 
-            console.log(this.questionTitle)
           }
         }
       });
+    for (let i=0;i<this.questionList.length;i++) {
+      this.mindReaderControlService.getAnswer(this.questionList[i])
+        .subscribe({
+          next: async (data) => {
+            if (data) {
+              this.answerList.push(data)
+            }
+          }
+        });
+    }
   }
 
   /**
    * 데이터셋 로드
    */
   loadDataSet(){
+    this.answerList = this.answerList.reduce((acc, current) => {
+      return acc.concat(current);
+    }, []);
+
     // 사용자 데이터 셋 조회
     this.mindReaderControlService.getDataSet(this.inputResult.controls['userEmail'].value)
       .subscribe({
@@ -183,6 +199,7 @@ export class FishFamilyResultComponent implements OnInit{
   saveResultSheet() {
     if (this.resultDescription.length == 10) {
       this.exception();
+      return;
       setTimeout(()=> {
       const request: MrResultSheetRequest = {
         answerIds: '',
@@ -216,7 +233,9 @@ export class FishFamilyResultComponent implements OnInit{
    */
   exception(){
     let selectAnswer: number[] = [];
+    let resultDescription: any[] = [];
     let resultAnswer = this.resultDescription.map(str => +str);
+
     // 1/2이상 동시 체크되면 questionId = 1 삭제
     let exception1: number[] = [7,8,9,10,11,16,18,19,20,23,25,29,34,36,37,38,39,40,41,42,43,44];
     if(resultAnswer.includes(1)){
@@ -231,11 +250,12 @@ export class FishFamilyResultComponent implements OnInit{
         resultAnswer = resultAnswer.filter(number => number !== 1);
       }
     }
-
+    resultAnswer=[1,7,8,9,10,11,16,18,20,23,25,29,32,34,36,37]
     // 물고기 순서 : 모두 해당하는 번호가 있다면 현재 그 번호의 내용으로 해석 / 모두 아니면 10 - 2
     let exception2_1: number[] = [32,34,37] // 10 - 1
     let exception2_2: number[] = [17,24,35,40] // 10 - 3
-    if (resultAnswer.includes(11)){
+    let exception2_3: number[] = [17,29,35,40] // 13 - 2
+    if (resultAnswer.includes(10)){
       let includedCount1: number = 0;
       exception2_1.forEach(number => {
         if (resultAnswer.includes(number) || exception2_1.includes(number)) {
@@ -256,10 +276,26 @@ export class FishFamilyResultComponent implements OnInit{
         let inclusionRatio2: number = includedCount2 / exception2_2.length;
         if (inclusionRatio2==1){
           selectAnswer.push(1)
+
         }
         else{
           selectAnswer.push(2)
         }
+      }
+    }
+    if(resultAnswer.includes(13)){
+      let includedCount3: number = 0;
+      exception2_3.forEach(number=>{
+        if(resultAnswer.includes(number) || exception2_3.includes(number)){
+          includedCount3++;
+        }
+      })
+      let inclusionRatio: number = includedCount3 / exception2_3.length;
+      if(inclusionRatio==1){
+        selectAnswer.push(1)
+      }
+      else{
+        selectAnswer.push(0)
       }
     }
 
@@ -290,9 +326,9 @@ export class FishFamilyResultComponent implements OnInit{
       });
       let inclusionRatio: number = includedCount / exception3.length;
       if (inclusionRatio>=0.66){
-        selectAnswer.push(0)
+        selectAnswer.push(2)
       }else{
-        selectAnswer.push(1)
+        selectAnswer.push(0)
       }
     }
 
@@ -313,7 +349,7 @@ export class FishFamilyResultComponent implements OnInit{
       }
     }
     resultAnswer = this.resultDescription.map(str => +str);
-    let resultDescription: any[] = [];
+
 
     for (let i = 0; i < this.resultDescription.length; i++) {
       let j = 0;
@@ -333,4 +369,5 @@ export class FishFamilyResultComponent implements OnInit{
     }
     this.resultDescription=resultDescription;
   }
+
 }
