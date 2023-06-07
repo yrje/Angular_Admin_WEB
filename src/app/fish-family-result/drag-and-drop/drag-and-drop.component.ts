@@ -44,7 +44,7 @@ export class DragAndDropComponent implements AfterViewInit{
 
     public url: string | ArrayBuffer = '';
     public size: any = {
-        width: 900,
+        width: 1200,
         height: 900
     };
 
