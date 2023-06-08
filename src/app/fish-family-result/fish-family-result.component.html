@@ -16,9 +16,9 @@
     <app-drag-and-drop style="float:left;" #canvas></app-drag-and-drop>
     <div style="float:right;height: 100%;"[ngStyle] = "styleObject" >
       <div style="padding: 10px; border: #cccccc solid 1px;">
-        <span style="font-size: 25px;">[설문지]</span>
+        <span style="font-size: 25px;text-align: center;align-items: center;justify-content: center">[설문지]</span>
         <div>
-          <div style="height: 800px;overflow: auto;">
+          <div style="height: 900px;overflow: auto;">
             <ng-container *ngFor="let title of questionTitle; let i = index;">
               <b><br>{{i+1}}. {{title.title}}<br></b>
               <ng-container *ngFor="let description of questionData;let j = index;">
