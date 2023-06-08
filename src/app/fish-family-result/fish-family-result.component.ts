@@ -1,13 +1,14 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, EventEmitter, HostListener, OnInit, Output, ViewChild} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {MindReaderControlService} from "../../shared/service/mind-reader-control.service";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component";
-import {interval} from "rxjs";
-import {DrawerPosition} from "@progress/kendo-angular-layout";
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../shared/service/alert.service";
 import {MrResultSheetRequest} from "../../shared/model/request/mr-result-sheet.request.model";
 import {AuthService} from "../../shared/service/auth.service";
+import {MrObjectModel} from "../../shared/model/mr-object.model";
+import {MrFamilyCodeResponse} from "../../shared/model/response/mr-family-code.response.model";
+import {DataService} from "../../shared/service/data.service";
 
 @Component({
   selector: 'app-fish-family-result',
@@ -17,7 +18,7 @@ import {AuthService} from "../../shared/service/auth.service";
 export class FishFamilyResultComponent implements OnInit{
 
   // 회차별 오브젝트 데이터
-  public objectData: any;
+  public objectData:any;
 
   // 사용자 데이터 셋
   public dataSet: any[]=[];
@@ -55,6 +56,18 @@ export class FishFamilyResultComponent implements OnInit{
   public questionList: number[] = [22,31,32,33,42];
   public answerList : any[]=[];
 
+  public familySeq:any;
+
+  /** 가족 리스트 데이터 */
+  public familyList:any;
+  /** 사이드에 띄울 데이터 */
+  public sideNavData:any;
+
+  /** 설문지 크기 */
+  public answerSize: number=0;
+  /** 설문지 스타일 오브젝트 */
+  public styleObject: any = {};
+
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
 
@@ -67,7 +80,8 @@ export class FishFamilyResultComponent implements OnInit{
   constructor(
     private mindReaderControlService:MindReaderControlService,
     private alertService: AlertService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dataService: DataService
   ) {}
 
   // input result form group
@@ -79,6 +93,10 @@ export class FishFamilyResultComponent implements OnInit{
    * 초기화
    */
   ngOnInit(){
+    this.onWindowResize(null); // 초기화 시에도 스타일 적용을 위해 호출
+
+    // 윈도우 리사이즈 이벤트를 감지하여 onWindowResize 메서드 호출
+    window.addEventListener('resize', this.onWindowResize.bind(this));
     // 로그인 데이터 조회
     // 사용자 데이터 셋 조회
     this.mindReaderControlService.getQuestion()
@@ -110,6 +128,17 @@ export class FishFamilyResultComponent implements OnInit{
   }
 
   /**
+   * 해상도에 따른 설문지 크기 변경
+   * @param event
+   */
+  onWindowResize(event: any) {
+    console.log(this.answerSize)
+    this.styleObject = {
+      width: `${window.innerWidth - 1525}px`,
+    };
+  }
+
+  /**
    * 데이터셋 로드
    */
   loadDataSet(){
@@ -134,10 +163,19 @@ export class FishFamilyResultComponent implements OnInit{
         next: async (data) => {
           if (data){
             this.objectImage = data;
-            console.log(data)
           }
         }
       });
+    // 가족 리스트 조회
+    this.mindReaderControlService.getFamily()
+      .subscribe({
+        next: async (data) =>{
+          if(data){
+            this.familyList = data;
+          }
+        }
+      })
+    // 이메일 확인 체크
     this.inputEmailCheck = true;
   }
 
@@ -157,10 +195,15 @@ export class FishFamilyResultComponent implements OnInit{
         next: async (data) => {
           if (data){
             this.objectData=data;
-            console.log(data)
+            // 오브젝트 순서
+            this.familySeq = this.objectData.map((item:MrObjectModel) => item.name);
+            this.familySeq = this.familyList.filter((obj:MrFamilyCodeResponse)=>this.familySeq.includes(obj.id));
+            this.familySeq = this.familySeq.map((obj:MrFamilyCodeResponse)=>obj.description);
           }
         }
       });
+
+
     // 회차별 사용자 오브젝트 순서 목록 조회
     this.mindReaderControlService.getObjectCodeSeq(selectedTurn,this.inputResult.controls['userEmail'].value)
       .subscribe({
@@ -178,6 +221,7 @@ export class FishFamilyResultComponent implements OnInit{
    */
   objectResult(){
     this.loadDataTurn();
+    this.generateData();
 
     // 캔버스 초기화
     this.canvas.canvas.clear();
@@ -191,6 +235,15 @@ export class FishFamilyResultComponent implements OnInit{
       }},100);
     // 어항 세팅
     this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
+  }
+
+  /**
+   * side nav 에 뿌려줄 데이터 생성
+   */
+  generateData() {
+    this.sideNavData = this.objectList.map((description,index)=>({description,family:this.familySeq[index]}))
+    const data = this.sideNavData;
+    this.dataService.sendDataToSideNav(data);
   }
 
   /**

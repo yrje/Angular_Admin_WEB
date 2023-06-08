@@ -1,10 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import {DataService} from "../../service/data.service";
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.component.html'
 })
-export class SideNavComponent implements OnInit {
-  constructor() {}
+export class SideNavComponent {
+  // 받아온 데이터
+  public receivedData: any;
 
-  ngOnInit() {}
+  // 데이터 null 여부
+  public emptyData:boolean = false;
+
+  // main page에서 데이터 불러오기
+  constructor(private dataService: DataService) {
+    this.dataService.data$.subscribe(data => {
+      this.receivedData = data;
+      this.emptyData = true;
+    });
+  }
+
 }
