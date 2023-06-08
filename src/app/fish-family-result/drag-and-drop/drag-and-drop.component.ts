@@ -1,22 +1,14 @@
 import {
     AfterViewInit,
-    asNativeElements,
     Component,
     ElementRef,
     Injectable,
     Input,
-    OnInit,
     ViewChild
 } from "@angular/core";
 import { fabric } from 'fabric';
-import {MrObjectModel} from "../../../shared/model/mr-object.model";
 import {MindReaderControlService} from "../../../shared/service/mind-reader-control.service";
-import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../../shared/service/alert.service";
-import {MrDataSetRequestModel} from "../../../shared/model/request/mr-data-set.request.model";
-
-
-
 
 @Component({
     selector: 'app-drag-and-drop',
@@ -44,17 +36,15 @@ export class DragAndDropComponent implements AfterViewInit{
 
     public url: string | ArrayBuffer = '';
     public size: any = {
-        width: 1200,
+        width: 900,
         height: 900
     };
 
     public json: any;
     public moved: any;
 
-
-
     /**
-     *
+     * 생성자
      * @param mindReaderControlService
      * @param alertService
      */

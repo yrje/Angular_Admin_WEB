@@ -194,44 +194,10 @@ export class FishFamilyResultComponent implements OnInit{
   }
 
   /**
-   * 설문 데이터 저장
-   */
-  saveResultSheet() {
-    if (this.resultDescription.length == 10) {
-      this.exception();
-      return;
-      setTimeout(()=> {
-      const request: MrResultSheetRequest = {
-        answerIds: '',
-        counselor: String(this.authService.getUserEmail()),
-        createDate: new Date(),
-        dataSetId: Number(this.objectId),
-        description: String(this.resultDescription),
-        id: 0,
-        questionIds: '',
-        userEmail: this.inputResult.controls['userEmail'].value,
-      }
-      console.log(request)
-      this.mindReaderControlService.postResultSheet(request)
-        .subscribe({
-          next: async (data) => {
-            if (data) {
-              this.alertService.openAlert('설문 저장이 완료되었습니다.')
-            }
-          },
-          error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
-        });
-      } ,1000);
-    }
-    else {
-      this.alertService.openAlert('모든 문항을 체크하지 않았습니다.')
-    }
-  }
-
-  /**
    * 예외 처리
    */
   exception(){
+    console.log(this.resultDescription)
     let selectAnswer: number[] = [];
     let resultDescription: any[] = [];
     let resultAnswer = this.resultDescription.map(str => +str);
@@ -368,6 +334,36 @@ export class FishFamilyResultComponent implements OnInit{
         });
     }
     this.resultDescription=resultDescription;
+  }
+
+  /**
+   * 설문 데이터 저장
+   */
+  saveResultSheet() {
+    this.exception();
+    return;
+    setTimeout(()=> {
+      const request: MrResultSheetRequest = {
+        answerIds: '',
+        counselor: String(this.authService.getUserEmail()),
+        createDate: new Date(),
+        dataSetId: Number(this.objectId),
+        description: String(this.resultDescription),
+        id: 0,
+        questionIds: '',
+        userEmail: this.inputResult.controls['userEmail'].value,
+      }
+      console.log(request)
+      this.mindReaderControlService.postResultSheet(request)
+        .subscribe({
+          next: async (data) => {
+            if (data) {
+              this.alertService.openAlert('설문 저장이 완료되었습니다.')
+            }
+          },
+          error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
+        });
+    } ,1000);
   }
 
 }

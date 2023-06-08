@@ -30,7 +30,7 @@
                   <ng-container *ngIf="questionList.includes(description.id)">
                     <ng-container *ngFor="let list of answerList; let k = index;">
                       <ng-container *ngIf="list.questionId==description.id">
-                        <input style="margin-left: 5%"type="radio" id="{{list.questionId}}" name="{{list.questionId}}" value="{{list.questionId}}">
+                        <input style="margin-left: 5%"type="radio" id="{{list.questionId}}" name="{{list.questionId}}" value="{{list.id}}" [(ngModel)]="resultDescription[description.id]">
                       {{list.description}}<br>
                     </ng-container>
                     </ng-container>
