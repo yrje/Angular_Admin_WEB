@@ -55,7 +55,7 @@ export class FishFamilyResultComponent implements OnInit{
   /** 해석 여러개 문항 */
   public questionList: number[] = [22,31,32,33,42];
   public answerList : any[]=[];
-
+  /** 오브젝트 가족 순서 */
   public familySeq:any;
 
   /** 가족 리스트 데이터 */
@@ -94,7 +94,6 @@ export class FishFamilyResultComponent implements OnInit{
    */
   ngOnInit(){
     this.onWindowResize(null); // 초기화 시에도 스타일 적용을 위해 호출
-
     // 윈도우 리사이즈 이벤트를 감지하여 onWindowResize 메서드 호출
     window.addEventListener('resize', this.onWindowResize.bind(this));
     // 로그인 데이터 조회
@@ -115,6 +114,8 @@ export class FishFamilyResultComponent implements OnInit{
           }
         }
       });
+
+    // 설문지 답안 조회
     for (let i=0;i<this.questionList.length;i++) {
       this.mindReaderControlService.getAnswer(this.questionList[i])
         .subscribe({
@@ -134,7 +135,7 @@ export class FishFamilyResultComponent implements OnInit{
   onWindowResize(event: any) {
     console.log(this.answerSize)
     this.styleObject = {
-      width: `${window.innerWidth - 1525}px`,
+      width: `${window.innerWidth - 1528}px`,
     };
   }
 
@@ -152,7 +153,6 @@ export class FishFamilyResultComponent implements OnInit{
         next: async (data) => {
           if (data){
             this.dataSet = data
-            console.log(data)
             this.countTurnList = Array.from({ length: this.dataSet.length }, (_, index) => index + 1).map(item => item + '회차');
           }
         }
@@ -220,21 +220,24 @@ export class FishFamilyResultComponent implements OnInit{
    * 시간차 오브젝트 띄우기
    */
   objectResult(){
-    this.loadDataTurn();
-    this.generateData();
+      this.loadDataTurn();
+      console.log(this.objectList)
+      // 캔버스 초기화
+      this.canvas.canvas.clear();
 
-    // 캔버스 초기화
-    this.canvas.canvas.clear();
-    setTimeout(()=>{
-      for (let i = 0; i < this.objectData.length; i++) {
-        let pathUrl = this.objectImage[this.objectSeq[i].id].path;
+      setTimeout(()=>{
+        for (let i = 0; i < this.objectData.length; i++) {
+          let pathUrl = this.objectImage[this.objectSeq[i].id].path;
 
-        setTimeout(() => {
-          this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle, pathUrl);
-        }, 1000 * (i + 1));
-      }},100);
-    // 어항 세팅
-    this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
+          setTimeout(() => {
+            this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle, pathUrl);
+          }, 1000 * (i + 1));
+        }
+        //side nav에 띄울 data 생성
+        this.generateData();
+      },100);
+      // 어항 세팅
+      this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
   }
 
   /**
@@ -242,8 +245,8 @@ export class FishFamilyResultComponent implements OnInit{
    */
   generateData() {
     this.sideNavData = this.objectList.map((description,index)=>({description,family:this.familySeq[index]}))
-    const data = this.sideNavData;
-    this.dataService.sendDataToSideNav(data);
+    this.dataService.sendDataToSideNav(this.sideNavData);
+    console.log(this.sideNavData)
   }
 
   /**
