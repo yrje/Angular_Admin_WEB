@@ -9,6 +9,10 @@
     <span style="font-size: 25px; font-weight: 500;">MegaBridge</span> <br>
     <span style="font-size: 15px;">Connect your business</span>
   </div>
+
+  <div *ngIf="dataEmptyCheck" style="margin-left: 40%;font-size: 30px">
+    {{userName}} / {{userGender}} / {{userAge}}
+  </div>
   <span class="nav-spacer"></span>
     <button mat-raised-button color="#f44237" (click)="openDialog()">
       <span>logout</span>

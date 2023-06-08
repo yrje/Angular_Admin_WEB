@@ -79,10 +79,10 @@ export class DragAndDropComponent implements AfterViewInit{
         this.waterUrl = opt;
         this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
-          top: 150,
-          left: 70,
-          scaleX:0.58,
-          scaleY: 0.58
+          top:46,
+          left: 45,
+          scaleX:0.61,
+          scaleY: 0.61
         });
 
     }

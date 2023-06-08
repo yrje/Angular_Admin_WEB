@@ -67,6 +67,8 @@ export class FishFamilyResultComponent implements OnInit{
   public answerSize: number=0;
   /** 설문지 스타일 오브젝트 */
   public styleObject: any = {};
+  /** 내담자 설문 데이터 */
+  public patientInfo:any;
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -126,6 +128,7 @@ export class FishFamilyResultComponent implements OnInit{
           }
         });
     }
+
   }
 
   /**
@@ -175,6 +178,17 @@ export class FishFamilyResultComponent implements OnInit{
           }
         }
       })
+    // 내담자 추가 입력 정보 조회
+    this.mindReaderControlService.getInfo(this.inputResult.controls['userEmail'].value)
+      .subscribe({
+        next: async (data) => {
+          if (data){
+            this.patientInfo = data;
+            this.dataService.sendDataToTopNav(this.patientInfo);
+          }
+        }
+      });
+
     // 이메일 확인 체크
     this.inputEmailCheck = true;
   }
@@ -185,10 +199,10 @@ export class FishFamilyResultComponent implements OnInit{
   loadDataTurn(){
     let selectedTurn: number = 0;
 
-    selectedTurn = Number(this.selectedTurn.replace('회차',''));
+    selectedTurn = Number(this.selectedTurn.replace('회차',''))-1;
     this.objectId = this.dataSet.find(obj => obj.seq === selectedTurn).id;
-    this.selectedBowl=this.objectImage[this.dataSet[selectedTurn-1].fishbowlCode].path
-    this.selectedBowlCode=this.dataSet[selectedTurn-1].fishbowlCode
+    this.selectedBowl=this.objectImage[this.dataSet[selectedTurn].fishbowlCode].path
+    this.selectedBowlCode=this.dataSet[selectedTurn].fishbowlCode
     // 회차별 사용자 오브젝트 조회
     this.mindReaderControlService.getSeqObject(selectedTurn,this.inputResult.controls['userEmail'].value)
       .subscribe({
@@ -234,19 +248,11 @@ export class FishFamilyResultComponent implements OnInit{
           }, 1000 * (i + 1));
         }
         //side nav에 띄울 data 생성
-        this.generateData();
+        this.sideNavData = this.objectList.map((description,index)=>({description,family:this.familySeq[index]}))
+        this.dataService.sendDataToSideNav(this.sideNavData);
       },100);
       // 어항 세팅
       this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
-  }
-
-  /**
-   * side nav 에 뿌려줄 데이터 생성
-   */
-  generateData() {
-    this.sideNavData = this.objectList.map((description,index)=>({description,family:this.familySeq[index]}))
-    this.dataService.sendDataToSideNav(this.sideNavData);
-    console.log(this.sideNavData)
   }
 
   /**

@@ -1,9 +1,10 @@
 import {Component, OnInit, Output, EventEmitter, ViewContainerRef, ViewChild} from '@angular/core';
 import {LogoutConfirmComponent} from "../../component/dialogs/logout-confirm/logout-confirm.component";
-import {Router} from "@angular/router";
+import {Data, Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogService} from "@progress/kendo-angular-dialog";
 import {AuthService} from "../../service/auth.service";
+import {DataService} from "../../service/data.service";
 
 @Component({
   selector: 'app-top-nav',
@@ -11,7 +12,11 @@ import {AuthService} from "../../service/auth.service";
   styleUrls: ['./top-nav.component.scss']
 })
 export class TopNavComponent implements OnInit {
+  public userName:string='';
+  public userAge:number=0;
+  public userGender:string='';
 
+  public dataEmptyCheck: boolean = false;
   /**
    * 생성자
    * @param dialog
@@ -23,7 +28,26 @@ export class TopNavComponent implements OnInit {
     private router: Router,
     private dialogService: DialogService,
     private loginService:AuthService,
-  ) {}
+    private dataService: DataService,
+
+  )  {
+    this.dataService.topData$.subscribe(data => {
+      this.userName=data.userName;
+      this.userAge=data.age;
+      if(data.genderId==0){
+        this.userGender='남성'
+      }
+      else if(data.genderId==1){
+        this.userGender='여성'
+      }
+      else{
+        this.userGender='기타'
+      }
+      this.dataEmptyCheck = true;
+      //this.topReceiveData = data.userName;
+    });
+  }
+
 
   @Output() sideNavToggled = new EventEmitter<void>();
 
@@ -75,6 +99,10 @@ export class TopNavComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  // 받아온 데이터
+  public receivedData: any;
 
+  // 데이터 null 여부
+  public emptyData:boolean = false;
 
 }

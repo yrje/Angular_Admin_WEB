@@ -9,9 +9,16 @@ import { Subject } from 'rxjs';
 })
 export class DataService {
   private dataSubject = new Subject<any>();
-  data$ = this.dataSubject.asObservable();
+  private dataTopSubject = new Subject<any>();
+  sideData$ = this.dataSubject.asObservable();
+
+  topData$ = this.dataTopSubject.asObservable();
 
   sendDataToSideNav(data: any) {
     this.dataSubject.next(data);
+  }
+
+  sendDataToTopNav(data: any) {
+    this.dataTopSubject.next(data);
   }
 }

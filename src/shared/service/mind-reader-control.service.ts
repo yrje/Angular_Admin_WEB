@@ -15,6 +15,7 @@ import {MrQuestionResponse} from "../model/response/mr-question.response.model";
 import {MrResultSheetRequest} from "../model/request/mr-result-sheet.request.model";
 import {MrResultSheetResponse} from "../model/response/mr-result-sheet.response.model";
 import {MrAnswerResponse} from "../model/response/mr-answer.response.model";
+import {MrPatientInfoResponse} from "../model/response/mr-patient-info.response.model";
 
 @Injectable({
   providedIn: 'root'
@@ -168,6 +169,16 @@ export class MindReaderControlService {
    */
   getAnswer(questionId:number): Observable<MrAnswerResponse[]>{
     return this.http.get<MrAnswerResponse[]>(`${this.MR_CONTROL_URL}/answer/${questionId}`)
+  }
+
+  /**
+   * 내담자 추가 입력 정보 조회
+   */
+  getInfo(userEmail: string): Observable<MrPatientInfoResponse[]>{
+    const param={
+      userEmail: userEmail
+    }
+    return this.http.get<MrPatientInfoResponse[]>(`${this.MR_CONTROL_URL}/patientInfo`,{params: param})
   }
 
 }
