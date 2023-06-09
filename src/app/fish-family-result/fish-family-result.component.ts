@@ -6,9 +6,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../shared/service/alert.service";
 import {MrResultSheetRequest} from "../../shared/model/request/mr-result-sheet.request.model";
 import {AuthService} from "../../shared/service/auth.service";
-import {MrObjectModel} from "../../shared/model/mr-object.model";
-import {MrFamilyCodeResponse} from "../../shared/model/response/mr-family-code.response.model";
 import {DataService} from "../../shared/service/data.service";
+import {UserService} from "../../shared/service/user.service";
 
 @Component({
   selector: 'app-fish-family-result',
@@ -75,6 +74,12 @@ export class FishFamilyResultComponent implements OnInit{
   public resultSheetCheck: boolean = true;
   /** 회차 리스트 disabled 여부 */
   public test:boolean=false;
+  /** 전체 설문 답안 데이터 */
+  public allAnswerList:any[]=[];
+  /** 전체 유저 데이터 */
+  public allUserData:any;
+  /** 선택한 사용자 */
+  public selectedUser:string='';
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -84,12 +89,14 @@ export class FishFamilyResultComponent implements OnInit{
    * @param mindReaderControlService
    * @param alertService
    * @param authService
+   * @param userService
    */
   constructor(
     private mindReaderControlService:MindReaderControlService,
     private alertService: AlertService,
     private authService: AuthService,
-    private dataService: DataService
+    private dataService: DataService,
+    private userService: UserService
   ) {}
 
   /**
@@ -106,12 +113,24 @@ export class FishFamilyResultComponent implements OnInit{
     this.onWindowResize(null); // 초기화 시에도 스타일 적용을 위해 호출
     // 윈도우 리사이즈 이벤트를 감지하여 onWindowResize 메서드 호출
     window.addEventListener('resize', this.onWindowResize.bind(this));
-    // 설문 답안 조회
+    // 전체 사용자 조회
+    this.userService.getAllUser()
+      .subscribe({
+        next: async (data) => {
+          if (data){
+            this.allUserData=data;
+            console.log(data)
+          }
+        }
+      });
+
+    // 설문지 문항 조회
     this.mindReaderControlService.getQuestion()
       .subscribe({
         next: async (data) => {
           if (data){
             this.questionData = data;
+            //this.getAnswer(this.questionData.length);
             this.questionTitle = data.filter((item, index, array) => {
               return (
                 index === array.findIndex(
@@ -135,7 +154,24 @@ export class FishFamilyResultComponent implements OnInit{
           }
         });
     }
+  }
 
+  /**
+   * 설문 답안 전체 가져오기
+   */
+  getAnswer(index: number){
+    for (let i=0;i<index;i++) {
+      console.log(i)
+      this.mindReaderControlService.getAnswer(this.questionList[i])
+        .subscribe({
+          next: async (data) => {
+            if (data) {
+              this.allAnswerList.push(data)
+            }
+          }
+        });
+    }
+    console.log(this.allAnswerList)
   }
 
   /**
@@ -152,12 +188,13 @@ export class FishFamilyResultComponent implements OnInit{
    * 데이터셋 로드
    */
   loadDataSet(){
+    console.log(this.selectedUser)
     this.answerList = this.answerList.reduce((acc, current) => {
       return acc.concat(current);
     }, []);
 
     // 사용자 데이터 셋 조회
-    this.mindReaderControlService.getDataSet(this.inputResult.controls['userEmail'].value)
+    this.mindReaderControlService.getDataSet(this.selectedUser)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -185,7 +222,7 @@ export class FishFamilyResultComponent implements OnInit{
         }
       })
     // 내담자 추가 입력 정보 조회
-    this.mindReaderControlService.getInfo(this.inputResult.controls['userEmail'].value)
+    this.mindReaderControlService.getInfo(this.selectedUser)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -224,7 +261,7 @@ export class FishFamilyResultComponent implements OnInit{
     this.selectedBowl=this.objectImage[this.dataSet[selectedTurn].fishbowlCode].path
     this.selectedBowlCode=this.dataSet[selectedTurn].fishbowlCode
     // 회차별 사용자 오브젝트 조회
-    this.mindReaderControlService.getSeqObject(selectedTurn,this.inputResult.controls['userEmail'].value)
+    this.mindReaderControlService.getSeqObject(selectedTurn,this.selectedUser)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -249,7 +286,7 @@ export class FishFamilyResultComponent implements OnInit{
 
 
     // 회차별 사용자 오브젝트 순서 목록 조회
-    this.mindReaderControlService.getObjectCodeSeq(selectedTurn,this.inputResult.controls['userEmail'].value)
+    this.mindReaderControlService.getObjectCodeSeq(selectedTurn,this.selectedUser)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -445,7 +482,7 @@ export class FishFamilyResultComponent implements OnInit{
         description: String(this.resultDescription),
         id: 0,
         questionIds: '',
-        userEmail: this.inputResult.controls['userEmail'].value,
+        userEmail: this.selectedUser,
       }
       console.log(request)
       // 설문 데이터 저장하기

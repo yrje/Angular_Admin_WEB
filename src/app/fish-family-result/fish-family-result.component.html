@@ -1,9 +1,14 @@
 <div style="width:100%;height:100%">
   <div style="width:80%;float:left;height: 100%">
-    <form [formGroup]="inputResult">
-      <input class="email-input" placeholder="설문지를 작성할 이메일을 입력하십시오."  formControlName="userEmail">
+    <!--<form [formGroup]="inputResult">-->
+      <!--<input class="email-input" placeholder="설문지를 작성할 이메일을 입력하십시오."  formControlName="userEmail">-->
+      <select [(ngModel)]="selectedUser">
+        <option *ngFor="let user of allUserData" [value]="user.email">
+          {{ user.email }} - {{ user.username }}
+        </option>
+      </select>
       <button class="button-style" (click)="loadDataSet()">확인</button>
-    </form>
+    <!--</form>-->
   </div>
 
   <div style="width:100%" *ngIf="inputEmailCheck" >
@@ -13,10 +18,11 @@
       (ngModelChange)="objectResult()"
       class="dropdown-list"
     ></kendo-dropdownlist>
-    <button (click)="objectResult()">다시보기</button>
+    <button (click)="objectResult()">순서 다시보기</button>
     <app-drag-and-drop style="float:left;" #canvas></app-drag-and-drop>
     <div style="float:right;height: 100%;"[ngStyle] = "styleObject"  >
       <div style="padding: 10px; border: #cccccc solid 1px;" *ngIf="resultSheetCheck">
+        <!--설문답안지-->
         <span  style="font-size: 25px;text-align: center;align-items: center;justify-content: center">[설문지]</span>
         <div>
           <div style="height: 900px;overflow: auto;">
@@ -43,8 +49,12 @@
         </div>
       </div>
       <div *ngIf="!resultSheetCheck">
-        <span style="font-size: 25px;text-align: center;align-items: center;justify-content: center">[해석 결과]</span> <br>
-        {{resultSheet.description}}
+        <div style="padding:5%;font-size: 25px;text-align: center;align-items: center;justify-content: center">
+          <span>[해석 결과]</span> <br>
+        </div>
+        <div style="font-size: 20px;">
+          {{resultSheet.description}}
+        </div>
       </div>
     </div>
   </div>
