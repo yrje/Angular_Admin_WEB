@@ -2,11 +2,19 @@
   <div style="width:80%;float:left;height: 100%">
     <!--<form [formGroup]="inputResult">-->
       <!--<input class="email-input" placeholder="설문지를 작성할 이메일을 입력하십시오."  formControlName="userEmail">-->
-      <select [(ngModel)]="selectedUser">
+  <!--    <select [(ngModel)]="selectedUser">
         <option *ngFor="let user of allUserData" [value]="user.email">
           {{ user.email }} - {{ user.username }}
         </option>
-      </select>
+      </select>-->
+    <kendo-dropdownlist
+    [data]="allUserData"
+    textField="email"
+    valueField="email"
+
+    [(ngModel)]="selectedUser"
+    >
+    </kendo-dropdownlist>
       <button class="button-style" (click)="loadDataSet()">확인</button>
     <!--</form>-->
   </div>

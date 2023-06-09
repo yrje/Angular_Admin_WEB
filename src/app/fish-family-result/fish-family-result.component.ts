@@ -79,7 +79,7 @@ export class FishFamilyResultComponent implements OnInit{
   /** 전체 유저 데이터 */
   public allUserData:any;
   /** 선택한 사용자 */
-  public selectedUser:string='';
+  public selectedUser:any;
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -194,7 +194,7 @@ export class FishFamilyResultComponent implements OnInit{
     }, []);
 
     // 사용자 데이터 셋 조회
-    this.mindReaderControlService.getDataSet(this.selectedUser)
+    this.mindReaderControlService.getDataSet(this.selectedUser.email)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -222,7 +222,7 @@ export class FishFamilyResultComponent implements OnInit{
         }
       })
     // 내담자 추가 입력 정보 조회
-    this.mindReaderControlService.getInfo(this.selectedUser)
+    this.mindReaderControlService.getInfo(this.selectedUser.email)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -243,7 +243,7 @@ export class FishFamilyResultComponent implements OnInit{
     this.objectData=[];
     this.resultSheetCheck=true;
     let selectedTurn: number = 0;
-
+    console.log(this.selectedUser)
     selectedTurn = Number(this.selectedTurn.replace('회차',''))-1;
     // 내담자 설문 결과 조회
     this.mindReaderControlService.getResultSheet(this.dataSet[selectedTurn].id)
@@ -261,7 +261,7 @@ export class FishFamilyResultComponent implements OnInit{
     this.selectedBowl=this.objectImage[this.dataSet[selectedTurn].fishbowlCode].path
     this.selectedBowlCode=this.dataSet[selectedTurn].fishbowlCode
     // 회차별 사용자 오브젝트 조회
-    this.mindReaderControlService.getSeqObject(selectedTurn,this.selectedUser)
+    this.mindReaderControlService.getSeqObject(selectedTurn,this.selectedUser.email)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -286,7 +286,7 @@ export class FishFamilyResultComponent implements OnInit{
 
 
     // 회차별 사용자 오브젝트 순서 목록 조회
-    this.mindReaderControlService.getObjectCodeSeq(selectedTurn,this.selectedUser)
+    this.mindReaderControlService.getObjectCodeSeq(selectedTurn,this.selectedUser.email)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -482,7 +482,7 @@ export class FishFamilyResultComponent implements OnInit{
         description: String(this.resultDescription),
         id: 0,
         questionIds: '',
-        userEmail: this.selectedUser,
+        userEmail: this.selectedUser.email,
       }
       console.log(request)
       // 설문 데이터 저장하기
