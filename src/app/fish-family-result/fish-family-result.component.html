@@ -14,9 +14,9 @@
       class="dropdown-list"
     ></kendo-dropdownlist>
     <app-drag-and-drop style="float:left;" #canvas></app-drag-and-drop>
-    <div style="float:right;height: 100%;"[ngStyle] = "styleObject" >
-      <div style="padding: 10px; border: #cccccc solid 1px;">
-        <span style="font-size: 25px;text-align: center;align-items: center;justify-content: center">[설문지]</span>
+    <div style="float:right;height: 100%;"[ngStyle] = "styleObject"  >
+      <div style="padding: 10px; border: #cccccc solid 1px;" *ngIf="resultSheetCheck">
+        <span  style="font-size: 25px;text-align: center;align-items: center;justify-content: center">[설문지]</span>
         <div>
           <div style="height: 900px;overflow: auto;">
             <ng-container *ngFor="let title of questionTitle; let i = index;">
@@ -41,6 +41,10 @@
             <button class="btn-style"(click)="saveResultSheet()">저장하기</button>
           </div>
         </div>
+      </div>
+      <div *ngIf="!resultSheetCheck">
+        <span style="font-size: 25px;text-align: center;align-items: center;justify-content: center">[해석 결과]</span> <br>
+        {{resultSheet.description}}
       </div>
     </div>
   </div>

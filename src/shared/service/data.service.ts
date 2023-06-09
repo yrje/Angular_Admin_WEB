@@ -17,7 +17,7 @@ export class DataService {
   sendDataToSideNav(data: any) {
     this.dataSubject.next(data);
   }
-
+  // top - nav
   sendDataToTopNav(data: any) {
     this.dataTopSubject.next(data);
   }

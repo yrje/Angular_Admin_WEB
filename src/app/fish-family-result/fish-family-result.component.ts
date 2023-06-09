@@ -69,6 +69,10 @@ export class FishFamilyResultComponent implements OnInit{
   public styleObject: any = {};
   /** 내담자 설문 데이터 */
   public patientInfo:any;
+  /** 내담자 설문 결과 */
+  public resultSheet: any;
+  /** 설문 완료 여부 */
+  public resultSheetCheck: boolean = true;
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -88,7 +92,7 @@ export class FishFamilyResultComponent implements OnInit{
 
   // input result form group
   public inputResult: FormGroup = new FormGroup({
-    userEmail: new FormControl(''), // 사용자 이메일
+    userEmail: new FormControl('yerinje@naver.com'), // 사용자 이메일
   });
 
   /**
@@ -98,13 +102,13 @@ export class FishFamilyResultComponent implements OnInit{
     this.onWindowResize(null); // 초기화 시에도 스타일 적용을 위해 호출
     // 윈도우 리사이즈 이벤트를 감지하여 onWindowResize 메서드 호출
     window.addEventListener('resize', this.onWindowResize.bind(this));
-    // 로그인 데이터 조회
-    // 사용자 데이터 셋 조회
+    // 설문 답안 조회
     this.mindReaderControlService.getQuestion()
       .subscribe({
         next: async (data) => {
           if (data){
             this.questionData = data;
+            console.log(data)
             this.questionTitle = data.filter((item, index, array) => {
               return (
                 index === array.findIndex(
@@ -197,9 +201,22 @@ export class FishFamilyResultComponent implements OnInit{
    * 회차별 데이터 조회
    */
   loadDataTurn(){
+    this.resultSheetCheck=true;
     let selectedTurn: number = 0;
 
     selectedTurn = Number(this.selectedTurn.replace('회차',''))-1;
+    // 내담자 설문 결과 조회
+    this.mindReaderControlService.getResultSheet(this.dataSet[selectedTurn].id)
+      .subscribe({
+        next: async (data) => {
+          if (data){
+            this.resultSheet = data;
+            if(data.length!=0){
+            this.resultSheetCheck=false;
+            }
+          }
+        }
+      });
     this.objectId = this.dataSet.find(obj => obj.seq === selectedTurn).id;
     this.selectedBowl=this.objectImage[this.dataSet[selectedTurn].fishbowlCode].path
     this.selectedBowlCode=this.dataSet[selectedTurn].fishbowlCode
@@ -403,7 +420,7 @@ export class FishFamilyResultComponent implements OnInit{
    */
   saveResultSheet() {
     this.exception();
-    return;
+
     setTimeout(()=> {
       const request: MrResultSheetRequest = {
         answerIds: '',
