@@ -63,7 +63,6 @@ export class DragAndDropComponent implements AfterViewInit{
         skipTargetFind: true,
         selectionBorderColor: 'blue',
         isDrawingMode: false,
-        backgroundColor: '#ffffff'
       });
 
       this.canvas.setWidth(this.size.width);

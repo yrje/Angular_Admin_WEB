@@ -9,6 +9,7 @@
         </option>
       </select>
       <button class="button-style" (click)="loadDataSet()">확인</button>
+    <button class="button-style" (click)="objectResult()"  *ngIf="inputEmailCheck">순서 다시보기</button>
     <!--</form>-->
   </div>
 
@@ -19,7 +20,13 @@
       (ngModelChange)="objectResult()"
       class="dropdown-list"
     ></kendo-dropdownlist>
-    <button (click)="objectResult()">순서 다시보기</button>
+<!--    <select [(ngModel)]="selectedTurn" style="padding:1%">
+      <option value="" disabled>조회할 사용자 email을 선택해주십시오.</option>
+      <option *ngFor="let turn of countTurnList">
+        {{ turn}}
+      </option>
+    </select>-->
+
     <app-drag-and-drop style="float:left;" #canvas></app-drag-and-drop>
     <div style="float:right;height: 100%;"[ngStyle] = "styleObject"  >
       <div style="padding: 10px; border: #cccccc solid 1px;" *ngIf="resultSheetCheck">
@@ -53,7 +60,7 @@
         <div style="padding:5%;font-size: 25px;text-align: center;align-items: center;justify-content: center">
           <span>[해석 결과]</span> <br>
         </div>
-        <div style="font-size: 20px;">
+        <div style="font-size: 20px;padding: 25px">
           {{resultSheet.description}}
         </div>
       </div>
