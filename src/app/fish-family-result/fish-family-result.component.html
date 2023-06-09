@@ -13,6 +13,7 @@
       (ngModelChange)="objectResult()"
       class="dropdown-list"
     ></kendo-dropdownlist>
+    <button (click)="objectResult()">다시보기</button>
     <app-drag-and-drop style="float:left;" #canvas></app-drag-and-drop>
     <div style="float:right;height: 100%;"[ngStyle] = "styleObject"  >
       <div style="padding: 10px; border: #cccccc solid 1px;" *ngIf="resultSheetCheck">
