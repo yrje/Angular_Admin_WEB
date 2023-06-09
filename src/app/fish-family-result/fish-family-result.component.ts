@@ -1,4 +1,4 @@
-import {Component, EventEmitter, HostListener, OnInit, Output, ViewChild} from "@angular/core";
+import {Component,OnInit, ViewChild} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {MindReaderControlService} from "../../shared/service/mind-reader-control.service";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component";
@@ -90,7 +90,9 @@ export class FishFamilyResultComponent implements OnInit{
     private dataService: DataService
   ) {}
 
-  // input result form group
+  /**
+   * input result form group
+   */
   public inputResult: FormGroup = new FormGroup({
     userEmail: new FormControl('yerinje@naver.com'), // 사용자 이메일
   });
@@ -140,7 +142,6 @@ export class FishFamilyResultComponent implements OnInit{
    * @param event
    */
   onWindowResize(event: any) {
-    console.log(this.answerSize)
     this.styleObject = {
       width: `${window.innerWidth - 1528}px`,
     };
@@ -252,7 +253,6 @@ export class FishFamilyResultComponent implements OnInit{
    */
   objectResult(){
       this.loadDataTurn();
-      console.log(this.objectList)
       // 캔버스 초기화
       this.canvas.canvas.clear();
 
@@ -419,6 +419,7 @@ export class FishFamilyResultComponent implements OnInit{
    * 설문 데이터 저장
    */
   saveResultSheet() {
+    //예외처리
     this.exception();
 
     setTimeout(()=> {
