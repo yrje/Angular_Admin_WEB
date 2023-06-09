@@ -110,7 +110,6 @@ export class FishFamilyResultComponent implements OnInit{
         next: async (data) => {
           if (data){
             this.questionData = data;
-            console.log(data)
             this.questionTitle = data.filter((item, index, array) => {
               return (
                 index === array.findIndex(
@@ -257,6 +256,7 @@ export class FishFamilyResultComponent implements OnInit{
       this.canvas.canvas.clear();
 
       setTimeout(()=>{
+        console.log(this.objectData)
         for (let i = 0; i < this.objectData.length; i++) {
           let pathUrl = this.objectImage[this.objectSeq[i].id].path;
 
@@ -267,7 +267,7 @@ export class FishFamilyResultComponent implements OnInit{
         //side nav에 띄울 data 생성
         this.sideNavData = this.objectList.map((description,index)=>({description,family:this.familySeq[index]}))
         this.dataService.sendDataToSideNav(this.sideNavData);
-      },100);
+      },500);
       // 어항 세팅
       this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
   }
@@ -276,7 +276,6 @@ export class FishFamilyResultComponent implements OnInit{
    * 예외 처리
    */
   exception(){
-    console.log(this.resultDescription)
     let selectAnswer: number[] = [];
     let resultDescription: any[] = [];
     let resultAnswer = this.resultDescription.map(str => +str);
