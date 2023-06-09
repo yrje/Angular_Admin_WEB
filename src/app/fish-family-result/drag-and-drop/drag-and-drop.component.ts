@@ -60,6 +60,7 @@ export class DragAndDropComponent implements AfterViewInit{
       this.canvas = new fabric.Canvas(this.htmlCanvasElement.nativeElement, {
         hoverCursor: 'pointer',
         selection: false,
+        skipTargetFind: true,
         selectionBorderColor: 'blue',
         isDrawingMode: false,
         backgroundColor: '#ffffff'
