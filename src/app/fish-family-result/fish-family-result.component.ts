@@ -79,7 +79,7 @@ export class FishFamilyResultComponent implements OnInit{
   /** 전체 유저 데이터 */
   public allUserData:any;
   /** 선택한 사용자 */
-  public selectedUser:any;
+  public selectedUser:string='';
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -194,7 +194,7 @@ export class FishFamilyResultComponent implements OnInit{
     }, []);
 
     // 사용자 데이터 셋 조회
-    this.mindReaderControlService.getDataSet(this.selectedUser.email)
+    this.mindReaderControlService.getDataSet(this.selectedUser)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -222,7 +222,7 @@ export class FishFamilyResultComponent implements OnInit{
         }
       })
     // 내담자 추가 입력 정보 조회
-    this.mindReaderControlService.getInfo(this.selectedUser.email)
+    this.mindReaderControlService.getInfo(this.selectedUser)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -261,7 +261,7 @@ export class FishFamilyResultComponent implements OnInit{
     this.selectedBowl=this.objectImage[this.dataSet[selectedTurn].fishbowlCode].path
     this.selectedBowlCode=this.dataSet[selectedTurn].fishbowlCode
     // 회차별 사용자 오브젝트 조회
-    this.mindReaderControlService.getSeqObject(selectedTurn,this.selectedUser.email)
+    this.mindReaderControlService.getSeqObject(selectedTurn,this.selectedUser)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -286,7 +286,7 @@ export class FishFamilyResultComponent implements OnInit{
 
 
     // 회차별 사용자 오브젝트 순서 목록 조회
-    this.mindReaderControlService.getObjectCodeSeq(selectedTurn,this.selectedUser.email)
+    this.mindReaderControlService.getObjectCodeSeq(selectedTurn,this.selectedUser)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -482,7 +482,7 @@ export class FishFamilyResultComponent implements OnInit{
         description: String(this.resultDescription),
         id: 0,
         questionIds: '',
-        userEmail: this.selectedUser.email,
+        userEmail: this.selectedUser,
       }
       console.log(request)
       // 설문 데이터 저장하기
