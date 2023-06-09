@@ -56,7 +56,7 @@ export class FishFamilyResultComponent implements OnInit{
   public questionList: number[] = [22,31,32,33,42];
   public answerList : any[]=[];
   /** 오브젝트 가족 순서 */
-  public familySeq:any;
+  public familySeq:any[]=[];
 
   /** 가족 리스트 데이터 */
   public familyList:any;
@@ -73,6 +73,8 @@ export class FishFamilyResultComponent implements OnInit{
   public resultSheet: any;
   /** 설문 완료 여부 */
   public resultSheetCheck: boolean = true;
+  /** 회차 리스트 disabled 여부 */
+  public test:boolean=false;
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -201,6 +203,7 @@ export class FishFamilyResultComponent implements OnInit{
    * 회차별 데이터 조회
    */
   loadDataTurn(){
+    this.objectData=[];
     this.resultSheetCheck=true;
     let selectedTurn: number = 0;
 
@@ -225,11 +228,21 @@ export class FishFamilyResultComponent implements OnInit{
       .subscribe({
         next: async (data) => {
           if (data){
+            // 오브젝트 가족 관계 순서 데이터 생성
             this.objectData=data;
-            // 오브젝트 순서
-            this.familySeq = this.objectData.map((item:MrObjectModel) => item.name);
-            this.familySeq = this.familyList.filter((obj:MrFamilyCodeResponse)=>this.familySeq.includes(obj.id));
-            this.familySeq = this.familySeq.map((obj:MrFamilyCodeResponse)=>obj.description);
+            let i= 0;
+            for (let obj1 of this.familyList) {
+              for (let obj2 of this.objectData) {
+                this.familySeq[i]=null;
+                if (obj1.id === obj2.name) {
+                  obj2.name = obj1.description;
+                }
+              }i=i+1;
+            }
+            this.familySeq=this.objectData;
+            this.objectData=data;
+            this.familySeq= this.familySeq.map(item => item.name);
+
           }
         }
       });
@@ -251,25 +264,27 @@ export class FishFamilyResultComponent implements OnInit{
    * 시간차 오브젝트 띄우기
    */
   objectResult(){
-      this.loadDataTurn();
-      // 캔버스 초기화
-      this.canvas.canvas.clear();
+    // 회차 데이터 조회
+    this.loadDataTurn();
+    // 캔버스 초기화
+    this.canvas.canvas.clear();
+    // 어항 세팅
+    this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
 
-      setTimeout(()=>{
-        console.log(this.objectData)
-        for (let i = 0; i < this.objectData.length; i++) {
-          let pathUrl = this.objectImage[this.objectSeq[i].id].path;
-
-          setTimeout(() => {
-            this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle, pathUrl);
-          }, 1000 * (i + 1));
-        }
+    // 시간차를 두고 캔버스에 오브젝트 띄우기
+    setTimeout(()=>{
+      for (let i = 0; i < this.objectData.length; i++) {
+        let pathUrl = this.objectImage[this.objectSeq[i].id].path;
+        setTimeout(() => {
+          this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle, pathUrl);
+        }, 1000 * (i + 1));
+      }
         //side nav에 띄울 data 생성
         this.sideNavData = this.objectList.map((description,index)=>({description,family:this.familySeq[index]}))
         this.dataService.sendDataToSideNav(this.sideNavData);
+
       },500);
-      // 어항 세팅
-      this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
+
   }
 
   /**
@@ -433,6 +448,7 @@ export class FishFamilyResultComponent implements OnInit{
         userEmail: this.inputResult.controls['userEmail'].value,
       }
       console.log(request)
+      // 설문 데이터 저장하기
       this.mindReaderControlService.postResultSheet(request)
         .subscribe({
           next: async (data) => {

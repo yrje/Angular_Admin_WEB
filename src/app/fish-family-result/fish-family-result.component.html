@@ -24,13 +24,12 @@
               <ng-container *ngFor="let description of questionData;let j = index;">
                 <ng-container *ngIf="title.titleId==description.titleId">
                   <input type="checkbox" id="{{description.id}}" name="{{description.id}}" value="{{description.id}}" [(ngModel)]="resultDescription[description.id]" >
-                  {{description.id}}.
                   {{description.description}}<br>
 
                   <ng-container *ngIf="questionList.includes(description.id)">
                     <ng-container *ngFor="let list of answerList; let k = index;">
                       <ng-container *ngIf="list.questionId==description.id">
-                        <input style="margin-left: 5%"type="radio" id="{{list.questionId}}" name="{{list.questionId}}" value="{{list.id}}" [(ngModel)]="resultDescription[description.id]">
+                        <input style="margin-left: 5%;" type="radio" id="{{list.questionId}}" name="{{list.questionId}}" value="{{list.id}}" [(ngModel)]="resultDescription[description.id]">
                       {{list.description}}<br>
                     </ng-container>
                     </ng-container>
