@@ -13,17 +13,18 @@
     <kendo-panelbar-item title="Table" [routerLink]="['/table']"></kendo-panelbar-item>
     <kendo-panelbar-item title="Chart" [routerLink]="['/charts']"></kendo-panelbar-item>-->
   </kendo-panelbar>
-</div>
-<div style="padding: 5%;position:absolute;top:30%" *ngIf="emptyData">
-  <div style="border:1px solid #4f4f4f;border-radius: 30px;padding: 20px;align-items: center;">
-    <div style="justify-content: center;text-align: center;margin-bottom:10px;">
-      <b>추가된 순서</b><br><hr>
+  <div style="padding: 5%;" *ngIf="emptyData">
+    <div style="border:1px solid #4f4f4f;border-radius: 30px;padding: 20px;align-items: center;">
+      <div style="justify-content: center;text-align: center;margin-bottom:10px;">
+        <b>추가된 순서</b><br><hr>
+      </div>
+      <ng-container *ngFor="let data of receivedData;let i = index" style="font-size: 10px">
+        {{i+1}}. {{receivedData[i].description}}
+        <ng-container *ngIf="receivedData[i].family!=null">
+          : <b>{{receivedData[i].family}}</b>
+        </ng-container><br>
+      </ng-container>
     </div>
-    <ng-container *ngFor="let data of receivedData;let i = index" style="font-size: 10px">
-      {{i+1}}. {{receivedData[i].description}}
-      <ng-container *ngIf="receivedData[i].family!=null">
-        : <b>{{receivedData[i].family}}</b>
-      </ng-container><br>
-    </ng-container>
   </div>
 </div>
+
