@@ -98,10 +98,7 @@ export class FishFamilyResultComponent implements OnInit{
     private dataService: DataService,
     private userService: UserService,
   ) {}
-  @HostListener('window:beforeunload', ['$event'])
-  onRefresh($event: Event) {
-    console.log('click')
-  }
+
   /**
    * input result form group
    */
@@ -157,6 +154,10 @@ export class FishFamilyResultComponent implements OnInit{
           }
         });
     }
+  }
+
+  onRefresh() {
+    window.location.reload();
   }
 
   /**
