@@ -105,9 +105,9 @@ export class FishFamilyResultComponent implements OnInit{
   /**
    * input result form group
    */
-  public inputResult: FormGroup = new FormGroup({
+/*  public inputResult: FormGroup = new FormGroup({
     userEmail: new FormControl('yerinje@naver.com'), // 사용자 이메일
-  });
+  });*/
 
   /**
    * 초기화
