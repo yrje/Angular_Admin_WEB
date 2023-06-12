@@ -81,8 +81,8 @@ export class DragAndDropComponent implements AfterViewInit{
         this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
           top:46,
           left: 45,
-          scaleX:0.61,
-          scaleY: 0.61
+          scaleX:0.53,
+          scaleY: 0.53
         });
 
     }
