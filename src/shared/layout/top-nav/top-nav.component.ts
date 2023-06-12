@@ -35,10 +35,10 @@ export class TopNavComponent implements OnInit {
       this.userName=data.userName;
       this.userAge=data.age;
       if(data.genderId==0){
-        this.userGender='남성'
+        this.userGender='남'
       }
       else if(data.genderId==1){
-        this.userGender='여성'
+        this.userGender='여'
       }
       else{
         this.userGender='기타'
