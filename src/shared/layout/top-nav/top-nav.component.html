@@ -10,8 +10,8 @@
     <span style="font-size: 15px;">Connect your business</span>
   </div>
 
-  <div *ngIf="dataEmptyCheck" style="margin-left: 40%;font-size: 30px">
-    {{userName}} / {{userGender}} / {{userAge}}
+  <div *ngIf="dataEmptyCheck" style="margin-left: 40%;font-size: 20px">
+    <b>{{userName}}</b> / {{userGender}} / 만{{userAge}}세
   </div>
   <span class="nav-spacer"></span>
     <button mat-raised-button color="#f44237" (click)="openDialog()">

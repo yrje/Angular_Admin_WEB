@@ -2,13 +2,14 @@
   <div style="width:80%;float:left;height: 100%">
     <!--<form [formGroup]="inputResult">-->
       <!--<input class="email-input" placeholder="설문지를 작성할 이메일을 입력하십시오."  formControlName="userEmail">-->
-      <select [(ngModel)]="selectedUser" style="padding:1%">
+      <select [(ngModel)]="selectedUser" style="padding:1%" *ngIf="!inputEmailCheck">
         <option value="" disabled>조회할 사용자 email을 선택해주십시오.</option>
         <option *ngFor="let user of allUserData" [value]="user.email">
           {{ user.email }} - {{ user.username }}
         </option>
       </select>
-      <button class="button-style" (click)="loadDataSet()">확인</button>
+      <button class="button-style" (click)="loadDataSet()" *ngIf="!inputEmailCheck">확인</button>
+    <button class="button-style" (click)="onRefresh($event)"  *ngIf="inputEmailCheck">다시 조회하기</button>
     <button class="button-style" (click)="objectResult()"  *ngIf="inputEmailCheck">순서 다시보기</button>
     <!--</form>-->
   </div>

@@ -1,4 +1,4 @@
-import {Component,OnInit, ViewChild} from "@angular/core";
+import {Component, HostListener, OnInit, ViewChild} from "@angular/core";
 import {FormControl, FormGroup} from "@angular/forms";
 import {MindReaderControlService} from "../../shared/service/mind-reader-control.service";
 import {DragAndDropComponent} from "./drag-and-drop/drag-and-drop.component";
@@ -96,9 +96,12 @@ export class FishFamilyResultComponent implements OnInit{
     private alertService: AlertService,
     private authService: AuthService,
     private dataService: DataService,
-    private userService: UserService
+    private userService: UserService,
   ) {}
-
+  @HostListener('window:beforeunload', ['$event'])
+  onRefresh($event: Event) {
+    console.log('click')
+  }
   /**
    * input result form group
    */
