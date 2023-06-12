@@ -481,18 +481,12 @@ export class FishFamilyResultComponent implements OnInit{
     }
     this.resultDescription=resultDescription;
   }
-
-  updateResultDescription(answerId: string, checked: boolean): void {
-    this.resultDescription[Number(answerId)] = checked;
-  }
   /**
    * 설문 데이터 저장
    */
   saveResultSheet() {
-    console.log(this.allAnswerList)
     //예외처리
     //this.exception();
-    console.log(this.resultDescription)
     setTimeout(()=> {
       const request: MrResultSheetRequest = {
         answerIds: '',
@@ -516,6 +510,9 @@ export class FishFamilyResultComponent implements OnInit{
           error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
         });
     } ,1000);
+    // 저장시 결과지 보이기
+    this.resultSheetCheck = false;
+
   }
 
 }
