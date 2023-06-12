@@ -119,7 +119,6 @@ export class FishFamilyResultComponent implements OnInit{
         next: async (data) => {
           if (data){
             this.allUserData=data;
-            console.log(data)
           }
         }
       });
@@ -156,7 +155,11 @@ export class FishFamilyResultComponent implements OnInit{
     }
   }
 
+  /**
+   * 사용바 조회하기 버튼 event
+   */
   onRefresh() {
+    // page refresh
     window.location.reload();
   }
 
