@@ -47,17 +47,17 @@
   }
 }
 .long-text {
-  white-space: nowrap; /* 텍스트가 한 줄에 표시되도록 설정 */
-  overflow: hidden; /* 넘치는 부분을 숨김 */
-  text-overflow: ellipsis; /* 넘치는 부분을 생략 부호 (...)로 표시 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .btn-style {
-  padding:10px;
-  width: 25%;
+  width: 15%;
   font-size: 16px;
   color: #FFFFFF;
   background:rgb(214 64 92) ;
-  margin:20px;
   display:inline-block;
+  border-radius: 20px;
+  float: right;
 
 }
