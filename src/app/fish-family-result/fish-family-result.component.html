@@ -31,12 +31,13 @@
     <div style="float:right;height: 100%;"[ngStyle] = "styleObject"  >
       <div style="padding: 13px; border: #cccccc solid 1px;background-color: #FFFFFF;height: 1000px;border-radius: 20px;" *ngIf="resultSheetCheck">
         <!--설문답안지-->
-        <div style="padding:2%;font-size: 20px;text-align: center;align-items: center;justify-content: center;box-shadow: 0px 10px 5px -2px rgb(239 239 240);">
-        <span  style="font-size: 15px;text-align: center;align-items: center;justify-content: center;">[설문지]</span>
+        <div style="padding:2%;font-size: 20px;box-shadow: 0px 10px 5px -2px rgb(239 239 240);">
+        <span  style="font-size: 18px;text-align: center;align-items: center;justify-content: center;">설문지
+          <button style="justify-content: right;" class="btn-style"(click)="saveResultSheet()">저장하기</button>
+        </span>
         </div>
-          <div>
-          <div style="height: 900px;overflow: auto;">
-            <ng-container *ngFor="let title of questionTitle; let i = index;">
+          <div style="height: 900px;overflow: auto; margin:3px;">
+          <!--  <ng-container *ngFor="let title of questionTitle; let i = index;">
               <b><br>{{i+1}}. {{title.title}}<br></b>
               <ng-container *ngFor="let description of questionData;let j = index;">
                 <ng-container *ngIf="title.titleId==description.titleId">
@@ -53,12 +54,14 @@
                   </ng-container>
                 </ng-container>
               </ng-container>
+            </ng-container>-->
+            <ng-container *ngFor="let answer of allAnswerList">
+              <input type="checkbox" id="{{answer.id}}" name="{{answer.id}}" [value]="resultDescription[answer.id]" (change)="test1(answer.description)">
+              {{answer.description}}-{{answer.id}}<br>
             </ng-container>
-            <div style="text-align: center">
-              <button class="btn-style"(click)="saveResultSheet()">저장하기</button>
-            </div>
+
+
           </div>
-        </div>
       </div>
       <div *ngIf="!resultSheetCheck" style="background-color: #FFFFFF;height: 900px;border-radius: 20px;">
         <div style="padding:3%;font-size: 20px;text-align: center;align-items: center;justify-content: center;box-shadow: 0px 10px 5px -2px rgb(239 239 240);">

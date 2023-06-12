@@ -47,7 +47,7 @@ export class FishFamilyResultComponent implements OnInit{
   public inputEmailCheck: boolean = false;
   // 결과지 내용
   public selectDescription: string = '';
-  public resultDescription: string[] = [];
+  public resultDescription: any[] = [];
   /** 오브젝트 순서 */
   public objectList: string[] = [];
 
@@ -80,6 +80,7 @@ export class FishFamilyResultComponent implements OnInit{
   public allUserData:any;
   /** 선택한 사용자 */
   public selectedUser:string='';
+
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -153,6 +154,7 @@ export class FishFamilyResultComponent implements OnInit{
           }
         });
     }
+    this.getAnswer();
   }
 
   /**
@@ -163,22 +165,27 @@ export class FishFamilyResultComponent implements OnInit{
     window.location.reload();
   }
 
+  test1(description:string){
+    console.log(description)
+    this.resultDescription.push(description)
+  }
+
   /**
    * 설문 답안 전체 가져오기
    */
-  getAnswer(index: number){
-    for (let i=0;i<index;i++) {
-      console.log(i)
-      this.mindReaderControlService.getAnswer(this.questionList[i])
+  getAnswer(){
+    for (let i=0;i<65;i++) {
+      this.mindReaderControlService.getAnswer(i)
         .subscribe({
           next: async (data) => {
             if (data) {
               this.allAnswerList.push(data)
+
+
             }
           }
         });
     }
-    console.log(this.allAnswerList)
   }
 
   /**
@@ -195,7 +202,7 @@ export class FishFamilyResultComponent implements OnInit{
    * 데이터셋 로드
    */
   loadDataSet(){
-    console.log(this.selectedUser)
+
     this.answerList = this.answerList.reduce((acc, current) => {
       return acc.concat(current);
     }, []);
@@ -241,6 +248,7 @@ export class FishFamilyResultComponent implements OnInit{
 
     // 이메일 확인 체크
     this.inputEmailCheck = true;
+    this.allAnswerList = this.allAnswerList.flat().sort((a, b) => a.id - b.id);
   }
 
   /**
@@ -250,7 +258,6 @@ export class FishFamilyResultComponent implements OnInit{
     this.objectData=[];
     this.resultSheetCheck=true;
     let selectedTurn: number = 0;
-    console.log(this.selectedUser)
     selectedTurn = Number(this.selectedTurn.replace('회차',''))-1;
     // 내담자 설문 결과 조회
     this.mindReaderControlService.getResultSheet(this.dataSet[selectedTurn].id)
@@ -260,6 +267,7 @@ export class FishFamilyResultComponent implements OnInit{
             this.resultSheet = data;
             if(data.length!=0){
             this.resultSheetCheck=false;
+            console.log(this.resultSheet)
             }
           }
         }
@@ -330,6 +338,7 @@ export class FishFamilyResultComponent implements OnInit{
       },500);
 
   }
+
 
   /**
    * 예외 처리
@@ -473,13 +482,17 @@ export class FishFamilyResultComponent implements OnInit{
     this.resultDescription=resultDescription;
   }
 
+  updateResultDescription(answerId: string, checked: boolean): void {
+    this.resultDescription[Number(answerId)] = checked;
+  }
   /**
    * 설문 데이터 저장
    */
   saveResultSheet() {
+    console.log(this.allAnswerList)
     //예외처리
-    this.exception();
-
+    //this.exception();
+    console.log(this.resultDescription)
     setTimeout(()=> {
       const request: MrResultSheetRequest = {
         answerIds: '',
