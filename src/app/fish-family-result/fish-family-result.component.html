@@ -13,7 +13,6 @@
     <button class="button-style" (click)="objectResult()"  *ngIf="inputEmailCheck">순서 다시보기</button>
     <!--</form>-->
   </div>
-
   <div style="width:100%" *ngIf="inputEmailCheck" >
     <kendo-dropdownlist
       [data]="countTurnList"
@@ -30,10 +29,12 @@
 
     <app-drag-and-drop style="float:left;" #canvas></app-drag-and-drop>
     <div style="float:right;height: 100%;"[ngStyle] = "styleObject"  >
-      <div style="padding: 10px; border: #cccccc solid 1px;" *ngIf="resultSheetCheck">
+      <div style="padding: 10px; border: #cccccc solid 1px;background-color: #FFFFFF;height: 900px;border-radius: 20px;" *ngIf="resultSheetCheck">
         <!--설문답안지-->
-        <span  style="font-size: 25px;text-align: center;align-items: center;justify-content: center">[설문지]</span>
-        <div>
+        <div style="padding:3%;font-size: 20px;text-align: center;align-items: center;justify-content: center;box-shadow: 0px 10px 5px -2px rgb(239 239 240);">
+        <span  style="font-size: 15px;text-align: center;align-items: center;justify-content: center;">[설문지]</span>
+        </div>
+          <div>
           <div style="height: 900px;overflow: auto;">
             <ng-container *ngFor="let title of questionTitle; let i = index;">
               <b><br>{{i+1}}. {{title.title}}<br></b>
@@ -58,7 +59,7 @@
         </div>
       </div>
       <div *ngIf="!resultSheetCheck" style="background-color: #FFFFFF;height: 900px;border-radius: 20px;">
-        <div style="padding:5%;font-size: 20px;text-align: center;align-items: center;justify-content: center;box-shadow: 0px 10px 5px -2px rgb(239 239 240);">
+        <div style="padding:3%;font-size: 20px;text-align: center;align-items: center;justify-content: center;box-shadow: 0px 10px 5px -2px rgb(239 239 240);">
           <span>[결과지]</span> <br>
         </div>
         <div style="font-size: 20px;padding: 25px">
