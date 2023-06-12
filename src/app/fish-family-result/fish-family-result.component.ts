@@ -270,7 +270,6 @@ export class FishFamilyResultComponent implements OnInit{
             this.resultSheet = data;
             if(data.length!=0){
             this.resultSheetCheck=false;
-            console.log(this.resultSheet)
             }
           }
         }
