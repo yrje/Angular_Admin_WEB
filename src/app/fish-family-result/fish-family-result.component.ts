@@ -165,8 +165,11 @@ export class FishFamilyResultComponent implements OnInit{
     window.location.reload();
   }
 
-  test1(description:string){
-    console.log(description)
+  /**
+   * 설문지에 체크한 문항 저장
+   * @param description
+   */
+  changeResultSheet(description:string){
     this.resultDescription.push(description)
   }
 

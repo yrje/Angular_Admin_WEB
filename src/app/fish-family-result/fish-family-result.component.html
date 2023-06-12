@@ -56,7 +56,7 @@
               </ng-container>
             </ng-container>-->
             <ng-container *ngFor="let answer of allAnswerList">
-              <input type="checkbox" id="{{answer.id}}" name="{{answer.id}}" [value]="resultDescription[answer.id]" (change)="test1(answer.description)">
+              <input type="checkbox" id="{{answer.id}}" name="{{answer.id}}" [value]="resultDescription[answer.id]" (change)="changeResultSheet(answer.description)">
               {{answer.description}}<br>
             </ng-container>
 
