@@ -62,8 +62,6 @@ export class FishFamilyResultComponent implements OnInit{
   /** 사이드에 띄울 데이터 */
   public sideNavData:any;
 
-  /** 설문지 크기 */
-  public answerSize: number=0;
   /** 설문지 스타일 오브젝트 */
   public styleObject: any = {};
   /** 내담자 설문 데이터 */
@@ -169,8 +167,9 @@ export class FishFamilyResultComponent implements OnInit{
    * 설문지에 체크한 문항 저장
    * @param description
    */
-  changeResultSheet(description:string){
-    this.resultDescription.push(description)
+  changeResultSheet(answer:any){
+    /*this.resultDescription.push()*/
+    console.log(answer)
   }
 
   /**
@@ -197,7 +196,7 @@ export class FishFamilyResultComponent implements OnInit{
    */
   onWindowResize(event: any) {
     this.styleObject = {
-      width: `${window.innerWidth - 1528}px`,
+      width: `${window.innerWidth - 1600}px`,
     };
   }
 
