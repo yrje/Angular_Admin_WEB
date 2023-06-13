@@ -37,7 +37,7 @@ export class DragAndDropComponent implements AfterViewInit{
     public url: string | ArrayBuffer = '';
     public size: any = {
         width: 1200,
-        height: 900
+        height: 800
     };
 
     public json: any;
@@ -76,11 +76,12 @@ export class DragAndDropComponent implements AfterViewInit{
      * @param fishbowlCode
      */
     setWater(opt: string, fishbowlCode: number){
+      console.log(opt);
         this.waterUrl = opt;
         this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
-          top:46,
-          left: 45,
+          top:-40,
+          left: 0,
           scaleX:0.53,
           scaleY: 0.53
         });
