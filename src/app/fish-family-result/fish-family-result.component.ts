@@ -8,6 +8,7 @@ import {MrResultSheetRequest} from "../../shared/model/request/mr-result-sheet.r
 import {AuthService} from "../../shared/service/auth.service";
 import {DataService} from "../../shared/service/data.service";
 import {UserService} from "../../shared/service/user.service";
+import {MrResultSheetResponse} from "../../shared/model/response/mr-result-sheet.response.model";
 
 @Component({
   selector: 'app-fish-family-result',
@@ -149,7 +150,6 @@ export class FishFamilyResultComponent implements OnInit{
           next: async (data) => {
             if (data) {
               this.answerList.push(data)
-              console.log(this.answerList)
             }
           }
         });
@@ -197,6 +197,8 @@ export class FishFamilyResultComponent implements OnInit{
         next: async (data) => {
           if (data){
             this.dataSet = data
+            console.log(this.dataSet)
+            //this.dataSet=this.dataSet.filter(i=>i.deleted===false)
             this.countTurnList = Array.from({ length: this.dataSet.length }, (_, index) => index + 1).map(item => item + '회차');
           }
         }
@@ -235,6 +237,15 @@ export class FishFamilyResultComponent implements OnInit{
     this.allAnswerList = this.allAnswerList.flat().sort((a, b) => a.id - b.id);
   }
 
+  handleFilter(value:any) {
+    console.log(this.allUserData)
+    console.log(value)
+    this.allUserData = this.allUserData.filter(
+      (s: { email: string; }) => s.email.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+    console.log(this.allUserData)
+  }
+
   /**
    * 회차별 데이터 조회
    */
@@ -251,20 +262,24 @@ export class FishFamilyResultComponent implements OnInit{
         next: async (data) => {
           if (data){
             this.resultSheet = data;
+            console.log(data)
             if(data.length!=0){
             this.resultSheetCheck=false;
             }
           }
         }
       });
+    console.log(this.objectId)
     this.objectId = this.dataSet.find(obj => obj.seq === selectedTurn).id;
-    this.selectedBowl=this.objectImage[this.dataSet[selectedTurn].fishbowlCode].path
-    this.selectedBowlCode=this.dataSet[selectedTurn].fishbowlCode
+    console.log(this.objectId)
+    this.selectedBowl=this.objectImage[this.dataSet[selectedTurn-1].fishbowlCode].path
+    this.selectedBowlCode=this.dataSet[selectedTurn-1].fishbowlCode
     // 회차별 사용자 오브젝트 조회
     this.mindReaderControlService.getSeqObject(selectedTurn,this.selectedUser)
       .subscribe({
         next: async (data) => {
           if (data){
+            console.log(data)
             // 오브젝트 가족 관계 순서 데이터 생성
             this.objectData=data;
             let i= 0;
@@ -278,6 +293,7 @@ export class FishFamilyResultComponent implements OnInit{
             }
             this.familySeq=this.objectData;
             this.objectData=data;
+            console.log(this.objectData)
             this.familySeq= this.familySeq.map(item => item.name);
 
           }
@@ -291,6 +307,7 @@ export class FishFamilyResultComponent implements OnInit{
         next: async (data) => {
           if (data){
             this.objectSeq = data;
+            console.log(data)
             this.objectList = data.map(item => item.description);
           }
         }
@@ -468,21 +485,19 @@ export class FishFamilyResultComponent implements OnInit{
         });
     }
     this.resultDescription=resultDescription;
-  }
- */
+  }*/
   /**
    * 설문 데이터 저장
    */
   saveResultSheet() {
     //예외처리
     //this.exception();
-    setTimeout(()=> {
       const request: MrResultSheetRequest = {
         answerIds: '',
         counselor: String(this.authService.getUserEmail()),
         createDate: new Date(),
         dataSetId: Number(this.objectId),
-        description: String(this.resultDescription),
+        description: String( this.resultDescription),
         id: 0,
         questionIds: '',
         userEmail: this.selectedUser,
@@ -494,11 +509,22 @@ export class FishFamilyResultComponent implements OnInit{
           next: async (data) => {
             if (data) {
               this.alertService.openAlert('설문 저장이 완료되었습니다.')
+              this.mindReaderControlService.getResultSheet(Number(this.objectId))
+                .subscribe({
+                  next: async (data) => {
+                    if (data){
+                      this.resultSheet = data;
+                      if(data.length!=0){
+                        this.resultSheetCheck=false;
+                      }
+                    }
+                  }
+                });
             }
           },
           error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
         });
-    } ,1000);
+
     // 저장시 결과지 보이기
     this.resultSheetCheck = false;
 
