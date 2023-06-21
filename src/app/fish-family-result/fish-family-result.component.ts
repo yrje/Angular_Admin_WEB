@@ -198,7 +198,7 @@ export class FishFamilyResultComponent implements OnInit{
           if (data){
             this.dataSet = data
             console.log(this.dataSet)
-            //this.dataSet=this.dataSet.filter(i=>i.deleted===false)
+            this.dataSet=this.dataSet.filter(i=>i.deleted===false)
             this.countTurnList = Array.from({ length: this.dataSet.length }, (_, index) => index + 1).map(item => item + '회차');
           }
         }
@@ -270,12 +270,12 @@ export class FishFamilyResultComponent implements OnInit{
         }
       });
     console.log(this.objectId)
-    this.objectId = this.dataSet.find(obj => obj.seq === selectedTurn).id;
+    this.objectId = this.dataSet[selectedTurn-1].id
     console.log(this.objectId)
     this.selectedBowl=this.objectImage[this.dataSet[selectedTurn-1].fishbowlCode].path
     this.selectedBowlCode=this.dataSet[selectedTurn-1].fishbowlCode
     // 회차별 사용자 오브젝트 조회
-    this.mindReaderControlService.getSeqObject(selectedTurn,this.selectedUser)
+    this.mindReaderControlService.getSeqObject(this.dataSet[selectedTurn-1].seq,this.selectedUser)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -293,7 +293,6 @@ export class FishFamilyResultComponent implements OnInit{
             }
             this.familySeq=this.objectData;
             this.objectData=data;
-            console.log(this.objectData)
             this.familySeq= this.familySeq.map(item => item.name);
 
           }
@@ -302,12 +301,11 @@ export class FishFamilyResultComponent implements OnInit{
 
 
     // 회차별 사용자 오브젝트 순서 목록 조회
-    this.mindReaderControlService.getObjectCodeSeq(selectedTurn,this.selectedUser)
+    this.mindReaderControlService.getObjectCodeSeq(this.dataSet[selectedTurn-1].seq,this.selectedUser)
       .subscribe({
         next: async (data) => {
           if (data){
             this.objectSeq = data;
-            console.log(data)
             this.objectList = data.map(item => item.description);
           }
         }
