@@ -78,6 +78,8 @@ export class FishFamilyResultComponent implements OnInit{
   public allUserData:any;
   /** 선택한 사용자 */
   public selectedUser:string='';
+  /** 평가 기준 */
+  public test1:string[]=['평가 기준1 : 물의양','평가 기준2 : 물고기를 그린 순서','평가 기준3 : 그림 내용'];
 
 
   /** canvas */
@@ -142,17 +144,15 @@ export class FishFamilyResultComponent implements OnInit{
       });
 
     // 설문지 답안 조회
-    for (let i=0;i<this.questionList.length;i++) {
-      this.mindReaderControlService.getAnswer(this.questionList[i])
+      this.mindReaderControlService.getAnswer()
         .subscribe({
           next: async (data) => {
             if (data) {
               this.answerList.push(data)
+              console.log(this.answerList)
             }
           }
         });
-    }
-    this.getAnswer();
   }
 
   /**
@@ -168,27 +168,9 @@ export class FishFamilyResultComponent implements OnInit{
    * @param description
    */
   changeResultSheet(answer:any){
-    /*this.resultDescription.push()*/
-    console.log(answer)
+    this.resultDescription.push(answer)
   }
 
-  /**
-   * 설문 답안 전체 가져오기
-   */
-  getAnswer(){
-    for (let i=0;i<65;i++) {
-      this.mindReaderControlService.getAnswer(i)
-        .subscribe({
-          next: async (data) => {
-            if (data) {
-              this.allAnswerList.push(data)
-
-
-            }
-          }
-        });
-    }
-  }
 
   /**
    * 해상도에 따른 설문지 크기 변경
@@ -260,9 +242,11 @@ export class FishFamilyResultComponent implements OnInit{
     this.objectData=[];
     this.resultSheetCheck=true;
     let selectedTurn: number = 0;
-    selectedTurn = Number(this.selectedTurn.replace('회차',''))-1;
+    console.log(this.selectedTurn)
+    selectedTurn = Number(this.selectedTurn.replace('회차',''));
+    console.log(selectedTurn)
     // 내담자 설문 결과 조회
-    this.mindReaderControlService.getResultSheet(this.dataSet[selectedTurn].id)
+    this.mindReaderControlService.getResultSheet(this.dataSet[selectedTurn-1].id)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -313,10 +297,13 @@ export class FishFamilyResultComponent implements OnInit{
       });
   }
 
+  public canvasTimeout : any ;
+
   /**
    * 시간차 오브젝트 띄우기
    */
   objectResult(){
+    clearTimeout(this.canvasTimeout);
     // 회차 데이터 조회
     this.loadDataTurn();
     // 캔버스 초기화
@@ -328,7 +315,7 @@ export class FishFamilyResultComponent implements OnInit{
     setTimeout(()=>{
       for (let i = 0; i < this.objectData.length; i++) {
         let pathUrl = this.objectImage[this.objectSeq[i].id].path;
-        setTimeout(() => {
+        this.canvasTimeout = setTimeout(() => {
           this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle, pathUrl);
         }, 1000 * (i + 1));
       }
@@ -344,7 +331,7 @@ export class FishFamilyResultComponent implements OnInit{
   /**
    * 예외 처리
    */
-  exception(){
+/*  exception(){
     let selectAnswer: number[] = [];
     let resultDescription: any[] = [];
     let resultAnswer = this.resultDescription.map(str => +str);
@@ -482,6 +469,7 @@ export class FishFamilyResultComponent implements OnInit{
     }
     this.resultDescription=resultDescription;
   }
+ */
   /**
    * 설문 데이터 저장
    */
