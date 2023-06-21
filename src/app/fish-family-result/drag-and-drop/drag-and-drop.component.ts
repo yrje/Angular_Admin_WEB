@@ -37,7 +37,7 @@ export class DragAndDropComponent implements AfterViewInit{
     public url: string | ArrayBuffer = '';
     public size: any = {
         width: 1200,
-        height: 800
+        height: 900
     };
 
     public json: any;
@@ -80,10 +80,10 @@ export class DragAndDropComponent implements AfterViewInit{
         this.waterUrl = opt;
         this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
-          top:-40,
-          left: 0,
-          scaleX:0.53,
-          scaleY: 0.53
+          top:40,
+          left: 40,
+          scaleX:0.5,
+          scaleY: 0.5
         });
 
     }
@@ -99,22 +99,26 @@ export class DragAndDropComponent implements AfterViewInit{
    */
 
     timeObjectResult(x:number,y:number,width:number,height:number,angle:number,imgUrl:string) {
-
-      const imageElement = document.createElement('img');
       const imageUrl = './../../' + imgUrl;
-      const image = new fabric.Image(imageElement);
 
-      fabric.Image.fromURL(imageUrl, (img) => {
-        image.setElement(img.getElement());
+      fabric.loadSVGFromURL(imageUrl, (objects, options) => {
+
+        const image = fabric.util.groupSVGElements(objects, options);
         image.set({
-          top: y-50,
-          left: x-60,
-          scaleX: width,
-          scaleY: height,
+          top: y - (height/2),
+          left: x - (width/2),
           angle: angle
         });
+        let originWidthScale : number = image.width? image.width : 1;
+        image.scale(width/originWidthScale);
         this.canvas.add(image);
+        this.selectItemAfterAdded(image);
       });
+    }
+
+    selectItemAfterAdded(obj:any){
+      this.canvas.discardActiveObject().renderAll();
+      this.canvas.setActiveObject(obj);
     }
 }
 
