@@ -75,12 +75,12 @@
                 <ng-container class="answer-title" *ngIf="answer.id==6">
                   {{test1[1]}}<br>
                 </ng-container>
-                <ng-container class="answer-title" *ngIf="answer.id==14">
+                <ng-container class="answer-title" *ngIf="answer.id==17">
                   {{test1[2]}}<br>
                 </ng-container>
                 </div>
               <input type="checkbox" id="{{answer.id}}" name="{{answer.id}}" [value]="true" (change)="changeResultSheet(answer.description)">
-              {{answer.description}}<br></div>
+              {{answer.id+1}}) {{answer.description}}<br></div>
             </ng-container>
 
 

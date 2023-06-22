@@ -238,12 +238,9 @@ export class FishFamilyResultComponent implements OnInit{
   }
 
   handleFilter(value:any) {
-    console.log(this.allUserData)
-    console.log(value)
     this.allUserData = this.allUserData.filter(
       (s: { email: string; }) => s.email.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
-    console.log(this.allUserData)
   }
 
   /**
@@ -253,25 +250,20 @@ export class FishFamilyResultComponent implements OnInit{
     this.objectData=[];
     this.resultSheetCheck=true;
     let selectedTurn: number = 0;
-    console.log(this.selectedTurn)
     selectedTurn = Number(this.selectedTurn.replace('회차',''));
-    console.log(selectedTurn)
     // 내담자 설문 결과 조회
     this.mindReaderControlService.getResultSheet(this.dataSet[selectedTurn-1].id)
       .subscribe({
         next: async (data) => {
           if (data){
             this.resultSheet = data;
-            console.log(data)
             if(data.length!=0){
             this.resultSheetCheck=false;
             }
           }
         }
       });
-    console.log(this.objectId)
     this.objectId = this.dataSet[selectedTurn-1].id
-    console.log(this.objectId)
     this.selectedBowl=this.objectImage[this.dataSet[selectedTurn-1].fishbowlCode].path
     this.selectedBowlCode=this.dataSet[selectedTurn-1].fishbowlCode
     // 회차별 사용자 오브젝트 조회
@@ -279,7 +271,6 @@ export class FishFamilyResultComponent implements OnInit{
       .subscribe({
         next: async (data) => {
           if (data){
-            console.log(data)
             // 오브젝트 가족 관계 순서 데이터 생성
             this.objectData=data;
             let i= 0;
