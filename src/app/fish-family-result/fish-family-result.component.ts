@@ -8,7 +8,7 @@ import {MrResultSheetRequest} from "../../shared/model/request/mr-result-sheet.r
 import {AuthService} from "../../shared/service/auth.service";
 import {DataService} from "../../shared/service/data.service";
 import {UserService} from "../../shared/service/user.service";
-import {MrResultSheetResponse} from "../../shared/model/response/mr-result-sheet.response.model";
+import {saveAs} from "@progress/kendo-drawing/pdf";
 
 @Component({
   selector: 'app-fish-family-result',
@@ -155,6 +155,53 @@ export class FishFamilyResultComponent implements OnInit{
         });
   }
 
+  /**
+   * object to csv download
+   */
+  downloadFile() {
+    const csvData = this.convertToCSV(this.objectData);
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'test');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  convertToCSV(data: any): string {
+    const csvRows = [];
+
+    // Header row creation
+    const headers = Object.keys(data[0]);
+    csvRows.push(headers.join(','));
+
+    // Data rows creation
+    data.forEach((item: Record<string, any>) => {
+      const values = headers.map((header) => item[header]);
+      csvRows.push(values.join(','));
+    });
+
+    return csvRows.join('\n')
+  }
+
+  private convertToCsv(data: any[]): string {
+    const csvRows = [];
+
+    // CSV 헤더 추가
+    const headers = Object.keys(data[0]);
+    csvRows.push(headers.join(','));
+
+    // 데이터 행 추가
+    data.forEach(item => {
+      const values = headers.map(header => item[header]);
+      csvRows.push(values.join(','));
+    });
+
+    // CSV 데이터 반환
+    return csvRows.join('\n');
+  }
   /**
    * 사용바 조회하기 버튼 event
    */
@@ -518,5 +565,6 @@ export class FishFamilyResultComponent implements OnInit{
     this.resultSheetCheck = false;
 
   }
+
 
 }
