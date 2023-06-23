@@ -178,7 +178,7 @@ export class FishFamilyResultComponent implements OnInit{
    */
   onWindowResize(event: any) {
     this.styleObject = {
-      width: `${window.innerWidth - 1600}px`,
+      width: `${window.innerWidth - 1400}px`,
     };
   }
 
