@@ -7,6 +7,7 @@ import {LayoutComponent} from "../shared/layout/layout.component";
 import {ChartsComponent} from "./charts/charts.component";
 import {AuthGuard} from "../shared/service/auth.guard";
 import {FishFamilyResultComponent} from "./fish-family-result/fish-family-result.component";
+import {PatientInfoComponent} from "./patient-info/patient-info.component";
 
 const routes: Routes = [
   {
@@ -24,6 +25,12 @@ const routes: Routes = [
         component: FishFamilyResultComponent,
         canActivate:[AuthGuard],
         loadChildren: () => import('./fish-family-result/fish-family-result.module').then(i => i.FishFamilyResultModule)
+      },
+      {
+        path: 'patient-info',
+        component: PatientInfoComponent,
+        canActivate:[AuthGuard],
+        loadChildren: () => import('./patient-info/patient-info.module').then(i => i.PatientInfoModule),
       },
 
       {
