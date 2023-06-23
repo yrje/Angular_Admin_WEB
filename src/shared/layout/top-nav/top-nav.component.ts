@@ -105,4 +105,8 @@ export class TopNavComponent implements OnInit {
   // 데이터 null 여부
   public emptyData:boolean = false;
 
+  test(){
+    console.log("click!")
+  }
+
 }
