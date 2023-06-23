@@ -11,8 +11,8 @@
   </div>
 
   <div *ngIf="dataEmptyCheck" style="margin-left: 40%;font-size: 20px">
-    <b>{{userName}}</b> <span class="k-icon k-i-user" (click)="test()"></span> / {{userGender}} / 만{{userAge}}세
-
+    <b>{{userName}}</b> / {{userGender}} / 만{{userAge}}
+    <span class="k-icon k-i-user" style="font-size: 30px;margin-left: 10px" (click)="pathPatientInfo()"></span>
   </div>
 
   <span class="nav-spacer"></span>
@@ -24,5 +24,4 @@
 <!--      <span>logout</span>-->
 <!--    </button>-->
 </mat-toolbar>
-
 <ng-container #dialog></ng-container>

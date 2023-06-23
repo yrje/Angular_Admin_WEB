@@ -15,7 +15,7 @@ export class TopNavComponent implements OnInit {
   public userName:string='';
   public userAge:number=0;
   public userGender:string='';
-
+  public  userData: any;
   public dataEmptyCheck: boolean = false;
   /**
    * 생성자
@@ -32,6 +32,7 @@ export class TopNavComponent implements OnInit {
 
   )  {
     this.dataService.topData$.subscribe(data => {
+      this.userData=data
       this.userName=data.userName;
       this.userAge=data.age;
       if(data.genderId==0){
@@ -105,8 +106,8 @@ export class TopNavComponent implements OnInit {
   // 데이터 null 여부
   public emptyData:boolean = false;
 
-  test(){
-    console.log("click!")
+  pathPatientInfo(){
+    this.router.navigate(['/patient-info'],{queryParams:this.userData});
   }
 
 }
