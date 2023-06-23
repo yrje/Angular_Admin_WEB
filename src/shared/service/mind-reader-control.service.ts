@@ -16,6 +16,7 @@ import {MrResultSheetRequest} from "../model/request/mr-result-sheet.request.mod
 import {MrResultSheetResponse} from "../model/response/mr-result-sheet.response.model";
 import {MrAnswerResponse} from "../model/response/mr-answer.response.model";
 import {MrPatientInfoResponse} from "../model/response/mr-patient-info.response.model";
+import {PatientInfoRequest} from "../model/request/patient-info.request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -180,6 +181,15 @@ export class MindReaderControlService {
     }
     return this.http.get<MrPatientInfoResponse[]>(`${this.MR_CONTROL_URL}/patientInfo`,{params: param})
   }
+
+  /**
+   * 내담자 추가 정보 생성
+   * @param request
+   */
+  postPatientInfo(request: PatientInfoRequest) : Observable<PatientInfoRequest> {
+    return this.http.post<PatientInfoRequest>(`${this.MR_CONTROL_URL}/patientInfo`, request);
+  }
+
 
 }
 
