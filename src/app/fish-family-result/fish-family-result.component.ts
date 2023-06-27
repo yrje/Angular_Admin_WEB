@@ -81,7 +81,8 @@ export class FishFamilyResultComponent implements OnInit{
   public selectedUser:string='';
   /** 평가 기준 */
   public test1:string[]=['평가 기준1 : 물의양','평가 기준2 : 물고기를 그린 순서','평가 기준3 : 그림 내용'];
-
+  public selectDataSet:any;
+  public SelectSeqobjectList:any[]=[];
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -121,6 +122,15 @@ export class FishFamilyResultComponent implements OnInit{
         next: async (data) => {
           if (data){
             this.allUserData=data;
+          }
+        }
+      });
+    this.mindReaderControlService.getObjectData()
+      .subscribe({
+        next: async (data) => {
+          if (data){
+
+            this.SelectSeqobjectList=data
           }
         }
       });
@@ -330,6 +340,7 @@ export class FishFamilyResultComponent implements OnInit{
               }i=i+1;
             }
             this.familySeq=this.objectData;
+            this.selectDataSet=this.familySeq
             this.objectData=data;
             this.familySeq= this.familySeq.map(item => item.name);
 
@@ -364,10 +375,12 @@ export class FishFamilyResultComponent implements OnInit{
     // 어항 세팅
     this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
 
+
     // 시간차를 두고 캔버스에 오브젝트 띄우기
     setTimeout(()=>{
-      for (let i = 0; i < this.objectData.length; i++) {
-        let pathUrl = this.objectImage[this.objectSeq[i].id].path;
+      for (let i = 0; i < this.selectDataSet.length; i++) {
+        let pathUrl=this.SelectSeqobjectList.find(obj => obj.objectCodeId ===this.selectDataSet[i].objectCodeId ).path;
+
         this.canvasTimeout = setTimeout(() => {
           this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle, pathUrl);
         }, 1000 * (i + 1));
