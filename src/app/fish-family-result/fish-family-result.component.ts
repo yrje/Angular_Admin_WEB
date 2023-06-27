@@ -80,9 +80,20 @@ export class FishFamilyResultComponent implements OnInit{
   /** 선택한 사용자 */
   public selectedUser:string='';
   /** 평가 기준 */
-  public test1:string[]=['평가 기준1 : 물의양','평가 기준2 : 물고기를 그린 순서','평가 기준3 : 그림 내용'];
+  public resultSheetTitle:any[]= [
+    {id:0,description:'평가 기준1 : 물의양'},
+    {id:6,description:'평가 기준2 : 물고기 순서'},
+    {id:17,description:'평가 기준3 : 어항 내부 구성물'},
+    {id:25,description:'평가 기준4 : 어항 내부의 그림 내용'},
+    {id:30,description:'평가 기준5 : 물고기의 모습I'},
+    {id:35,description:'평가 기준6 : 물고기의 모습II'},
+    {id:39,description:'평가 기준7 : 물고기의 모습III'},
+    {id:46,description:'평가 기준8 : 물고기의 모습IV'},
+    {id:60,description:'평가 기준9 : 물고기의 크기'},
+    {id:67,description:'평가 기준10 : 기타 모습'}
+  ];
   public selectDataSet:any;
-  public SelectSeqobjectList:any[]=[];
+  public SelectSeqObjectList:any[]=[];
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -130,7 +141,7 @@ export class FishFamilyResultComponent implements OnInit{
         next: async (data) => {
           if (data){
 
-            this.SelectSeqobjectList=data
+            this.SelectSeqObjectList=data
           }
         }
       });
@@ -379,7 +390,7 @@ export class FishFamilyResultComponent implements OnInit{
     // 시간차를 두고 캔버스에 오브젝트 띄우기
     setTimeout(()=>{
       for (let i = 0; i < this.selectDataSet.length; i++) {
-        let pathUrl=this.SelectSeqobjectList.find(obj => obj.objectCodeId ===this.selectDataSet[i].objectCodeId ).path;
+        let pathUrl=this.SelectSeqObjectList.find(obj => obj.objectCodeId ===this.selectDataSet[i].objectCodeId ).path;
 
         this.canvasTimeout = setTimeout(() => {
           this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle, pathUrl);
