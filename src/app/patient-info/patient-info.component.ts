@@ -56,6 +56,18 @@ export class PatientInfoComponent implements OnInit{
   // 가족 선택했는지 확인
   public familySelected: boolean = false;
   public userData:any;
+
+  /** default item */
+  public jobDefault:{id:number;code:string;description:string}={
+    id:99,
+    code:'',
+    description:'직업/학년',
+  }
+  public genderDefault:{id:number;code:string;description:string}={
+    id:99,
+    code:'',
+    description:'성별',
+  }
   // input form
   public infoForm: FormGroup = new FormGroup({
     userEmail: new FormControl(''), // 사용자 이메일
@@ -232,11 +244,18 @@ export class PatientInfoComponent implements OnInit{
           if(data) {
             this.alertService.openAlert('수정되었습니다.');
             this.router.navigate(['/fish-family-result']);
+            this.startDrawFish()
           }
         },
         error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
       });
   }
 
+  /**
+   * 결과 조회 화면으로 이동
+   */
+  startDrawFish() {
+    this.router.navigateByUrl(`/fish-family-result`);
 
+  }
 }
