@@ -5,8 +5,9 @@
   float:left;
 
   .select-list{
+    width:430px;
     padding:1%;
-    font-size: 18px;
+    font-size: 20px;
   }
 
   .button-style{
@@ -58,8 +59,10 @@
       .text {
         font-size: 18px;
         .save-button-style {
+          width: 100px;
+          height: 30px;
           float:right;
-          margin: 8px;
+
           background: rgb(215 64 92);
           color: #FFFFFF;
           border-radius: 20px;
