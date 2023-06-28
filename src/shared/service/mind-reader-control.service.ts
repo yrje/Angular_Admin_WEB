@@ -33,9 +33,16 @@ export class MindReaderControlService {
 
 
   /**
+   *  오브젝트 코드 조회
+   */
+  getObjectCode(code: number) :Observable<MrObjectCodeResponseModel[]> {
+    return this.http.get<MrObjectCodeResponseModel[]>(`${this.MR_CONTROL_URL}/objectCode/${code}`);
+  }
+
+  /**
    * 타입별 오브젝트 코드 조회
    */
-  getObjectCode(type: number) :Observable<MrObjectCodeResponseModel[]> {
+  getOTypeObjectCode(type: number) :Observable<MrObjectCodeResponseModel[]> {
     return this.http.get<MrObjectCodeResponseModel[]>(`${this.MR_CONTROL_URL}/${type}/objectCode`);
   }
 
