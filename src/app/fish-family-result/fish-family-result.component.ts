@@ -372,10 +372,11 @@ export class FishFamilyResultComponent implements OnInit{
                     if (data){
                       let objectData:any;
                       objectData=data
-                      this.objectList.push(objectData.description)
+                      this.objectList.splice(i, 0, objectData.description);
                     }
                   }
-                });}
+                });
+            }
 
             this.familySeq= this.familySeq.map(item => item.name);
 
@@ -395,7 +396,6 @@ export class FishFamilyResultComponent implements OnInit{
     clearTimeout(this.canvasTimeout);
     // 회차 데이터 조회
     this.loadDataTurn();
-    console.log(this.objectList)
 
     // 캔버스 초기화
     this.canvas.canvas.clear();
@@ -406,7 +406,12 @@ export class FishFamilyResultComponent implements OnInit{
     // 시간차를 두고 캔버스에 오브젝트 띄우기
     setTimeout(()=>{
       //side nav에 띄울 data 생성
+      console.log(this.objectList)
+
+      console.log(this.objectList)
+      console.log(this.familySeq)
       this.sideNavData = this.objectList.map((description,index)=>({description,family:this.familySeq[index]}))
+      console.log(this.sideNavData)
       this.dataService.sendDataToSideNav(this.sideNavData);
       for (let i = 0; i < this.selectDataSet.length; i++) {
 
