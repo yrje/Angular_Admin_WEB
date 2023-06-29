@@ -416,9 +416,8 @@ export class FishFamilyResultComponent implements OnInit{
       for (let i = 0; i < this.selectDataSet.length; i++) {
 
         let pathUrl=this.SelectSeqObjectList.find(obj => obj.objectCodeId ===this.selectDataSet[i].objectCodeId ).path;
-
         this.canvasTimeout = setTimeout(() => {
-          this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle, pathUrl);
+          this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle,this.objectData[i].flip, pathUrl);
         }, 1000 * (i + 1));
 
       }

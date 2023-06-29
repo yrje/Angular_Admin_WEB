@@ -97,22 +97,9 @@ export class DragAndDropComponent implements AfterViewInit{
    * @param imgUrl
    */
 
-    timeObjectResult(x:number,y:number,width:number,height:number,angle:number,imgUrl:string) {
+    timeObjectResult(x:number,y:number,width:number,height:number,angle:number,flip:boolean,imgUrl:string) {
       const imageUrl = './../../' + imgUrl;
 
-     /* fabric.loadSVGFromURL(imageUrl, (objects, options) => {
-
-        const image = fabric.util.groupSVGElements(objects, options);
-        image.set({
-          top: y - (height/2),
-          left: x - (width/2),
-          angle: angle
-        });
-        let originWidthScale : number = image.width? image.width : 1;
-        image.scale(width/originWidthScale);
-        this.canvas.add(image);
-        this.selectItemAfterAdded(image);
-      });*/
        const el = imageUrl;
      const imageElement = document.createElement('img');
      const image = new fabric.Image(imageElement);
@@ -121,7 +108,8 @@ export class DragAndDropComponent implements AfterViewInit{
        image.set({
          top: y - (height/2),
          left: x - (width/2),
-         angle: angle
+         angle: angle,
+         flipX: flip
        })
 
        let originWidthScale : number = image.width? image.width : 1;
