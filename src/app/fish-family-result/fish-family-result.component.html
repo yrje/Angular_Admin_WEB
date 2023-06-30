@@ -1,13 +1,5 @@
 <div>
   <div class="input-email-layout">
-    <!--<form [formGroup]="inputResult">-->
-      <!--<input class="email-input" placeholder="설문지를 작성할 이메일을 입력하십시오."  formControlName="userEmail">-->
-<!--      <select [(ngModel)]="selectedUser" class="select-list" *ngIf="!inputEmailCheck">
-        <option value="" disabled>조회할 사용자 email을 선택해주십시오.</option>
-        <option *ngFor="let user of allUserData" [value]="user.email">
-          {{ user.email }} - {{ user.username }}
-        </option>
-      </select>-->
     <kendo-dropdownlist
       class="select-list"
       *ngIf="!inputEmailCheck"
@@ -32,14 +24,6 @@
     <!--</form>-->
   </div>
   <div style="width:100%" *ngIf="inputEmailCheck" >
-
-<!--    <select [(ngModel)]="selectedTurn" style="padding:1%">
-      <option value="" disabled>조회할 사용자 email을 선택해주십시오.</option>
-      <option *ngFor="let turn of countTurnList">
-        {{ turn}}
-      </option>
-    </select>-->
-
     <app-drag-and-drop class="drag-and-drop-style" #canvas></app-drag-and-drop>
     <div class="result-sheet-style" [ngStyle] = "styleObject"  >
       <div class="result-sheet-layout" *ngIf="resultSheetCheck">
@@ -50,24 +34,6 @@
         </span>
         </div>
           <div style="height: 90%;overflow: auto;margin-top: 10px">
-          <!--  <ng-container *ngFor="let title of questionTitle; let i = index;">
-              <b><br>{{i+1}}. {{title.title}}<br></b>
-              <ng-container *ngFor="let description of questionData;let j = index;">
-                <ng-container *ngIf="title.titleId==description.titleId">
-                  <input type="checkbox" id="{{description.id}}" name="{{description.id}}" value="{{description.id}}" [(ngModel)]="resultDescription[description.id]" >
-                  {{description.description}}<br>
-
-                  <ng-container *ngIf="questionList.includes(description.id)">
-                    <ng-container *ngFor="let list of answerList; let k = index;">
-                      <ng-container *ngIf="list.questionId==description.id">
-                        <input style="margin-left: 5%;" type="radio" id="{{list.questionId}}" name="{{list.questionId}}" value="{{list.id}}" [(ngModel)]="resultDescription[description.id]">
-                      {{list.description}}<br>
-                    </ng-container>
-                    </ng-container>
-                  </ng-container>
-                </ng-container>
-              </ng-container>
-            </ng-container>-->
             <b style="color: red;"> * 해당되는 문항을 모두 선택해주십시오.</b>
             <ng-container *ngFor="let answer of answerList">
               <div style="margin-left: 2px;margin-right: 2px" class="answer-title">
