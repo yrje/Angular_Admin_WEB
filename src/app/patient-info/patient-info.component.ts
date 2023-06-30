@@ -10,6 +10,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AlertService} from "../../shared/service/alert.service";
 import {AuthService} from "../../shared/service/auth.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {DataService} from "../../shared/service/data.service";
 
 @Component({
     selector:'app-patient-info',
@@ -90,7 +91,8 @@ export class PatientInfoComponent implements OnInit{
     private router: Router,
     private alertService: AlertService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dataService: DataService,
   ) {
   }
 
@@ -98,6 +100,8 @@ export class PatientInfoComponent implements OnInit{
    * 초기화
    */
   ngOnInit():void {
+
+    this.dataService.sendDataToSideNav(undefined);
     this.route.queryParams.subscribe(params => {
       this.userData = params
     });
@@ -190,8 +194,6 @@ export class PatientInfoComponent implements OnInit{
       }
     )
     this.familySelected = true;
-    console.log(this.resultRelation);
-    console.log(this.selectedFamily);
 
     /*        this.resultInfo.push(1);
             this.familyData.push([]);*/
@@ -243,8 +245,8 @@ export class PatientInfoComponent implements OnInit{
         next: async (data) => {
           if(data) {
             this.alertService.openAlert('수정되었습니다.');
-            this.router.navigate(['/fish-family-result']);
-            this.startDrawFish()
+            this.router.navigate(['/fish-family-result'],{queryParams:this.userData});
+            this.userData=[];
           }
         },
         error: (err: HttpErrorResponse) => this.alertService.openAlert(err.message)
@@ -255,7 +257,7 @@ export class PatientInfoComponent implements OnInit{
    * 결과 조회 화면으로 이동
    */
   startDrawFish() {
-    this.router.navigateByUrl(`/fish-family-result`);
+    this.router.navigate(['/fish-family-result']);
 
   }
 }

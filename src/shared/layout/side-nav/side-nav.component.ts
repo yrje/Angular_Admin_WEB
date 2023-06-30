@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DataService} from "../../service/data.service";
+import {Router} from "@angular/router";
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.component.html'
 })
-export class SideNavComponent {
+export class SideNavComponent{
   // 받아온 데이터
   public receivedData: any;
 
@@ -12,10 +13,15 @@ export class SideNavComponent {
   public emptyData:boolean = false;
 
   // main page에서 데이터 불러오기
-  constructor(private dataService: DataService) {
+  constructor(private router: Router,
+              private dataService: DataService) {
     this.dataService.sideData$.subscribe(data => {
-      this.receivedData = data;
-      this.emptyData = true;
+      if(data==undefined){
+        this.emptyData = false;
+      }else{
+        this.receivedData = data;
+        this.emptyData = true;
+      }
     });
   }
 

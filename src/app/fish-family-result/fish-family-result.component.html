@@ -19,7 +19,7 @@
       (filterChange)="handleFilter($event)"
     >
     </kendo-dropdownlist>
-      <button class="button-style check-button" (click)="loadDataSet()" *ngIf="!inputEmailCheck">확인</button>
+      <button class="button-style check-button" (click)="loadDataSet(selectedUser.email)" *ngIf="!inputEmailCheck">확인</button>
     <button class="button-style" style="margin-left: 3%" (click)="onRefresh()"  *ngIf="inputEmailCheck">사용자 조회하기</button>
     <button class="button-style" (click)="objectResult()"  *ngIf="inputEmailCheck">순서 다시보기</button>
     <kendo-dropdownlist

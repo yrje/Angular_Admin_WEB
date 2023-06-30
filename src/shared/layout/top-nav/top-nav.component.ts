@@ -32,21 +32,25 @@ export class TopNavComponent implements OnInit {
 
   )  {
     this.dataService.topData$.subscribe(data => {
-      this.userData=data
-      this.userName=data.userName;
-      this.userAge=data.age;
-      if(data.genderId==0){
-        this.userGender='남'
-      }
-      else if(data.genderId==1){
-        this.userGender='여'
+      if(data==undefined) {
+        this.dataEmptyCheck = false;
       }
       else{
-        this.userGender='기타'
+        this.userData = data
+        this.userName = data.userName;
+        this.userAge = data.age;
+        if (data.genderId == 0) {
+          this.userGender = '남'
+        } else if (data.genderId == 1) {
+          this.userGender = '여'
+        } else {
+          this.userGender = '기타'
+        }
+        this.dataEmptyCheck = true;
+        //this.topReceiveData = data.userName;
       }
-      this.dataEmptyCheck = true;
-      //this.topReceiveData = data.userName;
-    });
+      });
+
   }
 
 
@@ -108,6 +112,7 @@ export class TopNavComponent implements OnInit {
 
   pathPatientInfo(){
     this.router.navigate(['/patient-info'],{queryParams:this.userData});
+    this.userData=undefined
   }
 
 }

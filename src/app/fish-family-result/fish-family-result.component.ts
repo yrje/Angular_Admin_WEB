@@ -9,6 +9,7 @@ import {AuthService} from "../../shared/service/auth.service";
 import {DataService} from "../../shared/service/data.service";
 import {UserService} from "../../shared/service/user.service";
 import {saveAs} from "@progress/kendo-drawing/pdf";
+import {ActivatedRoute, Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-fish-family-result',
@@ -98,6 +99,7 @@ export class FishFamilyResultComponent implements OnInit{
   public canvasTimeout : any ;
   public searchEmail:any[]=[];
   public resultSheetList:string[]=[];
+  public userDataNav:any;
 
   /** canvas */
   @ViewChild('canvas', { static: false }) canvas !: DragAndDropComponent;
@@ -115,14 +117,9 @@ export class FishFamilyResultComponent implements OnInit{
     private authService: AuthService,
     private dataService: DataService,
     private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {}
-
-  /**
-   * input result form group
-   */
-/*  public inputResult: FormGroup = new FormGroup({
-    userEmail: new FormControl('yerinje@naver.com'), // 사용자 이메일
-  });*/
 
   /**
    * 초기화
@@ -150,8 +147,6 @@ export class FishFamilyResultComponent implements OnInit{
         }
       });
 
-
-
     // 설문지 문항 조회
     this.mindReaderControlService.getQuestion()
       .subscribe({
@@ -176,10 +171,24 @@ export class FishFamilyResultComponent implements OnInit{
         .subscribe({
           next: async (data) => {
             if (data) {
-              this.answerList.push(data)
+              this.answerList=data
             }
           }
         });
+    this.route.queryParams.subscribe(params => {
+      this.userDataNav=params;
+      if(this.userDataNav.userEmail==undefined){
+        console.log('?????????????')
+        this.inputEmailCheck = false;
+        this.sideNavData=undefined;
+
+      }else{
+        this.inputEmailCheck = true;
+        this.selectedUser=this.userDataNav
+        this.loadDataSet(this.userDataNav.userEmail);
+      }
+
+    });
   }
 
   /**
@@ -234,7 +243,12 @@ export class FishFamilyResultComponent implements OnInit{
    */
   onRefresh() {
     // page refresh
+
+    this.router.navigateByUrl('/fish-family-result')
+    this.dataService.sendDataToTopNav(undefined);
+    this.userDataNav=undefined
     window.location.reload();
+
   }
 
   /**
@@ -259,13 +273,13 @@ export class FishFamilyResultComponent implements OnInit{
   /**
    * 데이터셋 로드
    */
-  loadDataSet(){
-
+  loadDataSet(email:string){
     this.answerList = this.answerList.reduce((acc, current) => {
       return acc.concat(current);
     }, []);
     // 사용자 데이터 셋 조회
-    this.mindReaderControlService.getDataSet(this.selectedUser.email)
+    this.mindReaderControlService.getDataSet(email)
+
       .subscribe({
         next: async (data) => {
           if (data){
@@ -294,7 +308,7 @@ export class FishFamilyResultComponent implements OnInit{
         }
       })
     // 내담자 추가 입력 정보 조회
-    this.mindReaderControlService.getInfo(this.selectedUser.email)
+    this.mindReaderControlService.getInfo(email)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -346,7 +360,7 @@ export class FishFamilyResultComponent implements OnInit{
     this.selectedBowl=this.objectImage[this.dataSet[selectedTurn-1].fishbowlCode].path
     this.selectedBowlCode=this.dataSet[selectedTurn-1].fishbowlCode
     // 회차별 사용자 오브젝트 조회
-    this.mindReaderControlService.getSeqObject(this.dataSet[selectedTurn-1].seq,this.selectedUser.email)
+    this.mindReaderControlService.getSeqObject(this.dataSet[selectedTurn-1].seq,this.selectedUser.userEmail)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -391,8 +405,6 @@ export class FishFamilyResultComponent implements OnInit{
    * 시간차 오브젝트 띄우기
    */
   objectResult(){
-
-
     clearTimeout(this.canvasTimeout);
     // 회차 데이터 조회
     this.loadDataTurn();
@@ -406,12 +418,7 @@ export class FishFamilyResultComponent implements OnInit{
     // 시간차를 두고 캔버스에 오브젝트 띄우기
     setTimeout(()=>{
       //side nav에 띄울 data 생성
-      console.log(this.objectList)
-
-      console.log(this.objectList)
-      console.log(this.familySeq)
       this.sideNavData = this.objectList.map((description,index)=>({description,family:this.familySeq[index]}))
-      console.log(this.sideNavData)
       this.dataService.sendDataToSideNav(this.sideNavData);
       for (let i = 0; i < this.selectDataSet.length; i++) {
 
@@ -582,9 +589,8 @@ export class FishFamilyResultComponent implements OnInit{
         description: String( this.resultDescription),
         id: 0,
         questionIds: '',
-        userEmail: this.selectedUser.email,
+        userEmail: this.selectedUser.userEmail,
       }
-      console.log(request)
       // 설문 데이터 저장하기
       this.mindReaderControlService.postResultSheet(request)
         .subscribe({
