@@ -145,12 +145,16 @@ export class PatientInfoComponent implements OnInit{
                 next: async (data) => {
                   if (data){
                     this.familyList  = data
+                    if(this.patientData.familyInfo!=""){
                     this.selectedFamily = this.patientData.familyInfo.split(',').map(Number)
                     //this.selectedFamily = this.resultInfo.filter((value, index, array) => array.indexOf(value) === index);
                     // 가족 선택 리스트
                     this.selectedFamily = this.selectedFamily.map(id => {
                       return this.familyList.find(item => item.id === id);
                     });
+                    }else{
+                      this.selectedFamily=[];
+                    }
                   }
                 }
               });
@@ -160,11 +164,15 @@ export class PatientInfoComponent implements OnInit{
                 next: async (data) => {
                   if (data){
                     this.familyRelation  = data
+                    if(this.patientData.familyRelation!=""){
                     this.resultRelation  =this.patientData.familyRelation.split(',').map(Number)
                     // 가족 관계 리스트
                     this.resultRelation = this.resultRelation.map(id => {
                       return this.familyRelation.find(item => item.id === id);
                     });
+                  }else{
+                      this.resultRelation=[];
+                    }
                   }
                 }
               });
@@ -220,10 +228,8 @@ export class PatientInfoComponent implements OnInit{
     if(this.patientData!=undefined){
       this.userId=this.patientData.id
     }
-
-    const selectedFamily = this.selectedFamily.map(i=>i.id).toString()
-    const selectFamilyRelation =this.resultRelation.map(i=>i.id).toString()
-
+    const selectedFamily = this.selectedFamily.map(i=>i.id).filter(id => id !== 999).toString();
+    const selectFamilyRelation = this.resultRelation.map(i=>i.id).filter(id => id !== 999).toString();
     //this.familyInfo()
     /*        let resultFamilyRelation=this.selectedFamilyRelation.join(',');
             let resultFamilyInfo=this.selectedFamilyList.join(',');*/
