@@ -17,7 +17,7 @@ import {ActivatedRoute, Route, Router} from "@angular/router";
   styleUrls:['fish-family-result.component.scss']
 })
 export class FishFamilyResultComponent implements OnInit{
-
+  public finalSelectEmail:any;
   // 회차별 오브젝트 데이터
   public objectData:any;
 
@@ -53,8 +53,6 @@ export class FishFamilyResultComponent implements OnInit{
   /** 오브젝트 순서 */
   public objectList: any[] = [];
 
-  /** 해석 여러개 문항 */
-  public questionList: number[] = [22,31,32,33,42];
   public answerList : any[]=[];
   /** 오브젝트 가족 순서 */
   public familySeq:any[]=[];
@@ -93,12 +91,17 @@ export class FishFamilyResultComponent implements OnInit{
     {id:60,description:'평가 기준9 : 물고기의 크기'},
     {id:67,description:'평가 기준10 : 기타 모습'}
   ];
+  /** 선택한 Data Set */
   public selectDataSet:any;
+  /** 선택한 회차 오브젝트 리스트 */
   public SelectSeqObjectList:any[]=[];
-
+  /** canvas time out */
   public canvasTimeout : any ;
+  /** 사용자 검색 시 이메일 */
   public searchEmail:any[]=[];
+  /** 결과지 리스트 */
   public resultSheetList:string[]=[];
+  /** nav에서 받은 데이터 */
   public userDataNav:any;
 
   /** canvas */
@@ -110,6 +113,9 @@ export class FishFamilyResultComponent implements OnInit{
    * @param alertService
    * @param authService
    * @param userService
+   * @param dataService
+   * @param route
+   * @param router
    */
   constructor(
     private mindReaderControlService:MindReaderControlService,
@@ -133,10 +139,12 @@ export class FishFamilyResultComponent implements OnInit{
       .subscribe({
         next: async (data) => {
           if (data){
+
             this.allUserData=data;
           }
         }
       });
+    // 선택한 회차 오브젝트 데이터 조회
     this.mindReaderControlService.getObjectData()
       .subscribe({
         next: async (data) => {
@@ -178,17 +186,18 @@ export class FishFamilyResultComponent implements OnInit{
     this.route.queryParams.subscribe(params => {
       this.userDataNav=params;
       if(this.userDataNav.userEmail==undefined){
-        console.log('?????????????')
         this.inputEmailCheck = false;
         this.sideNavData=undefined;
 
       }else{
         this.inputEmailCheck = true;
-        this.selectedUser=this.userDataNav
+        this.finalSelectEmail=this.userDataNav
         this.loadDataSet(this.userDataNav.userEmail);
+        this.finalSelectEmail=this.userDataNav.userEmail;
       }
 
     });
+
   }
 
   /**
@@ -239,14 +248,11 @@ export class FishFamilyResultComponent implements OnInit{
     return csvRows.join('\n');
   }
   /**
-   * 사용바 조회하기 버튼 event
+   * 사용자 조회하기 버튼 event
    */
   onRefresh() {
-    // page refresh
-
     this.router.navigateByUrl('/fish-family-result')
-    this.dataService.sendDataToTopNav(undefined);
-    this.userDataNav=undefined
+    // page refresh
     window.location.reload();
 
   }
@@ -332,12 +338,13 @@ export class FishFamilyResultComponent implements OnInit{
       (s: { email: string; }) => s.email.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
   }
-
+  emailChange(value:any){
+    this.finalSelectEmail=this.selectedUser.email
+  }
   /**
    * 회차별 데이터 조회
    */
   loadDataTurn(){
-
     this.resultDescription=[];
     this.objectData=[];
     this.resultSheetCheck=true;
@@ -360,7 +367,7 @@ export class FishFamilyResultComponent implements OnInit{
     this.selectedBowl=this.objectImage[this.dataSet[selectedTurn-1].fishbowlCode].path
     this.selectedBowlCode=this.dataSet[selectedTurn-1].fishbowlCode
     // 회차별 사용자 오브젝트 조회
-    this.mindReaderControlService.getSeqObject(this.dataSet[selectedTurn-1].seq,this.selectedUser.userEmail)
+    this.mindReaderControlService.getSeqObject(this.dataSet[selectedTurn-1].seq,this.finalSelectEmail)
       .subscribe({
         next: async (data) => {
           if (data){
@@ -378,7 +385,7 @@ export class FishFamilyResultComponent implements OnInit{
             this.familySeq=this.objectData;
             this.selectDataSet=this.familySeq
             this.objectData=data;
-
+            // 회차별 오브젝트 코드
             for (let i = 0; i < this.selectDataSet.length; i++) {
               this.mindReaderControlService.getObjectCode(this.selectDataSet[i].objectCodeId)
                 .subscribe({
@@ -589,7 +596,7 @@ export class FishFamilyResultComponent implements OnInit{
         description: String( this.resultDescription),
         id: 0,
         questionIds: '',
-        userEmail: this.selectedUser.userEmail,
+        userEmail: this.finalSelectEmail,
       }
       // 설문 데이터 저장하기
       this.mindReaderControlService.postResultSheet(request)
