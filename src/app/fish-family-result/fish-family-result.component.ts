@@ -251,9 +251,15 @@ export class FishFamilyResultComponent implements OnInit{
    * 사용자 조회하기 버튼 event
    */
   onRefresh() {
-    this.router.navigateByUrl('/fish-family-result')
+    // top-nav data 제거
+    this.dataService.sendDataToTopNav(undefined);
+    // 파라미터 제거 후 이동
+    const currentUrl = window.location.href;
+    const newUrl = currentUrl.split('?')[0];
+    window.location.href = newUrl;
     // page refresh
     window.location.reload();
+
 
   }
 

@@ -6,7 +6,7 @@ import {MrFamilyCodeResponse} from "../../shared/model/response/mr-family-code.r
 import {MrFamilyRelationCodeResponse} from "../../shared/model/response/mr-family-relation-code.response.model";
 import {MindReaderControlService} from "../../shared/service/mind-reader-control.service";
 import {PatientInfoRequest} from "../../shared/model/request/patient-info.request.model";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
 import {AlertService} from "../../shared/service/alert.service";
 import {AuthService} from "../../shared/service/auth.service";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -251,7 +251,7 @@ export class PatientInfoComponent implements OnInit{
         next: async (data) => {
           if(data) {
             this.alertService.openAlert('수정되었습니다.');
-            this.router.navigate(['/fish-family-result'],{queryParams:this.userData});
+            this.router.navigate(['/fish-family-result'],{queryParams:this.userData,replaceUrl:true});
             this.userData=[];
           }
         },
