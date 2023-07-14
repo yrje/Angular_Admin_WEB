@@ -444,7 +444,7 @@ export class FishFamilyResultComponent implements OnInit{
 
       },1500);
 
-    console.log(this.dataSet)
+    // 오브젝트 마우스 오버 시 tooltip
     this.canvas.canvas.on('mouse:move', e => {
       const tooltips = this.canvas.canvas.getObjects('textbox');
       tooltips.forEach(tooltip => this.canvas.canvas.remove(tooltip));
@@ -459,8 +459,8 @@ export class FishFamilyResultComponent implements OnInit{
           Number(e.pointer?.y) <= this.objectData[i].y + 10
         ) {
           let familyName:string=''
-          if (this.sideNavData[i].family==undefined){
-          }else{familyName='/'+this.sideNavData[i].family}
+          if (this.sideNavData[i].name==undefined){
+          }else{familyName='/'+this.sideNavData[i].name}
 
           const tooltipText : string=String(i+1+'. ')+this.sideNavData[i].description+familyName;
           const tooltip = new fabric.Textbox(tooltipText, {
