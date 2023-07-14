@@ -21,8 +21,8 @@
       </div>
       <ng-container *ngFor="let data of receivedData;let i = index" style="font-size: 10px">
         {{i+1}}. {{receivedData[i].description}}
-        <ng-container *ngIf="receivedData[i].family!=null">
-          : <b>{{receivedData[i].family}}</b>
+        <ng-container *ngIf="receivedData[i].name!=null">
+          : <b>{{receivedData[i].name}}</b>
         </ng-container><br>
       </ng-container>
     </div>

@@ -148,7 +148,7 @@ export class FishFamilyResultComponent implements OnInit{
           }
         }
       });
-    // 선택한 회차 오브젝트 데이터 조회
+    // 오브젝트 데이터 조회
     this.mindReaderControlService.getObjectData()
       .subscribe({
         next: async (data) => {
@@ -385,6 +385,7 @@ export class FishFamilyResultComponent implements OnInit{
           if (data){
             // 오브젝트 가족 관계 순서 데이터 생성
             this.objectData=data;
+            this.objectData.sort((a:any, b:any) => a.id - b.id);
             let i= 0;
             for (let obj1 of this.familyList) {
               for (let obj2 of this.objectData) {
@@ -405,7 +406,8 @@ export class FishFamilyResultComponent implements OnInit{
                     if (data){
                       let objectData:any;
                       objectData=data
-                      this.objectList.splice(i, 0, objectData.description);
+                      this.objectData[i].code=objectData.code
+                      this.objectData[i].description=objectData.description
                     }
                   }
                 });
@@ -431,8 +433,7 @@ export class FishFamilyResultComponent implements OnInit{
 
     // 시간차를 두고 캔버스에 오브젝트 띄우기
     setTimeout(()=>{
-      console.log(this.objectList)
-      this.sideNavData = this.objectList.map((description,index,id)=>({description:this.objectList[index],family:this.familySeq[index]}))
+      this.sideNavData = this.objectData
       this.dataService.sendDataToSideNav(this.sideNavData);
       for (let i = 0; i < this.selectDataSet.length; i++) {
         let pathUrl=this.SelectSeqObjectList.find(obj => obj.objectCodeId ===this.selectDataSet[i].objectCodeId ).path;
