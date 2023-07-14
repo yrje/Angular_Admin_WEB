@@ -10,7 +10,11 @@ import {DataService} from "../../shared/service/data.service";
 import {UserService} from "../../shared/service/user.service";
 import {saveAs} from "@progress/kendo-drawing/pdf";
 import {ActivatedRoute, Route, Router} from "@angular/router";
-
+import {MrObjectModel} from "../../shared/model/mr-object.model";
+import {MrDataSetRequestModel} from "../../shared/model/request/mr-data-set.request.model";
+import {MrDataSetResponseModel} from "../../shared/model/response/mr-data-set.response.model";
+import {max} from "rxjs";
+import {fabric} from "fabric";
 @Component({
   selector: 'app-fish-family-result',
   templateUrl: 'fish-family-result.component.html',
@@ -351,9 +355,11 @@ export class FishFamilyResultComponent implements OnInit{
    * 회차별 데이터 조회
    */
   loadDataTurn(){
+    this.canvas.test();
     this.resultDescription=[];
     this.objectData=[];
-    this.resultSheetCheck=true;
+    this.resultSheetCheck = true;
+    this.objectList=[];
     let selectedTurn: number = 0;
     selectedTurn = Number(this.selectedTurn.replace('회차',''));
     // 내담자 설문 결과 조회
@@ -406,12 +412,9 @@ export class FishFamilyResultComponent implements OnInit{
             }
 
             this.familySeq= this.familySeq.map(item => item.name);
-
-
           }
         }
       });
-
   }
 
   /**
@@ -421,29 +424,57 @@ export class FishFamilyResultComponent implements OnInit{
     clearTimeout(this.canvasTimeout);
     // 회차 데이터 조회
     this.loadDataTurn();
-
     // 캔버스 초기화
     this.canvas.canvas.clear();
     // 어항 세팅
     this.canvas.setWater(this.selectedBowl,this.selectedBowlCode);
 
-
     // 시간차를 두고 캔버스에 오브젝트 띄우기
     setTimeout(()=>{
-      //side nav에 띄울 data 생성
-      this.sideNavData = this.objectList.map((description,index)=>({description,family:this.familySeq[index]}))
+      console.log(this.objectList)
+      this.sideNavData = this.objectList.map((description,index,id)=>({description:this.objectList[index],family:this.familySeq[index]}))
       this.dataService.sendDataToSideNav(this.sideNavData);
       for (let i = 0; i < this.selectDataSet.length; i++) {
-
         let pathUrl=this.SelectSeqObjectList.find(obj => obj.objectCodeId ===this.selectDataSet[i].objectCodeId ).path;
         this.canvasTimeout = setTimeout(() => {
           this.canvas.timeObjectResult(this.objectData[i].x, this.objectData[i].y, this.objectData[i].width, this.objectData[i].height, this.objectData[i].angle,this.objectData[i].flip, pathUrl);
         }, 1000 * (i + 1));
-
       }
-      },500);
-    this.objectList=[];
 
+      },1500);
+
+    console.log(this.dataSet)
+    this.canvas.canvas.on('mouse:move', e => {
+      const tooltips = this.canvas.canvas.getObjects('textbox');
+      tooltips.forEach(tooltip => this.canvas.canvas.remove(tooltip));
+
+      for (let i = 0; i < this.objectData.length; i++) {
+        let maxWidth: number = this.objectData[i].x + this.objectData[i].width;
+        let maxHeight: number = this.objectData[i].y - this.objectData[i].height;
+        if (
+          this.objectData[i].x-10<= Number(e.pointer?.x) &&
+          Number(e.pointer?.x) <= this.objectData[i].x + 10 &&
+          this.objectData[i].y-10<= Number(e.pointer?.y) &&
+          Number(e.pointer?.y) <= this.objectData[i].y + 10
+        ) {
+          let familyName:string=''
+          if (this.sideNavData[i].family==undefined){
+          }else{familyName='/'+this.sideNavData[i].family}
+
+          const tooltipText : string=String(i+1+'. ')+this.sideNavData[i].description+familyName;
+          const tooltip = new fabric.Textbox(tooltipText, {
+            left: this.objectData[i].x+20,
+            top: this.objectData[i].y,
+            fontSize:15,
+            width:400,
+            opacity: 0.8,
+            selectable: false
+          });
+          this.canvas.canvas.add(tooltip);
+        }
+      }
+    });
+    this.objectList=[];
   }
 
 
@@ -592,6 +623,7 @@ export class FishFamilyResultComponent implements OnInit{
    * 설문 데이터 저장
    */
   saveResultSheet() {
+    return;
     //예외처리
     //this.exception();
       const request: MrResultSheetRequest = {
