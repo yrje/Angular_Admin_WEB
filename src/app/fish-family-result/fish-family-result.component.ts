@@ -466,7 +466,7 @@ export class FishFamilyResultComponent implements OnInit{
           const tooltip = new fabric.Textbox(tooltipText, {
             left: this.objectData[i].x+20,
             top: this.objectData[i].y,
-            fontSize:15,
+            fontSize:20,
             width:400,
             opacity: 0.8,
             selectable: false
