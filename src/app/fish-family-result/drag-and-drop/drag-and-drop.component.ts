@@ -31,13 +31,14 @@ export class DragAndDropComponent implements AfterViewInit{
     /** 어항 코드 */
     public fishbowlCode: number = 0;
 
-
+  showTooltip: boolean = false;
+  tooltipText: string = '';
     public waterUrl: string = '';
 
     public url: string | ArrayBuffer = '';
     public size: any = {
         width: 1000,
-        height: 1000
+        height: 570
     };
 
     public json: any;
@@ -64,9 +65,9 @@ export class DragAndDropComponent implements AfterViewInit{
         selectionBorderColor: 'blue',
         isDrawingMode: false,
       });
-
       this.canvas.setWidth(this.size.width);
       this.canvas.setHeight(this.size.height);
+
     }
 
 
@@ -79,10 +80,10 @@ export class DragAndDropComponent implements AfterViewInit{
         this.waterUrl = opt;
         this.fishbowlCode = fishbowlCode;
         this.canvas.setBackgroundImage(this.waterUrl, this.canvas.renderAll.bind(this.canvas), {
-          top: 275,
-          left: 15,
-          scaleX:0.42,
-          scaleY: 0.42
+          top: 100 ,
+          left: 200 ,
+          scaleX:0.35 ,
+          scaleY: 0.35
         });
 
     }
@@ -109,7 +110,8 @@ export class DragAndDropComponent implements AfterViewInit{
          top: y - (height/2),
          left: x - (width/2),
          angle: angle,
-         flipX: flip
+         flipX: flip,
+         selectable:false
        })
 
        let originWidthScale : number = image.width? image.width : 1;
@@ -119,11 +121,24 @@ export class DragAndDropComponent implements AfterViewInit{
        this.selectItemAfterAdded(image);
      })
 
+
+
+
   }
 
-    selectItemAfterAdded(obj:any){
+
+  /**
+   * 캔버스에 이미지 추가
+   * @param obj
+   */
+  selectItemAfterAdded(obj:any){
       this.canvas.discardActiveObject().renderAll();
       this.canvas.setActiveObject(obj);
+    }
+    test(){
+      this.canvas.on('mouse:over',function (e){
+        console.log(e)
+      })
     }
 }
 
